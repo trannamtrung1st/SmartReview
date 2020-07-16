@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartReview.DataAnalyzer.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.Sentiment", "SmartReview.DataAnalyzer.Sentiment\SmartReview.DataAnalyzer.Sentiment.csproj", "{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.Classification", "SmartReview.DataAnalyzer.Classification\SmartReview.DataAnalyzer.Classification.csproj", "{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

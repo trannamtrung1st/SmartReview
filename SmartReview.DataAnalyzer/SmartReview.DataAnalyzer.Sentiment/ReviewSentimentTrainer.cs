@@ -10,7 +10,7 @@ using System.Text;
 
 namespace SmartReview.DataAnalyzer.Sentiment
 {
-    public class YelpSentimentTrainer
+    public class ReviewSentimentTrainer
     {
         public const int STARS_COL_IDX = 3;
         public const int REVIEW_COL_IDX = 4;

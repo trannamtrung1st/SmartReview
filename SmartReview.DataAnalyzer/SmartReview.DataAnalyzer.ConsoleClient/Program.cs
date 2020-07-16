@@ -1,6 +1,8 @@
-﻿using SmartReview.DataAnalyzer.Sentiment;
+﻿using SmartReview.DataAnalyzer.Classification;
+using SmartReview.DataAnalyzer.Sentiment;
 using SmartReview.DataAnalyzer.Sentiment.Models;
 using System;
+using System.IO;
 
 namespace SmartReview.DataAnalyzer.ConsoleClient
 {
@@ -10,12 +12,13 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
         static void Main(string[] args)
         {
             //TrainYelpSentiment();
-            TestSentimentAnalysis();
+            //TestSentimentAnalysis();
+            TrainMacDonaldReview();
         }
 
         static void TestSentimentAnalysis()
         {
-            var trainer = new YelpSentimentTrainer();
+            var trainer = new ReviewSentimentTrainer();
             var engine = trainer.GetPredictionEngine(MODEL_PATH);
             var output = engine.Predict(new ModelInput
             {
@@ -29,9 +32,19 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
             //var csvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\yelp.csv";
             //var data = FileProcessor.ReadCsv(csvPath, false);
             var tsvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\yelp.tsv";
-            var trainer = new YelpSentimentTrainer();
+            var trainer = new ReviewSentimentTrainer();
             //trainer.PreprocessYelpTsv(data, tsvPath);
             trainer.CreateModel(tsvPath, MODEL_PATH);
+        }
+
+        static void TrainMacDonaldReview()
+        {
+            var csvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\macdonald.csv";
+            var data = FileProcessor.ReadCsv(csvPath, false);
+            var tsvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\macdonald.tsv";
+            var trainer = new ReviewCategorizeTrainer();
+            var cSet = trainer.PreprocessReviewTsvThenReturnCategories(data, tsvPath);
+            File.WriteAllLines(@"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\categories.txt", cSet);
         }
     }
 }
