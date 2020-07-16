@@ -8,18 +8,31 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
 {
     class Program
     {
-        const string MODEL_PATH = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.DataAnalyzer\SmartReview.DataAnalyzer.Sentiment\MLModel.zip";
+        const string SENTIMENT_MODEL_PATH = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.DataAnalyzer\SmartReview.DataAnalyzer.Sentiment\MLModel.zip";
+        const string CLASSIFY_MODEL_PATH = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.DataAnalyzer\SmartReview.DataAnalyzer.Classification\MLModel.zip";
         static void Main(string[] args)
         {
             //TrainYelpSentiment();
             //TestSentimentAnalysis();
-            TrainMacDonaldReview();
+            //TrainMacDonaldReview();
+            //TestClassification();
+            TestIntegration();
+        }
+
+        static void TestClassification()
+        {
+            var engine = new ReviewCategorizer(CLASSIFY_MODEL_PATH);
+            var output = engine.Predict(new Classification.Models.ModelInput
+            {
+                Review = "We had lunch at the Mix, Greec... a very big plate but no taste. Everything was very greasy. The young people that Work there are very sweet but too eager to clean the table. A Customer needs space. No need to remove your glass or napkin. As the standing en watching. It is clean and nice decorated!!"
+            });
+            foreach (var r in output.TopOutputs)
+                Console.WriteLine(r.Label + "-" + r.Score);
         }
 
         static void TestSentimentAnalysis()
         {
-            var trainer = new ReviewSentimentTrainer();
-            var engine = trainer.GetPredictionEngine(MODEL_PATH);
+            var engine = new ReviewSentimentAnalyzer(SENTIMENT_MODEL_PATH);
             var output = engine.Predict(new ModelInput
             {
                 Text = "This service give me a good mood. I wanna go there more"
@@ -34,7 +47,7 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
             var tsvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\yelp.tsv";
             var trainer = new ReviewSentimentTrainer();
             //trainer.PreprocessYelpTsv(data, tsvPath);
-            trainer.CreateModel(tsvPath, MODEL_PATH);
+            trainer.CreateModel(tsvPath, SENTIMENT_MODEL_PATH);
         }
 
         static void TrainMacDonaldReview()
@@ -45,6 +58,25 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
             var trainer = new ReviewCategorizeTrainer();
             var cSet = trainer.PreprocessReviewTsvThenReturnCategories(data, tsvPath);
             File.WriteAllLines(@"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\categories.txt", cSet);
+            trainer.CreateModel(tsvPath, CLASSIFY_MODEL_PATH);
+        }
+
+        static void TestIntegration()
+        {
+            var rData = "We had lunch at the Mix, Greec... a very big plate but no taste. Everything was very greasy. The young people that Work there are very sweet but too eager to clean the table. A Customer needs space. No need to remove your glass or napkin. As the standing en watching. It is clean and nice decorated!!";
+            var sEngine = new ReviewSentimentAnalyzer(SENTIMENT_MODEL_PATH);
+            var sOutput = sEngine.Predict(new ModelInput
+            {
+                Text = rData
+            });
+            Console.WriteLine(sOutput.Prediction + "-" + sOutput.Score);
+            var cEngine = new ReviewCategorizer(CLASSIFY_MODEL_PATH);
+            var cOutput = cEngine.Predict(new Classification.Models.ModelInput
+            {
+                Review = rData
+            });
+            foreach (var r in cOutput.TopOutputs)
+                Console.WriteLine(r.Label + "-" + r.Score);
         }
     }
 }
