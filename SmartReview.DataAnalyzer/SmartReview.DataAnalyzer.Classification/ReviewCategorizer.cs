@@ -19,7 +19,7 @@ namespace SmartReview.DataAnalyzer.Classification
             engine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
         }
 
-        public ModelOutputViewModel Predict(ModelInput input, float minScore = 0.2f)
+        public ModelOutputs Predict(ModelInput input, float minScore = 0.2f)
         {
             // Use model to make prediction on input data
             ModelOutput result = engine.Predict(input);
@@ -38,7 +38,7 @@ namespace SmartReview.DataAnalyzer.Classification
                 Label = labelNames[i],
                 Score = s
             }).OrderByDescending(o => o.Score).Where(o => o.Score >= minScore).ToList();
-            return new ModelOutputViewModel
+            return new ModelOutputs
             {
                 Prediction = result.Category,
                 TopOutputs = topOutputs

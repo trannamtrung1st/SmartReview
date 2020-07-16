@@ -15,7 +15,7 @@ namespace SmartReview.DataAnalyzer.Classification.Models
     }
 
     [XmlRoot("modelOutput")]
-    public class ModelOutputViewModel
+    public class ModelOutputs
     {
         [XmlElement("prediction")]
         [JsonProperty("prediction")]

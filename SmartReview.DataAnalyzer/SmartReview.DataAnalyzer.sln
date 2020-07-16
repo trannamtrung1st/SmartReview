@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.Classification", "SmartReview.DataAnalyzer.Classification\SmartReview.DataAnalyzer.Classification.csproj", "{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.WebApi", "SmartReview.DataAnalyzer.WebApi\SmartReview.DataAnalyzer.WebApi.csproj", "{8F87E35B-F78C-48C0-9600-A76A784A0661}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A4A15DF-F084-42B0-BD8C-394B9CE6A3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F87E35B-F78C-48C0-9600-A76A784A0661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F87E35B-F78C-48C0-9600-A76A784A0661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F87E35B-F78C-48C0-9600-A76A784A0661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F87E35B-F78C-48C0-9600-A76A784A0661}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
