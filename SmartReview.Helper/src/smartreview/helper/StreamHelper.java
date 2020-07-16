@@ -6,10 +6,12 @@
 package smartreview.helper;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -28,5 +30,13 @@ public class StreamHelper {
             }
         }
         return textBuilder.toString();
+    }
+
+    public static InputStream getStreamFromString(String str) {
+        return new ByteArrayInputStream(str.getBytes());
+    }
+
+    public static StringReader getReaderFromString(String str) {
+        return new StringReader(str);
     }
 }

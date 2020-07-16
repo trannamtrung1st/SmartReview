@@ -76,11 +76,4 @@ public class FileHelper {
         Files.write(new File(path).toPath(), content.getBytes(), new OpenOption[]{});
     }
 
-    public static InputStream getStreamFromString(String str) {
-        return new ByteArrayInputStream(str.getBytes());
-    }
-
-    public static StringReader getReaderFromString(String str) {
-        return new StringReader(str);
-    }
 }

@@ -68,7 +68,7 @@ public class XMLHelper {
     public static Document parseDOMFromString(String srcXml) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        InputStreamReader reader = new InputStreamReader(FileHelper.getStreamFromString(srcXml), "UTF-8");
+        InputStreamReader reader = new InputStreamReader(StreamHelper.getStreamFromString(srcXml), "UTF-8");
         InputSource is = new InputSource(reader);
         is.setEncoding("UTF-8");
         Document doc = builder.parse(is);
