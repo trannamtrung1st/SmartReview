@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartReview.DataAnalyzerML.Model\SmartReview.DataAnalyzerML.Model.csproj" />
+    <ProjectReference Include="..\SmartReview.DataAnalyzer.Sentiment\SmartReview.DataAnalyzer.Sentiment.csproj" />
   </ItemGroup>
 
 </Project>

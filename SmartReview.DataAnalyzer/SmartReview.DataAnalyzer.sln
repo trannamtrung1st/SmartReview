@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer", "SmartReview.DataAnalyzer\SmartReview.DataAnalyzer.csproj", "{056C3789-CF69-4D21-BE22-3E24645530B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartReview.DataAnalyzer", "SmartReview.DataAnalyzer\SmartReview.DataAnalyzer.csproj", "{056C3789-CF69-4D21-BE22-3E24645530B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.ConsoleClient", "SmartReview.DataAnalyzer.ConsoleClient\SmartReview.DataAnalyzer.ConsoleClient.csproj", "{8AD91152-1406-4089-886C-791E60ABBD8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartReview.DataAnalyzer.ConsoleClient", "SmartReview.DataAnalyzer.ConsoleClient\SmartReview.DataAnalyzer.ConsoleClient.csproj", "{8AD91152-1406-4089-886C-791E60ABBD8A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartReview.DataAnalyzerML.Model", "SmartReview.DataAnalyzerML.Model\SmartReview.DataAnalyzerML.Model.csproj", "{9FB2610E-C815-4036-AAB3-19F068637B01}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartReview.DataAnalyzerML.ConsoleApp", "SmartReview.DataAnalyzerML.ConsoleApp\SmartReview.DataAnalyzerML.ConsoleApp.csproj", "{C3D82C9C-731D-4D6C-9E65-002657877E67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartReview.DataAnalyzer.Sentiment", "SmartReview.DataAnalyzer.Sentiment\SmartReview.DataAnalyzer.Sentiment.csproj", "{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +23,10 @@ Global
 		{8AD91152-1406-4089-886C-791E60ABBD8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AD91152-1406-4089-886C-791E60ABBD8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AD91152-1406-4089-886C-791E60ABBD8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9FB2610E-C815-4036-AAB3-19F068637B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FB2610E-C815-4036-AAB3-19F068637B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FB2610E-C815-4036-AAB3-19F068637B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FB2610E-C815-4036-AAB3-19F068637B01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3D82C9C-731D-4D6C-9E65-002657877E67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3D82C9C-731D-4D6C-9E65-002657877E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3D82C9C-731D-4D6C-9E65-002657877E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3D82C9C-731D-4D6C-9E65-002657877E67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF6E00D-4F6C-408B-9E2A-AE86424AD5AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
