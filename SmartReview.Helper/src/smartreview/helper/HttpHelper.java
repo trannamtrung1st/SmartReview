@@ -16,12 +16,27 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.core5.http.ContentType;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
  *
  * @author TNT
  */
 public class HttpHelper {
+
+    private static final WebDriver DRIVER;
+
+    static {
+        ChromeOptions chromeOptions = new ChromeOptions();
+//        chromeOptions.addArguments("--headless");
+        DRIVER = new ChromeDriver(chromeOptions);
+    }
+
+    public static WebDriver getWebDriver() {
+        return DRIVER;
+    }
 
     public static MultipartEntityBuilder addFileUpload(MultipartEntityBuilder builder, String partName, InputStream is, String fileName) {
         return builder.addBinaryBody(partName, is, ContentType.MULTIPART_FORM_DATA, fileName);
