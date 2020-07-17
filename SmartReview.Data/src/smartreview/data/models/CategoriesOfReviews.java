@@ -35,10 +35,10 @@ public class CategoriesOfReviews implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
-    @JoinColumn(name = "ReviewId", referencedColumnName = "id")
+    @JoinColumn(name = "reviewId", referencedColumnName = "id")
     @ManyToOne
     private BusinessReview reviewId;
-    @JoinColumn(name = "CategoryCode", referencedColumnName = "code")
+    @JoinColumn(name = "categoryCode", referencedColumnName = "code")
     @ManyToOne
     private ReviewCategory categoryCode;
 

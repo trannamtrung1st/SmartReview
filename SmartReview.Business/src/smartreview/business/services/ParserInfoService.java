@@ -40,7 +40,7 @@ public class ParserInfoService {
     }
 
     public boolean parserInfoCodeExists(String parserCode) {
-        String sql = "SELECT COUNT(code) FROM ParserInfo parserCode code=?code";
+        String sql = "SELECT COUNT(code) FROM ParserInfo WHERE parserCode=?code";
         Query query = parserInfoDAO.nativeQuery(sql).setParameter("code", parserCode);
         Integer count = (Integer) query.getSingleResult();
         return count > 0;

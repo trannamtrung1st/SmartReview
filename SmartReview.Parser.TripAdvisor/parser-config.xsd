@@ -12,6 +12,9 @@
         <xs:element name="businessItemCssSelector" type="xs:string" />
         <xs:element name="nextPageCssSelector" type="xs:string" />
         <xs:element name="currentPageCssSelector" type="xs:string" />
+        <xs:element name="defaultFromPage" type="xs:unsignedByte" />
+        <xs:element name="defaultToPage" type="xs:unsignedByte" />
+        <xs:element name="codeFromUrlRegex" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

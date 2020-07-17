@@ -6,10 +6,7 @@
 package smartreview.helper;
 
 import java.io.IOException;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import java.util.regex.Matcher;
 
 /**
  *
@@ -18,24 +15,9 @@ import org.openqa.selenium.WebElement;
 public class Entry {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "T:\\ITs\\WebDriver\\chromedriver84.exe");
-        WebDriver driver = HttpHelper.getWebDriver();
-        driver.get("https://www.tripadvisor.com/Restaurant_Review-g293925-d15101144-Reviews-The_D_Saigon-Ho_Chi_Minh_City.html");
-        String src = driver.getPageSource();
-        try {
-            WebElement e = driver.findElement(By.cssSelector(".pageNum.current + .pageNum"));
-            while (e != null) {
-                e.click();
-                Thread.sleep(1000);
-//            WebElement element = new WebDriverWait(driver, 20).until((t) -> {
-//                return null; //To change body of generated lambdas, choose Tools | Templates.
-//            });
-
-                src = driver.getPageSource();
-                FileHelper.writeToFile(src, "temp.html");
-                e = driver.findElement(By.cssSelector(".pageNum.current + .pageNum"));
-            }
-        } catch (NoSuchElementException e) {
-        }
+        String url = "https://www.tripadvisor.com/Restaurant_Review-g33450-d11962753-Reviews-Del_Taco-Grand_Junction_Colorado.html";
+        Matcher matcher = RegexHelper.matcherDotAll(url, "^.+?-.+?-(.+?)-.*$");
+        matcher.find();
+        System.out.println(matcher.group(1));
     }
 }

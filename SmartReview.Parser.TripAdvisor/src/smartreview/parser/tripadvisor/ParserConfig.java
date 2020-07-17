@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -26,6 +27,9 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="businessItemCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="nextPageCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="currentPageCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="defaultFromPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *         &lt;element name="defaultToPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *         &lt;element name="codeFromUrlRegex" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -43,7 +47,10 @@ import javax.xml.bind.annotation.XmlType;
     "businessLinksXPath",
     "businessItemCssSelector",
     "nextPageCssSelector",
-    "currentPageCssSelector"
+    "currentPageCssSelector",
+    "defaultFromPage",
+    "defaultToPage",
+    "codeFromUrlRegex"
 })
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
@@ -64,6 +71,12 @@ public class ParserConfig {
     protected String nextPageCssSelector;
     @XmlElement(required = true)
     protected String currentPageCssSelector;
+    @XmlSchemaType(name = "unsignedByte")
+    protected short defaultFromPage;
+    @XmlSchemaType(name = "unsignedByte")
+    protected short defaultToPage;
+    @XmlElement(required = true)
+    protected String codeFromUrlRegex;
 
     /**
      * Gets the value of the driverPath property.
@@ -255,6 +268,62 @@ public class ParserConfig {
      */
     public void setCurrentPageCssSelector(String value) {
         this.currentPageCssSelector = value;
+    }
+
+    /**
+     * Gets the value of the defaultFromPage property.
+     * 
+     */
+    public short getDefaultFromPage() {
+        return defaultFromPage;
+    }
+
+    /**
+     * Sets the value of the defaultFromPage property.
+     * 
+     */
+    public void setDefaultFromPage(short value) {
+        this.defaultFromPage = value;
+    }
+
+    /**
+     * Gets the value of the defaultToPage property.
+     * 
+     */
+    public short getDefaultToPage() {
+        return defaultToPage;
+    }
+
+    /**
+     * Sets the value of the defaultToPage property.
+     * 
+     */
+    public void setDefaultToPage(short value) {
+        this.defaultToPage = value;
+    }
+
+    /**
+     * Gets the value of the codeFromUrlRegex property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCodeFromUrlRegex() {
+        return codeFromUrlRegex;
+    }
+
+    /**
+     * Sets the value of the codeFromUrlRegex property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCodeFromUrlRegex(String value) {
+        this.codeFromUrlRegex = value;
     }
 
 }

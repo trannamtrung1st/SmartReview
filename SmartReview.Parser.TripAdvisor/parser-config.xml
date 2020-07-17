@@ -8,4 +8,7 @@
   <businessItemCssSelector>._1llCuDZj</businessItemCssSelector>
   <nextPageCssSelector>.pageNum.current + .pageNum</nextPageCssSelector>
   <currentPageCssSelector>.pageNum.current</currentPageCssSelector>
+  <defaultFromPage>1</defaultFromPage>
+  <defaultToPage>20</defaultToPage>
+  <codeFromUrlRegex><![CDATA[^.+?-.+?-(.+?)-.*$]]></codeFromUrlRegex>
 </parserConfig>

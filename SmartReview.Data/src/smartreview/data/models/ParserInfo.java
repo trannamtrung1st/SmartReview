@@ -24,7 +24,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ParserInfo.findAll", query = "SELECT p FROM ParserInfo p")
     , @NamedQuery(name = "ParserInfo.findByParserCode", query = "SELECT p FROM ParserInfo p WHERE p.parserCode = :parserCode")
-    , @NamedQuery(name = "ParserInfo.findByParserBaseUrl", query = "SELECT p FROM ParserInfo p WHERE p.parserBaseUrl = :parserBaseUrl")})
+    , @NamedQuery(name = "ParserInfo.findByParserBaseUrl", query = "SELECT p FROM ParserInfo p WHERE p.parserBaseUrl = :parserBaseUrl")
+    , @NamedQuery(name = "ParserInfo.findByFromPage", query = "SELECT p FROM ParserInfo p WHERE p.fromPage = :fromPage")
+    , @NamedQuery(name = "ParserInfo.findByToPage", query = "SELECT p FROM ParserInfo p WHERE p.toPage = :toPage")
+    , @NamedQuery(name = "ParserInfo.findByRefreshExistedData", query = "SELECT p FROM ParserInfo p WHERE p.refreshExistedData = :refreshExistedData")})
 public class ParserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +35,9 @@ public class ParserInfo implements Serializable {
     @Basic(optional = false)
     private String parserCode;
     private String parserBaseUrl;
+    private Integer fromPage;
+    private Integer toPage;
+    private Boolean refreshExistedData;
 
     public ParserInfo() {
     }
@@ -54,6 +60,30 @@ public class ParserInfo implements Serializable {
 
     public void setParserBaseUrl(String parserBaseUrl) {
         this.parserBaseUrl = parserBaseUrl;
+    }
+
+    public Integer getFromPage() {
+        return fromPage;
+    }
+
+    public void setFromPage(Integer fromPage) {
+        this.fromPage = fromPage;
+    }
+
+    public Integer getToPage() {
+        return toPage;
+    }
+
+    public void setToPage(Integer toPage) {
+        this.toPage = toPage;
+    }
+
+    public Boolean getRefreshExistedData() {
+        return refreshExistedData;
+    }
+
+    public void setRefreshExistedData(Boolean refreshExistedData) {
+        this.refreshExistedData = refreshExistedData;
     }
 
     @Override

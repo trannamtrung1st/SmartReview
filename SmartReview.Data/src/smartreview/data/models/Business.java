@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Business.findByRating", query = "SELECT b FROM Business b WHERE b.rating = :rating")
     , @NamedQuery(name = "Business.findByAddress", query = "SELECT b FROM Business b WHERE b.address = :address")
     , @NamedQuery(name = "Business.findByPhone", query = "SELECT b FROM Business b WHERE b.phone = :phone")
-    , @NamedQuery(name = "Business.findByDetailUrl", query = "SELECT b FROM Business b WHERE b.detailUrl = :detailUrl")})
+    , @NamedQuery(name = "Business.findByDetailUrl", query = "SELECT b FROM Business b WHERE b.detailUrl = :detailUrl")
+    , @NamedQuery(name = "Business.findByFromPage", query = "SELECT b FROM Business b WHERE b.fromPage = :fromPage")})
 public class Business implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,6 +52,7 @@ public class Business implements Serializable {
     private String address;
     private String phone;
     private String detailUrl;
+    private String fromPage;
     @OneToMany(mappedBy = "businessId")
     private Collection<BusinessReview> businessReviewCollection;
     @OneToMany(mappedBy = "businessId")
@@ -125,6 +127,14 @@ public class Business implements Serializable {
 
     public void setDetailUrl(String detailUrl) {
         this.detailUrl = detailUrl;
+    }
+
+    public String getFromPage() {
+        return fromPage;
+    }
+
+    public void setFromPage(String fromPage) {
+        this.fromPage = fromPage;
     }
 
     @XmlTransient
