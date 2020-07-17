@@ -4,9 +4,14 @@
   <xs:element name="parserConfig">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="code" type="xs:string" />
+        <xs:element name="driverPath" type="xs:string" />
         <xs:element name="baseUrl" type="xs:string" />
         <xs:element name="businessListUrl" type="xs:string" />
+        <xs:element name="code" type="xs:string" />
+        <xs:element name="businessLinksXPath" type="xs:string" />
+        <xs:element name="businessItemCssSelector" type="xs:string" />
+        <xs:element name="nextPageCssSelector" type="xs:string" />
+        <xs:element name="currentPageCssSelector" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

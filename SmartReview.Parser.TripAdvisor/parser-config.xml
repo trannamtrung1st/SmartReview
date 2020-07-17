@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="parserConfig">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="code" type="xs:string" />
-        <xs:element name="baseUrl" type="xs:string" />
-        <xs:element name="businessListUrl" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-</xs:schema>
+<?xml version="1.0" encoding="UTF-8"?>
+<parserConfig>
+  <driverPath>T:\ITs\WebDriver\chromedriver84.exe</driverPath>
+  <baseUrl>https://www.tripadvisor.com</baseUrl>
+  <businessListUrl>https://www.tripadvisor.com/Restaurants-g293925-Ho_Chi_Minh_City.html</businessListUrl>
+  <code>trip-advisor</code>
+  <businessLinksXPath>//*[@class='_15_ydu6b']/@href</businessLinksXPath>
+  <businessItemCssSelector>._1llCuDZj</businessItemCssSelector>
+  <nextPageCssSelector>.pageNum.current + .pageNum</nextPageCssSelector>
+  <currentPageCssSelector>.pageNum.current</currentPageCssSelector>
+</parserConfig>

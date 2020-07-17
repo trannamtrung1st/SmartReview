@@ -18,9 +18,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="driverPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="baseUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="businessListUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="businessLinksXPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="businessItemCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="nextPageCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="currentPageCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,42 +36,57 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "code",
+    "driverPath",
     "baseUrl",
-    "businessListUrl"
+    "businessListUrl",
+    "code",
+    "businessLinksXPath",
+    "businessItemCssSelector",
+    "nextPageCssSelector",
+    "currentPageCssSelector"
 })
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
 
     @XmlElement(required = true)
-    protected String code;
+    protected String driverPath;
     @XmlElement(required = true)
     protected String baseUrl;
     @XmlElement(required = true)
     protected String businessListUrl;
+    @XmlElement(required = true)
+    protected String code;
+    @XmlElement(required = true)
+    protected String businessLinksXPath;
+    @XmlElement(required = true)
+    protected String businessItemCssSelector;
+    @XmlElement(required = true)
+    protected String nextPageCssSelector;
+    @XmlElement(required = true)
+    protected String currentPageCssSelector;
 
     /**
-     * Gets the value of the code property.
+     * Gets the value of the driverPath property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getCode() {
-        return code;
+    public String getDriverPath() {
+        return driverPath;
     }
 
     /**
-     * Sets the value of the code property.
+     * Sets the value of the driverPath property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setCode(String value) {
-        this.code = value;
+    public void setDriverPath(String value) {
+        this.driverPath = value;
     }
 
     /**
@@ -115,6 +135,126 @@ public class ParserConfig {
      */
     public void setBusinessListUrl(String value) {
         this.businessListUrl = value;
+    }
+
+    /**
+     * Gets the value of the code property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * Sets the value of the code property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCode(String value) {
+        this.code = value;
+    }
+
+    /**
+     * Gets the value of the businessLinksXPath property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBusinessLinksXPath() {
+        return businessLinksXPath;
+    }
+
+    /**
+     * Sets the value of the businessLinksXPath property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBusinessLinksXPath(String value) {
+        this.businessLinksXPath = value;
+    }
+
+    /**
+     * Gets the value of the businessItemCssSelector property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBusinessItemCssSelector() {
+        return businessItemCssSelector;
+    }
+
+    /**
+     * Sets the value of the businessItemCssSelector property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBusinessItemCssSelector(String value) {
+        this.businessItemCssSelector = value;
+    }
+
+    /**
+     * Gets the value of the nextPageCssSelector property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNextPageCssSelector() {
+        return nextPageCssSelector;
+    }
+
+    /**
+     * Sets the value of the nextPageCssSelector property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNextPageCssSelector(String value) {
+        this.nextPageCssSelector = value;
+    }
+
+    /**
+     * Gets the value of the currentPageCssSelector property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCurrentPageCssSelector() {
+        return currentPageCssSelector;
+    }
+
+    /**
+     * Sets the value of the currentPageCssSelector property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCurrentPageCssSelector(String value) {
+        this.currentPageCssSelector = value;
     }
 
 }
