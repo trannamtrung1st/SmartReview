@@ -15,9 +15,12 @@ import javax.xml.validation.Validator;
 import org.openqa.selenium.WebDriver;
 import smartreview.business.services.BusinessService;
 import smartreview.business.services.ParserInfoService;
+import smartreview.business.services.ReviewService;
 import smartreview.data.EntityContext;
 import smartreview.data.daos.BusinessDAO;
+import smartreview.data.daos.BusinessReviewDAO;
 import smartreview.data.daos.ParserInfoDAO;
+import smartreview.data.daos.ReviewCategoryDAO;
 import smartreview.helper.HttpHelper;
 import smartreview.helper.XMLHelper;
 import smartreview.xmlparser.XmlParserConfig;
@@ -47,7 +50,8 @@ public class Entry {
             EntityManager em = context.getEntityManager();
             ParserInfoService parserInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             BusinessService businessService = new BusinessService(em, new BusinessDAO(em));
-            Parser parser = new Parser(bTemplate, bValidator, rTemplate, rValidator,
+            ReviewService reviewService = new ReviewService(em, new BusinessReviewDAO(em), new ReviewCategoryDAO(em));
+            Parser parser = new Parser(reviewService, bTemplate, bValidator, rTemplate, rValidator,
                     businessService, em, xmlParserConfig, parserInfoService, wDriver, parserConfig);
             parser.start();
         }

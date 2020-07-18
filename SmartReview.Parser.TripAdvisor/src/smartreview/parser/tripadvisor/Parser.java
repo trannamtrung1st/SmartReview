@@ -12,9 +12,12 @@ import java.io.StringWriter;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -43,6 +46,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import smartreview.business.services.BusinessService;
 import smartreview.business.services.ParserInfoService;
+import smartreview.business.services.ReviewService;
 import smartreview.data.models.Business;
 import smartreview.data.models.BusinessImage;
 import smartreview.data.models.BusinessReview;
@@ -76,8 +80,10 @@ public class Parser {
     protected Set<String> businessLinks;
     protected WebDriver webDriver;
     protected BusinessService businessService;
+    protected ReviewService reviewService;
 
     public Parser(
+            ReviewService reviewService,
             Templates businessTemplate,
             Validator businessValidator,
             Templates reviewsTemplate,
@@ -88,6 +94,7 @@ public class Parser {
             ParserInfoService parserInfoService,
             WebDriver webDriver,
             ParserConfig parserConfig) {
+        this.reviewService = reviewService;
         this.businessTemplate = businessTemplate;
         this.businessValidator = businessValidator;
         this.reviewsTemplate = reviewsTemplate;
@@ -133,7 +140,6 @@ public class Parser {
                 nextPage.click();
                 waitForNextPage(pageNum, nextPage, 5);
                 pageNum++;
-                WebElement currentPage = webDriver.findElement(By.cssSelector(parserConfig.getCurrentPageCssSelector()));
                 if (pageNeedCrawl(pageNum)) {
                     pSource = webDriver.getPageSource();
                     parseBusinessLinks(pSource, pageNum);
@@ -226,8 +232,8 @@ public class Parser {
                     BusinessItem bItem = XMLHelper.unmarshallDocXml(businessXml, smartreview.parser.tripadvisor.models.xmlschema.ObjectFactory.class);
                     System.out.println(bItem.getName());
                     Business bEntity = convertToBusinessEntity(bItem);
-                    List<BusinessReview> bReviews = parseAllBusinessReviews(pageSource, bEntity);
-                    insertToDb(bEntity, bReviews);
+                    Map<String, BusinessReview> bReviews = parseAllBusinessReviews(pageSource, bEntity);
+                    insertToDb(bEntity, bReviews.values());
                     System.out.println("Finish parsing page: " + businessLink);
                     System.out.println("------------------------");
                 }
@@ -296,8 +302,8 @@ public class Parser {
         return entity;
     }
 
-    protected List<BusinessReview> parseAllBusinessReviews(String pageSource, Business bEntity) throws Exception {
-        List<BusinessReview> entities = new ArrayList<>();
+    protected Map<String, BusinessReview> parseAllBusinessReviews(String pageSource, Business bEntity) throws Exception {
+        Map<String, BusinessReview> entities = new HashMap<>();
         try {
             WebElement nextPage;
             Integer pageNum = 1;
@@ -340,11 +346,12 @@ public class Parser {
         } catch (NoSuchElementException e) {
             System.out.println("No more");
         }
-        bEntity.setBusinessReviewCollection(entities);
+        reviewService.analyzeReviews(entities, 0.05f);
+        bEntity.setBusinessReviewCollection(entities.values());
         return entities;
     }
 
-    protected void addReviews(List<BusinessReview> entities, String currentPageSource, Business bEntity) throws Exception {
+    protected void addReviews(Map<String, BusinessReview> entities, String currentPageSource, Business bEntity) throws Exception {
         FileHelper.writeToFile(currentPageSource, "temp.html");
         String reviewxXml = transformReviews(currentPageSource);
         FileHelper.writeToFile(reviewxXml, "temp.xml");
@@ -379,11 +386,11 @@ public class Parser {
             String uName = reviewsItem.getUsernames().getItem().get(i);
             bR.setUsername(uName);
             System.out.println(rTitle);
-            entities.add(bR);
+            entities.put(bR.getCode(), bR);
         }
     }
 
-    protected void insertToDb(Business bEntity, List<BusinessReview> bReviews) {
+    protected void insertToDb(Business bEntity, Collection<BusinessReview> bReviews) {
     }
 
     protected String getCodeFromLink(String url) throws Exception {

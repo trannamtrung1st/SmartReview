@@ -30,7 +30,6 @@ namespace PetID.ClassifyWebApi.Controllers
         [Inject]
         private ReviewCategorizer _cEngine;
 
-        //<?xml version="1.0" encoding="UTF-8"?> <analyzeReviewModel> <reviews> <item> <reviewId>1</reviewId> <reviewText>string</reviewText> <rating>0</rating> </item> </reviews> </analyzeReviewModel>
         [Produces(MediaTypeNames.Application.Xml, MediaTypeNames.Application.Json,
             Type = typeof(ReviewAnalysisResultModel))]
         [Consumes(MediaTypeNames.Application.Xml, MediaTypeNames.Application.Json)]
@@ -41,7 +40,7 @@ namespace PetID.ClassifyWebApi.Controllers
             foreach (var r in model.Reviews)
             {
                 var aModel = new ReviewAnalysisModel();
-                aModel.ReviewId = r.ReviewId;
+                aModel.ReviewCode = r.ReviewCode;
                 if (!string.IsNullOrWhiteSpace(r.ReviewText))
                 {
                     var sOutput = _sEngine.Predict(new SmartReview.DataAnalyzer.Sentiment.Models.ModelInput

@@ -19,9 +19,9 @@ namespace SmartReview.DataAnalyzer.WebApi.Models
     [XmlRoot("rawReview")]
     public class RawReviewModel
     {
-        [JsonProperty("review_id")]
-        [XmlElement("reviewId")]
-        public int ReviewId { get; set; }
+        [JsonProperty("review_code")]
+        [XmlElement("reviewCode")]
+        public string ReviewCode { get; set; }
         [JsonProperty("review_text")]
         [XmlElement("reviewText")]
         public string ReviewText { get; set; }
