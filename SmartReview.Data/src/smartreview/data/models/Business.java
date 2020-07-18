@@ -8,6 +8,7 @@ package smartreview.data.models;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -53,9 +54,9 @@ public class Business implements Serializable {
     private String phone;
     private String detailUrl;
     private String fromPage;
-    @OneToMany(mappedBy = "businessId")
+    @OneToMany(mappedBy = "businessId", cascade = CascadeType.PERSIST)
     private Collection<BusinessReview> businessReviewCollection;
-    @OneToMany(mappedBy = "businessId")
+    @OneToMany(mappedBy = "businessId", cascade = CascadeType.PERSIST)
     private Collection<BusinessImage> businessImageCollection;
 
     public Business() {

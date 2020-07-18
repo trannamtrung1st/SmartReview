@@ -47,15 +47,16 @@ namespace PetID.ClassifyWebApi.Controllers
                     {
                         Text = r.ReviewText
                     });
-                    aModel.IsPositive = sOutput.Prediction;
-                    aModel.Output = _cEngine.Predict(new SmartReview.DataAnalyzer.Classification.Models.ModelInput
-                    {
-                        Review = r.ReviewText
-                    }, minScore: min_score);
+                    aModel.IsPositive = sOutput.Prediction || r.Rating > 3.5;
+                    if (!aModel.IsPositive)
+                        aModel.Output = _cEngine.Predict(new SmartReview.DataAnalyzer.Classification.Models.ModelInput
+                        {
+                            Review = r.ReviewText
+                        }, minScore: min_score);
                 }
                 else
                 {
-                    aModel.IsPositive = r.Rating > 3;
+                    aModel.IsPositive = r.Rating > 3.5;
                 }
                 results.Add(aModel);
             }

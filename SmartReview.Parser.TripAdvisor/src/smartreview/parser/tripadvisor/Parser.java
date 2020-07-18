@@ -243,7 +243,7 @@ public class Parser {
                 } else {
                     //create business info
                     webDriver.get(businessLink);
-                    webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+                    webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
                     String pageSource = webDriver.getPageSource();
                     System.out.println("Start parsing page: " + businessLink);
                     pageSource = preprocess(pageSource);
@@ -334,41 +334,44 @@ public class Parser {
                 try {
                     //show full content
                     List<WebElement> mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
-                    for (WebElement more : mores) {
-                        while (tryClick++ < 5) {
-                            try {
+                    while (tryClick++ < 10) {
+                        try {
+                            for (WebElement more : mores) {
                                 more.click();
-                                tryClick = 5;
-                            } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
+                                webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
                             }
+                            tryClick = 10;
+                        } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
+                            mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
                         }
                     }
+
                 } catch (NoSuchElementException e) {
                     System.out.println("No more");
                 }
+                pageSource = webDriver.getPageSource();
+                pageSource = preprocess(pageSource);
                 try {
                     addReviews(entities, pageSource, bEntity);
                 } catch (SAXException e) {
                     e.printStackTrace();
                 }
                 tryClick = 0;
-                while (tryClick++ < 5) {
+                while (tryClick++ < 10) {
                     try {
                         nextPage = webDriver.findElement(By.cssSelector(parserConfig.getNextPageCssSelector()));
                         nextPage.click();
                         waitForNextPage(pageNum, nextPage, 2);
-                        tryClick = 5;
+                        tryClick = 10;
                     } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
                     }
                 }
                 pageNum++;
-                pageSource = webDriver.getPageSource();
-                pageSource = preprocess(pageSource);
             }
         } catch (NoSuchElementException e) {
             System.out.println("No more");
         }
-        reviewService.analyzeReviews(entities, 0.05f);
+        reviewService.analyzeReviews(entities, 0.2f);
         bEntity.setBusinessReviewCollection(entities.values());
         return entities;
     }
@@ -413,6 +416,9 @@ public class Parser {
     }
 
     protected void insertToDb(Business bEntity, Collection<BusinessReview> bReviews) {
+        entityManager.getTransaction().begin();
+        businessService.createBusiness(bEntity);
+        entityManager.getTransaction().commit();
     }
 
     protected String getCodeFromLink(String url) throws Exception {

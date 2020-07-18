@@ -80,19 +80,22 @@ public class ReviewService {
             result.getResults().getItem().forEach((t) -> {
                 BusinessReview br = rawReviews.get(t.getReviewCode());
                 br.setIsPositive(t.isPrediction());
-                List<CategoriesOfReviews> list = new ArrayList<>();
-                t.getBadReviewDetail().getTopOutputs().getTopOutput().forEach((o) -> {
-                    CategoriesOfReviews e = new CategoriesOfReviews();
-                    ReviewCategory cate;
-                    if (!cateMap.containsKey(o.getLabel())) {
-                        cate = reviewCategoryDAO.findById(ReviewCategory.class, o.getLabel());
-                        cateMap.put(cate.getCode(), cate);
-                    }
-                    cate = cateMap.get(o.getLabel());
-                    e.setCategoryCode(cate);
-                    e.setReviewId(br);
-                });
-                br.setCategoriesOfReviewsCollection(list);
+                if (!br.getIsPositive()) {
+                    List<CategoriesOfReviews> list = new ArrayList<>();
+                    t.getBadReviewDetail().getTopOutputs().getTopOutput().forEach((o) -> {
+                        CategoriesOfReviews e = new CategoriesOfReviews();
+                        ReviewCategory cate;
+                        if (!cateMap.containsKey(o.getLabel())) {
+                            cate = reviewCategoryDAO.findById(ReviewCategory.class, o.getLabel());
+                            cateMap.put(cate.getCode(), cate);
+                        }
+                        cate = cateMap.get(o.getLabel());
+                        e.setCategoryCode(cate);
+                        e.setReviewId(br);
+                        list.add(e);
+                    });
+                    br.setCategoriesOfReviewsCollection(list);
+                }
             });
             return true;
         }

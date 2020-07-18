@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -62,7 +63,7 @@ public class BusinessReview implements Serializable {
     @JoinColumn(name = "businessId", referencedColumnName = "id")
     @ManyToOne
     private Business businessId;
-    @OneToMany(mappedBy = "reviewId")
+    @OneToMany(mappedBy = "reviewId", cascade = CascadeType.PERSIST)
     private Collection<CategoriesOfReviews> categoriesOfReviewsCollection;
 
     public BusinessReview() {
