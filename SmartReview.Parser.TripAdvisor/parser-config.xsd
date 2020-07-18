@@ -16,6 +16,27 @@
         <xs:element name="defaultToPage" type="xs:unsignedByte" />
         <xs:element name="codeFromUrlRegex" type="xs:string" />
         <xs:element name="moresBtnXPath" type="xs:string" />
+        <xs:element name="reviewCateMap">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="item">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="key" type="xs:string" />
+                    <xs:element name="value">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="code" type="xs:string" />
+                          <xs:element name="name" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

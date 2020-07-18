@@ -15,39 +15,46 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.xml.bind.JAXBException;
-import smartreview.data.daos.BusinessDAO;
-import smartreview.data.models.Business;
+import smartreview.data.daos.ReviewCategoryDAO;
+import smartreview.data.models.ReviewCategory;
 
 /**
  *
  * @author TNT
  */
-public class BusinessService {
+public class ReviewCategoryService {
 
-    protected BusinessDAO businessDAO;
+    protected ReviewCategoryDAO reviewCategoryDAO;
     protected EntityManager entityManager;
 
-    public BusinessService(EntityManager entityManager, BusinessDAO businessDAO) {
+    public ReviewCategoryService(EntityManager entityManager, ReviewCategoryDAO reviewCategoryDAO) {
         this.entityManager = entityManager;
-        this.businessDAO = businessDAO;
+        this.reviewCategoryDAO = reviewCategoryDAO;
     }
 
-    public Business findBusinessByCode(String code) {
-        String sql = "SELECT * FROM Business WHERE code=?code";
-        Query query = businessDAO.nativeQuery(sql, Business.class).setParameter("code", code);
-        List<Business> list = query.getResultList();
+    public ReviewCategory findReviewCategoryByCode(String code) {
+        String sql = "SELECT * FROM ReviewCategory WHERE code=?code";
+        Query query = reviewCategoryDAO.nativeQuery(sql, ReviewCategory.class).setParameter("code", code);
+        List<ReviewCategory> list = query.getResultList();
         return list.size() > 0 ? list.get(0) : null;
     }
 
-    public boolean businessCodeExists(String code) {
-        String sql = "SELECT COUNT(code) FROM Business WHERE code=?code";
-        Query query = businessDAO.nativeQuery(sql).setParameter("code", code);
+    public boolean reviewCategoryCodeExists(String code) {
+        String sql = "SELECT COUNT(code) FROM ReviewCategory WHERE code=?code";
+        Query query = reviewCategoryDAO.nativeQuery(sql).setParameter("code", code);
+        Integer count = (Integer) query.getSingleResult();
+        return count > 0;
+    }
+    
+    public boolean anyExisted() {
+        String sql = "SELECT COUNT(code) FROM ReviewCategory";
+        Query query = reviewCategoryDAO.nativeQuery(sql);
         Integer count = (Integer) query.getSingleResult();
         return count > 0;
     }
 
-    public Business createBusiness(Business entity) {
-        return businessDAO.create(entity);
+    public ReviewCategory createReviewCategory(ReviewCategory entity) {
+        return reviewCategoryDAO.create(entity);
     }
 
 }

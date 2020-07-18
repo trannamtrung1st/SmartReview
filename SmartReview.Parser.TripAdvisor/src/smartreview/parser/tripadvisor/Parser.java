@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import javax.persistence.EntityManager;
@@ -46,11 +47,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import smartreview.business.services.BusinessService;
 import smartreview.business.services.ParserInfoService;
+import smartreview.business.services.ReviewCategoryService;
 import smartreview.business.services.ReviewService;
 import smartreview.data.models.Business;
 import smartreview.data.models.BusinessImage;
 import smartreview.data.models.BusinessReview;
 import smartreview.data.models.ParserInfo;
+import smartreview.data.models.ReviewCategory;
 import smartreview.helper.DateHelper;
 import smartreview.helper.FileHelper;
 import smartreview.helper.HttpHelper;
@@ -81,8 +84,10 @@ public class Parser {
     protected WebDriver webDriver;
     protected BusinessService businessService;
     protected ReviewService reviewService;
+    protected ReviewCategoryService reviewCategoryService;
 
     public Parser(
+            ReviewCategoryService reviewCategoryService,
             ReviewService reviewService,
             Templates businessTemplate,
             Validator businessValidator,
@@ -94,6 +99,7 @@ public class Parser {
             ParserInfoService parserInfoService,
             WebDriver webDriver,
             ParserConfig parserConfig) {
+        this.reviewCategoryService = reviewCategoryService;
         this.reviewService = reviewService;
         this.businessTemplate = businessTemplate;
         this.businessValidator = businessValidator;
@@ -110,6 +116,14 @@ public class Parser {
     }
 
     public void start() throws Exception {
+        init();
+        crawlBusinessLinks();
+        System.out.println("Crawled links count: " + businessLinks.size());
+        parseBusinessInfoAndReview();
+        webDriver.close();
+    }
+
+    protected void init() {
         String parserCode = parserConfig.getCode();
         parserInfo = parserInfoService.findParserInfoByCode(parserCode);
         if (parserInfo == null) {
@@ -118,10 +132,17 @@ public class Parser {
             parserInfo = parserInfoService.createParserInfo(parserInfo);
             entityManager.getTransaction().commit();
         }
-        crawlBusinessLinks();
-        System.out.println("Crawled links count: " + businessLinks.size());
-        parseBusinessInfoAndReview();
-        webDriver.close();
+        if (reviewCategoryService.anyExisted()) {
+            return;
+        }
+        entityManager.getTransaction().begin();
+        parserConfig.getReviewCateMap().getItem().forEach((t) -> {
+            ReviewCategory entity = new ReviewCategory();
+            entity.setCode(t.getValue().getCode());
+            entity.setName(t.getValue().getName());
+            reviewCategoryService.createReviewCategory(entity);
+        });
+        entityManager.getTransaction().commit();
     }
 
     protected void crawlBusinessLinks() throws Exception {
@@ -222,6 +243,7 @@ public class Parser {
                 } else {
                     //create business info
                     webDriver.get(businessLink);
+                    webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
                     String pageSource = webDriver.getPageSource();
                     System.out.println("Start parsing page: " + businessLink);
                     pageSource = preprocess(pageSource);

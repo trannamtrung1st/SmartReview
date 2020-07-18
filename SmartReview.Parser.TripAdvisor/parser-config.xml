@@ -12,4 +12,69 @@
   <defaultToPage>20</defaultToPage>
   <codeFromUrlRegex><![CDATA[^.+?-.+?-(.+?)-.*$]]></codeFromUrlRegex>
   <moresBtnXPath>//*[text()='More' and contains(@class,'taLnk ulBlueLinks')]</moresBtnXPath>
+  <reviewCateMap>
+    <item>
+      <key>RudeService</key>
+      <value>
+        <code>RudeService</code>
+        <name>Rude service</name>
+      </value>
+    </item>
+    <item>
+      <key>OrderProblem</key>
+      <value>
+        <code>OrderProblem</code>
+        <name>Order problem</name>
+      </value>
+    </item>
+    <item>
+      <key>Filthy</key>
+      <value>
+        <code>Filthy</code>
+        <name>Filthy</name>
+      </value>
+    </item>
+    <item>
+      <key>SlowService</key>
+      <value>
+        <code>SlowService</code>
+        <name>Slow service</name>
+      </value>
+    </item>
+    <item>
+      <key>BadFood</key>
+      <value>
+        <code>BadFood</code>
+        <name>Bad food</name>
+      </value>
+    </item>
+    <item>
+      <key>na</key>
+      <value>
+        <code>na</code>
+        <name>Unknown</name>
+      </value>
+    </item>
+    <item>
+      <key>Scary</key>
+      <value>
+        <code>Scary</code>
+        <name>Scary</name>
+      </value>
+    </item>
+    <item>
+      <key>MissingFood</key>
+      <value>
+        <code>MissingFood</code>
+        <name>Missing food</name>
+      </value>
+    </item>
+    <item>
+      <key>Cost</key>
+      <value>
+        <code>Cost</code>
+        <name>Cost</name>
+      </value>
+    </item>
+  </reviewCateMap>
 </parserConfig>

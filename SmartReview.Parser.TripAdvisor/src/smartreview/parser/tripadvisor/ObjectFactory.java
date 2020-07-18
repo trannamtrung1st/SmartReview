@@ -37,4 +37,28 @@ public class ObjectFactory {
         return new ParserConfig();
     }
 
+    /**
+     * Create an instance of {@link ParserConfig.ReviewCateMap }
+     * 
+     */
+    public ParserConfig.ReviewCateMap createParserConfigReviewCateMap() {
+        return new ParserConfig.ReviewCateMap();
+    }
+
+    /**
+     * Create an instance of {@link ParserConfig.ReviewCateMap.Item }
+     * 
+     */
+    public ParserConfig.ReviewCateMap.Item createParserConfigReviewCateMapItem() {
+        return new ParserConfig.ReviewCateMap.Item();
+    }
+
+    /**
+     * Create an instance of {@link ParserConfig.ReviewCateMap.Item.Value }
+     * 
+     */
+    public ParserConfig.ReviewCateMap.Item.Value createParserConfigReviewCateMapItemValue() {
+        return new ParserConfig.ReviewCateMap.Item.Value();
+    }
+
 }

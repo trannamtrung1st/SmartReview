@@ -31,7 +31,10 @@ namespace SmartReview.DataAnalyzer.Classification
                 column.Value.GetKeyValues(ref vbuffer);
 
                 foreach (ReadOnlyMemory<char> denseValue in vbuffer.DenseValues())
-                    labelNames.Add(denseValue.ToString());
+                {
+                    var dStr = denseValue.ToString();
+                    labelNames.Add(dStr.Substring(1, dStr.Length - 1 - 1));
+                }
             }
             var topOutputs = result.Score.Select((s, i) => new TopOutput
             {
