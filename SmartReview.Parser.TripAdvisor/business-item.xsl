@@ -25,6 +25,13 @@
       <phone>
         <xsl:value-of select="//*[@class='_3S6pHEQs' and contains(@href,'tel')]"/>
       </phone>
+      <images>
+        <xsl:for-each select="//img[@class='basicImg' and contains(@src,'.')]">
+          <item>
+            <xsl:value-of select="./@src"/>
+          </item>
+        </xsl:for-each>
+      </images>
     </businessItem>
   </xsl:template>
 </xsl:stylesheet>

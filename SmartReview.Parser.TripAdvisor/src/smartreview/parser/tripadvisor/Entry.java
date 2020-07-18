@@ -33,16 +33,22 @@ public class Entry {
         System.setProperty("webdriver.chrome.driver", parserConfig.getDriverPath());
         XmlParserConfig xmlParserConfig = XMLHelper.unmarshallDocFile("xml-parser-config.xml", smartreview.xmlparser.ObjectFactory.class);
         WebDriver wDriver = HttpHelper.getWebDriver();
-        Templates bTemplate = XMLHelper.getTemplates("business-item.xsl");
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema breedSchema = schemaFactory.newSchema(new File("business-item.xsd"));
-        Validator bValidator = breedSchema.newValidator();
+
+        Templates bTemplate = XMLHelper.getTemplates("business-item.xsl");
+        Schema bSchema = schemaFactory.newSchema(new File("business-item.xsd"));
+        Validator bValidator = bSchema.newValidator();
+
+        Templates rTemplate = XMLHelper.getTemplates("reviews.xsl");
+        Schema rSchema = schemaFactory.newSchema(new File("reviews.xsd"));
+        Validator rValidator = rSchema.newValidator();
 
         try (EntityContext context = EntityContext.newInstance()) {
             EntityManager em = context.getEntityManager();
             ParserInfoService parserInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             BusinessService businessService = new BusinessService(em, new BusinessDAO(em));
-            Parser parser = new Parser(bTemplate, bValidator, businessService, em, xmlParserConfig, parserInfoService, wDriver, parserConfig);
+            Parser parser = new Parser(bTemplate, bValidator, rTemplate, rValidator,
+                    businessService, em, xmlParserConfig, parserInfoService, wDriver, parserConfig);
             parser.start();
         }
     }

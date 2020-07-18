@@ -15,6 +15,7 @@
         <xs:element name="defaultFromPage" type="xs:unsignedByte" />
         <xs:element name="defaultToPage" type="xs:unsignedByte" />
         <xs:element name="codeFromUrlRegex" type="xs:string" />
+        <xs:element name="moresBtnXPath" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

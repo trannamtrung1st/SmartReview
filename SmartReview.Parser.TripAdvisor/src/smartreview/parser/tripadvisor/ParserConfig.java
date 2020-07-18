@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="defaultFromPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
  *         &lt;element name="defaultToPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
  *         &lt;element name="codeFromUrlRegex" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="moresBtnXPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -50,7 +51,8 @@ import javax.xml.bind.annotation.XmlType;
     "currentPageCssSelector",
     "defaultFromPage",
     "defaultToPage",
-    "codeFromUrlRegex"
+    "codeFromUrlRegex",
+    "moresBtnXPath"
 })
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
@@ -77,6 +79,8 @@ public class ParserConfig {
     protected short defaultToPage;
     @XmlElement(required = true)
     protected String codeFromUrlRegex;
+    @XmlElement(required = true)
+    protected String moresBtnXPath;
 
     /**
      * Gets the value of the driverPath property.
@@ -324,6 +328,30 @@ public class ParserConfig {
      */
     public void setCodeFromUrlRegex(String value) {
         this.codeFromUrlRegex = value;
+    }
+
+    /**
+     * Gets the value of the moresBtnXPath property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMoresBtnXPath() {
+        return moresBtnXPath;
+    }
+
+    /**
+     * Sets the value of the moresBtnXPath property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMoresBtnXPath(String value) {
+        this.moresBtnXPath = value;
     }
 
 }

@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "ParserInfo.findByParserBaseUrl", query = "SELECT p FROM ParserInfo p WHERE p.parserBaseUrl = :parserBaseUrl")
     , @NamedQuery(name = "ParserInfo.findByFromPage", query = "SELECT p FROM ParserInfo p WHERE p.fromPage = :fromPage")
     , @NamedQuery(name = "ParserInfo.findByToPage", query = "SELECT p FROM ParserInfo p WHERE p.toPage = :toPage")
-    , @NamedQuery(name = "ParserInfo.findByRefreshExistedData", query = "SELECT p FROM ParserInfo p WHERE p.refreshExistedData = :refreshExistedData")})
+    , @NamedQuery(name = "ParserInfo.findByRefreshExistedData", query = "SELECT p FROM ParserInfo p WHERE p.refreshExistedData = :refreshExistedData")
+    , @NamedQuery(name = "ParserInfo.findByMaxParsedReviewsPage", query = "SELECT p FROM ParserInfo p WHERE p.maxParsedReviewsPage = :maxParsedReviewsPage")})
 public class ParserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +39,7 @@ public class ParserInfo implements Serializable {
     private Integer fromPage;
     private Integer toPage;
     private Boolean refreshExistedData;
+    private Integer maxParsedReviewsPage;
 
     public ParserInfo() {
     }
@@ -84,6 +86,14 @@ public class ParserInfo implements Serializable {
 
     public void setRefreshExistedData(Boolean refreshExistedData) {
         this.refreshExistedData = refreshExistedData;
+    }
+
+    public Integer getMaxParsedReviewsPage() {
+        return maxParsedReviewsPage;
+    }
+
+    public void setMaxParsedReviewsPage(Integer maxParsedReviewsPage) {
+        this.maxParsedReviewsPage = maxParsedReviewsPage;
     }
 
     @Override

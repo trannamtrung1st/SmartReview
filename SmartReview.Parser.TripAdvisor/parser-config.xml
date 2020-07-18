@@ -11,4 +11,5 @@
   <defaultFromPage>1</defaultFromPage>
   <defaultToPage>20</defaultToPage>
   <codeFromUrlRegex><![CDATA[^.+?-.+?-(.+?)-.*$]]></codeFromUrlRegex>
+  <moresBtnXPath>//*[text()='More' and contains(@class,'taLnk ulBlueLinks')]</moresBtnXPath>
 </parserConfig>
