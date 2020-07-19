@@ -25,6 +25,10 @@
         <servlet-class>smartreview.webapp.controllers.IndexController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>BusinessDetailController</servlet-name>
+        <servlet-class>smartreview.webapp.controllers.BusinessDetailController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>BusinessApiController</servlet-name>
         <servlet-class>smartreview.webapp.apis.BusinessApiController</servlet-class>
     </servlet>
@@ -35,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>IndexController</servlet-name>
         <url-pattern/>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BusinessDetailController</servlet-name>
+        <url-pattern>/business/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BusinessApiController</servlet-name>

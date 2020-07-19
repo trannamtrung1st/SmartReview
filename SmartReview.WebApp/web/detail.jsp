@@ -5,11 +5,13 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Restaurant A review</title>
+        <title>${businessName}</title>
         <style>
             .label {
                 font-weight: bold;
@@ -21,23 +23,15 @@
         </style>
     </head>
     <body>
-        <div><a href="index.jsp">Back to home</a></div>
-        <h1 style="color:red;">Restaurant A</h1>
-        <div><span class="label">Total review:</span> 124</div>
-        <div><span class="label">Rating:</span> 4.5</div>
-        <div><span class="label">Address:</span> 124 A DSKA</div>
-        <div><span class="label">Phone:</span> 012423123</div>
-        <div><span class="label">From page:</span> <a href="tripadvisor.com">tripadvisor.com</a></div>
-        <div><span class="label">Source detail page:</span> <a href="tripadvisor.com">Click here</a></div>
-        <h2>Review overview</h2>
-        <div><span class="label">Overall:</span> Good</div>
-        <div><span class="label">Bad reviews:</span> 30% Bad service, 10% Rude service</div>
+        <div><a href="${pageContext.servletContext.contextPath}/">Back to home</a></div>
+        <x:transform doc="${xmlData}" xslt="${bDetailXsl}">
+        </x:transform>
         <hr/>
         <h2>List reviews</h2>
         <div id="list-container">
             <div class="list-item">
                 <div>
-                    <img src="aa.jpg" style="width:50px;height:50px;vertical-align: middle"/> <span>UserA</span>
+                    <img src="/aa.jpg" style="width:50px;height:50px;vertical-align: middle"/> <span>UserA</span>
                 </div>
                 <div><span class="label">Rating:</span> 4.5</div>
                 <div><span class="label">Review date:</span> June 23, 2020</div>
@@ -50,7 +44,7 @@
             </div>
             <div class="list-item">
                 <div>
-                    <img src="aa.jpg" style="width:50px;height:50px;vertical-align: middle"/> <span>UserA</span>
+                    <img src="/aa.jpg" style="width:50px;height:50px;vertical-align: middle"/> <span>UserA</span>
                 </div>
                 <div><span class="label">Rating:</span> 4.5</div>
                 <div><span class="label">Review date:</span> June 23, 2020</div>
@@ -63,7 +57,7 @@
             </div>
             <div class="list-item">
                 <div>
-                    <img src="aa.jpg" style="width:50px;height:50px;vertical-align: middle"/> <span>UserA</span>
+                    <img src="/aa.jpg" style="width:50px;height:50px;vertical-align: middle"/> <span>UserA</span>
                 </div>
                 <div><span class="label">Rating:</span> 4.5</div>
                 <div><span class="label">Review date:</span> June 23, 2020</div>

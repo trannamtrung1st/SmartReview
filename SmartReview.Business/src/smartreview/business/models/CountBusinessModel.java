@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package smartreview.business.dtos;
+package smartreview.business.models;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

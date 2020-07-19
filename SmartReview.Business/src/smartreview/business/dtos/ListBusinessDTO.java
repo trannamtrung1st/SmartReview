@@ -5,6 +5,7 @@
  */
 package smartreview.business.dtos;
 
+import smartreview.business.models.CountBusinessModel;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;

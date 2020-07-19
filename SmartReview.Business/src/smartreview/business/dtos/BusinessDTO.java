@@ -5,6 +5,9 @@
  */
 package smartreview.business.dtos;
 
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import smartreview.data.models.Business;
 
@@ -24,6 +27,17 @@ public class BusinessDTO extends BaseDTO<Business> {
     private String phone;
     private String detailUrl;
     private String fromPage;
+    private List<BusinessImageDTO> businessImages;
+
+    @XmlElementWrapper(name = "images")
+    @XmlElement(name = "item")
+    public List<BusinessImageDTO> getBusinessImages() {
+        return businessImages;
+    }
+
+    public void setBusinessImages(List<BusinessImageDTO> businessImages) {
+        this.businessImages = businessImages;
+    }
 
     public Integer getId() {
         return id;

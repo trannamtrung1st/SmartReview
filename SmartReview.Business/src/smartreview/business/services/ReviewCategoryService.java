@@ -32,6 +32,13 @@ public class ReviewCategoryService {
         this.reviewCategoryDAO = reviewCategoryDAO;
     }
 
+    public List<ReviewCategory> getAll() {
+        String sql = "SELECT * FROM ReviewCategory";
+        Query query = reviewCategoryDAO.nativeQuery(sql, ReviewCategory.class);
+        List<ReviewCategory> list = query.getResultList();
+        return list;
+    }
+
     public ReviewCategory findReviewCategoryByCode(String code) {
         String sql = "SELECT * FROM ReviewCategory WHERE code=?code";
         Query query = reviewCategoryDAO.nativeQuery(sql, ReviewCategory.class).setParameter("code", code);
@@ -45,7 +52,7 @@ public class ReviewCategoryService {
         Integer count = (Integer) query.getSingleResult();
         return count > 0;
     }
-    
+
     public boolean anyExisted() {
         String sql = "SELECT COUNT(code) FROM ReviewCategory";
         Query query = reviewCategoryDAO.nativeQuery(sql);

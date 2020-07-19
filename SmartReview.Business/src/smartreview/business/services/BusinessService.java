@@ -8,18 +8,25 @@ package smartreview.business.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.xml.bind.JAXBException;
 import smartreview.business.dtos.BusinessDTO;
-import smartreview.business.dtos.CountBusinessModel;
+import smartreview.business.dtos.BusinessImageDTO;
+import smartreview.business.models.CountBusinessModel;
 import smartreview.business.dtos.ListBusinessDTO;
+import smartreview.business.models.BadReviewDetailModel;
+import smartreview.business.models.BusinessReviewGeneralModel;
 import smartreview.data.daos.BusinessDAO;
 import smartreview.data.models.Business;
+import smartreview.data.models.BusinessImage;
+import smartreview.data.models.ReviewCategory;
 import smartreview.helper.StringHelper;
 
 /**
@@ -113,6 +120,38 @@ public class BusinessService {
         BusinessDTO dto = new BusinessDTO();
         dto.copyFrom(entity);
         return dto;
+    }
+
+    public BusinessReviewGeneralModel generalizeReviewDataOfBusiness(Business entity, Map<String, ReviewCategory> cateMap) {
+        String sql = "SELECT c.categoryCode,COUNT(c.id) totalReview,CAST(COUNT(c.id) as float)/(SELECT COUNT(id) FROM BusinessReview WHERE businessId=?bId) ratio \n"
+                + "FROM CategoriesOfReviews c\n"
+                + "INNER JOIN BusinessReview r ON c.reviewId=r.id\n"
+                + "WHERE r.businessId = ?bId\n"
+                + "GROUP BY c.categoryCode";
+        Query query = businessDAO.nativeQuery(sql).setParameter("bId", entity.getId());
+        List<Object[]> results = query.getResultList();
+        BusinessReviewGeneralModel model = new BusinessReviewGeneralModel();
+        model.setBusinessId(entity.getId());
+        model.setOverall(entity.getRating() > 3.5);
+        List<BadReviewDetailModel> badReviews = results.stream().map((t) -> {
+            BadReviewDetailModel m = new BadReviewDetailModel();
+            m.setRatio((Double) t[2]);
+            m.setTotalReview((Integer) t[1]);
+            String cateCode = (String) t[0];
+            m.setReviewCateCode(cateCode);
+            m.setReviewCateName(cateMap.get(cateCode).getName());
+            return m;
+        }).collect(Collectors.toList());
+        model.setBadReviewDetails(badReviews);
+        return model;
+    }
+
+    public List<BusinessImageDTO> toListBusinessImageDTO(Collection<BusinessImage> entities) {
+        return Arrays.asList(entities.toArray(new BusinessImage[entities.size()])).stream().map((t) -> {
+            BusinessImageDTO dto = new BusinessImageDTO();
+            dto.copyFrom(t);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public boolean businessCodeExists(String code) {

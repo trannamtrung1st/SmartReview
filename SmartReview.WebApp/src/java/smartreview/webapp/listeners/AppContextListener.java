@@ -5,11 +5,19 @@
  */
 package smartreview.webapp.listeners;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import smartreview.business.services.ReviewCategoryService;
+import smartreview.data.EntityContext;
+import smartreview.data.daos.ReviewCategoryDAO;
+import smartreview.data.models.ReviewCategory;
 import smartreview.helper.FileHelper;
 
 /**
@@ -23,11 +31,25 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sContext = sce.getServletContext();
 
-        try {
+        try (EntityContext context = EntityContext.newInstance()) {
+            EntityManager em = context.getEntityManager();
+            ReviewCategoryService cateService = new ReviewCategoryService(em, new ReviewCategoryDAO(em));
+            List<ReviewCategory> categories = cateService.getAll();
+            Map<String, ReviewCategory> cateMap = new HashMap<>();
+            categories.forEach((t) -> {
+                cateMap.put(t.getCode(), t);
+            });
+            sContext.setAttribute("cateMap", cateMap);
+
             //business-paging.xsl
             String path = sContext.getRealPath("/WEB-INF/business-list.xsl");
             String bListXsl = FileHelper.readContent(path).replace("\n", "");
             sContext.setAttribute("bListXsl", bListXsl);
+
+            //business-detail.xsl
+            path = sContext.getRealPath("/WEB-INF/business-detail.xsl");
+            String bDetailXsl = FileHelper.readContent(path).replace("\n", "");
+            sContext.setAttribute("bDetailXsl", bDetailXsl);
         } catch (Exception e) {
             Logger.getLogger(AppContextListener.class.getName()).log(Level.SEVERE, null, e);
         }

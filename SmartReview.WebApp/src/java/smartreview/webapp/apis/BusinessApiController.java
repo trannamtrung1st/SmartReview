@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.hc.core5.http.HttpStatus;
 import smartreview.business.dtos.BusinessDTO;
-import smartreview.business.dtos.CountBusinessModel;
+import smartreview.business.models.CountBusinessModel;
 import smartreview.business.dtos.ListBusinessDTO;
 import smartreview.business.services.BusinessService;
 import smartreview.data.EntityContext;
