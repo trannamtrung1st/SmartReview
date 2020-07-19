@@ -95,7 +95,7 @@ public class BusinessDetailController extends BaseController {
             detailModel.setBusiness(dto);
             detailModel.setReviewGeneral(reviewGeneral);
             String xml = XMLHelper.marshall(detailModel, BusinessDetailModel.class);
-            FileHelper.writeToFile(xml, "T:\\FPT\\STUDY\\SUMMER2020\\PRX\\Project\\SmartReview\\Source\\SmartReview.WebApp\\temp.xml");
+//            FileHelper.writeToFile(xml, "T:\\FPT\\STUDY\\SUMMER2020\\PRX\\Project\\SmartReview\\Source\\SmartReview.WebApp\\temp.xml");
             request.setAttribute("xmlData", xml);
             request.setAttribute("business", dto);
         }
