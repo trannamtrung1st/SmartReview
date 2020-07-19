@@ -70,6 +70,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ParserConfig.DefaultConfigs }
+     * 
+     */
+    public ParserConfig.DefaultConfigs createParserConfigDefaultConfigs() {
+        return new ParserConfig.DefaultConfigs();
+    }
+
+    /**
      * Create an instance of {@link ParserConfig.ReviewCateMap.Item.Value }
      * 
      */

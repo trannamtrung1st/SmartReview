@@ -70,12 +70,12 @@ import smartreview.xmlparser.preprocessor.HtmlPreprocessor;
  */
 public class Parser {
 
-    protected final int WAIT_NEXT_PAGE_SECS_B_LIST = 5;
-    protected final int DEFAULT_WD_WAIT_TIMEOUT = 20;
-    protected final int DEFAULT_POLLING_SECS = 1;
-    protected final int WAIT_FOR_ACTION = 2;
-    protected final int MAX_TRY_CLICK = 10;
-    protected final int DEFAULT_MAX_REVIEW_PAGES = 7;
+    protected int defaultWaitNextBListPage;
+    protected int defaultWebDriverWait;
+    protected int defaultPollingSecs;
+    protected int defaultWaitForAction;
+    protected int defaultMaxTryClick;
+    protected int defaultMaxReviewPages;
 
     protected XmlParserConfig xmlParserConfig;
     protected ParserConfig parserConfig;
@@ -131,6 +131,14 @@ public class Parser {
     }
 
     protected void init() {
+        ParserConfig.DefaultConfigs conf = parserConfig.getDefaultConfigs();
+        this.defaultMaxReviewPages = conf.getDefaultMaxReviewPages();
+        this.defaultPollingSecs = conf.getDefaultPollingSecs();
+        this.defaultWebDriverWait = conf.getDefaultWebDriverWait();
+        this.defaultMaxTryClick = conf.getMaxTryClick();
+        this.defaultWaitForAction = conf.getWaitForAction();
+        this.defaultWaitNextBListPage = conf.getWaitForNextBusinessListPage();
+
         String parserCode = parserConfig.getCode();
         parserInfo = parserInfoService.findParserInfoByCode(parserCode);
         if (parserInfo == null) {
@@ -166,7 +174,7 @@ public class Parser {
             WebElement nextPage = webDriver.findElement(By.cssSelector(nextPageSelector));
             while (nextPage != null && pageNum < parserInfo.getToPage()) {
                 nextPage.click();
-                waitForNextPage(pageNum, nextPage, WAIT_NEXT_PAGE_SECS_B_LIST);
+                waitForNextPage(pageNum, nextPage, defaultWaitNextBListPage);
                 pageNum++;
                 if (pageNeedCrawl(pageNum)) {
                     pSource = webDriver.getPageSource();
@@ -186,8 +194,8 @@ public class Parser {
 
     protected void waitForNextPage(Integer pageNum, WebElement nextPage, String checkVisibleSelector) {
         Wait<WebDriver> wait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(DEFAULT_WD_WAIT_TIMEOUT))
-                .pollingEvery(Duration.ofSeconds(DEFAULT_POLLING_SECS))
+                .withTimeout(Duration.ofSeconds(defaultWebDriverWait))
+                .pollingEvery(Duration.ofSeconds(defaultPollingSecs))
                 .ignoreAll(Arrays.asList(NoSuchElementException.class, StaleElementReferenceException.class, ElementClickInterceptedException.class));
         wait.until((driver) -> {
             WebElement currentPage = driver.findElement(By.cssSelector(parserConfig.getCurrentPageCssSelector()));
@@ -201,8 +209,8 @@ public class Parser {
 
     protected void waitForNextPage(Integer pageNum, WebElement nextPage, Integer waitAtLeastSeconds) {
         Wait<WebDriver> wait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(DEFAULT_WD_WAIT_TIMEOUT))
-                .pollingEvery(Duration.ofSeconds(DEFAULT_POLLING_SECS))
+                .withTimeout(Duration.ofSeconds(defaultWebDriverWait))
+                .pollingEvery(Duration.ofSeconds(defaultPollingSecs))
                 .ignoreAll(Arrays.asList(NoSuchElementException.class, StaleElementReferenceException.class, ElementClickInterceptedException.class));
         wait.until(new Function<WebDriver, Object>() {
             int count = 0;
@@ -252,7 +260,7 @@ public class Parser {
                 } else {
                     //create business info
                     webDriver.get(businessLink);
-                    webDriver.manage().timeouts().implicitlyWait(WAIT_FOR_ACTION, TimeUnit.SECONDS);
+                    webDriver.manage().timeouts().implicitlyWait(defaultWaitForAction, TimeUnit.SECONDS);
                     String pageSource = webDriver.getPageSource();
                     System.out.println("Start parsing page: " + businessLink);
                     pageSource = preprocess(pageSource);
@@ -355,7 +363,7 @@ public class Parser {
                         try {
                             for (WebElement more : mores) {
                                 more.click();
-                                webDriver.manage().timeouts().implicitlyWait(WAIT_FOR_ACTION, TimeUnit.SECONDS);
+                                webDriver.manage().timeouts().implicitlyWait(defaultWaitForAction, TimeUnit.SECONDS);
                             }
                         } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
                             mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
@@ -374,12 +382,12 @@ public class Parser {
                     e.printStackTrace();
                 }
                 int tryClick = 0;
-                while (tryClick++ < MAX_TRY_CLICK) {
+                while (tryClick++ < defaultMaxTryClick) {
                     try {
                         nextPage = webDriver.findElement(By.cssSelector(parserConfig.getNextPageCssSelector()));
                         nextPage.click();
-                        waitForNextPage(pageNum, nextPage, WAIT_FOR_ACTION);
-                        tryClick = MAX_TRY_CLICK;
+                        waitForNextPage(pageNum, nextPage, defaultWaitForAction);
+                        tryClick = defaultMaxTryClick;
                     } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
                     }
                 }
@@ -464,7 +472,7 @@ public class Parser {
         entity.setFromPage((int) parserConfig.getDefaultFromPage());
         entity.setToPage((int) parserConfig.getDefaultToPage());
         entity.setRefreshExistedData(false);
-        entity.setMaxParsedReviewsPage(DEFAULT_MAX_REVIEW_PAGES);
+        entity.setMaxParsedReviewsPage(defaultMaxReviewPages);
         return entity;
     }
 

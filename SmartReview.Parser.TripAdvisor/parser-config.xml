@@ -86,4 +86,12 @@
     <div>10</div>
   </ratingRule>
   <reviewDateFormat>MMMM d, yyyy</reviewDateFormat>
+  <defaultConfigs>
+    <waitForNextBusinessListPage>5</waitForNextBusinessListPage>
+    <defaultWebDriverWait>20</defaultWebDriverWait>
+    <defaultPollingSecs>1</defaultPollingSecs>
+    <waitForAction>2</waitForAction>
+    <maxTryClick>10</maxTryClick>
+    <defaultMaxReviewPages>7</defaultMaxReviewPages>
+  </defaultConfigs>
 </parserConfig>

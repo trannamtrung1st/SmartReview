@@ -91,6 +91,22 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;/complexType>
  *         &lt;/element>
  *         &lt;element name="reviewDateFormat" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="defaultConfigs">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="waitForNextBusinessListPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                   &lt;element name="defaultWebDriverWait" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                   &lt;element name="defaultPollingSecs" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                   &lt;element name="waitForAction" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                   &lt;element name="maxTryClick" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                   &lt;element name="defaultMaxReviewPages" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -116,7 +132,8 @@ import javax.xml.bind.annotation.XmlType;
     "reviewCateMap",
     "reviewStringRules",
     "ratingRule",
-    "reviewDateFormat"
+    "reviewDateFormat",
+    "defaultConfigs"
 })
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
@@ -153,6 +170,8 @@ public class ParserConfig {
     protected ParserConfig.RatingRule ratingRule;
     @XmlElement(required = true)
     protected String reviewDateFormat;
+    @XmlElement(required = true)
+    protected ParserConfig.DefaultConfigs defaultConfigs;
 
     /**
      * Gets the value of the driverPath property.
@@ -520,6 +539,177 @@ public class ParserConfig {
      */
     public void setReviewDateFormat(String value) {
         this.reviewDateFormat = value;
+    }
+
+    /**
+     * Gets the value of the defaultConfigs property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ParserConfig.DefaultConfigs }
+     *     
+     */
+    public ParserConfig.DefaultConfigs getDefaultConfigs() {
+        return defaultConfigs;
+    }
+
+    /**
+     * Sets the value of the defaultConfigs property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ParserConfig.DefaultConfigs }
+     *     
+     */
+    public void setDefaultConfigs(ParserConfig.DefaultConfigs value) {
+        this.defaultConfigs = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="waitForNextBusinessListPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *         &lt;element name="defaultWebDriverWait" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *         &lt;element name="defaultPollingSecs" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *         &lt;element name="waitForAction" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *         &lt;element name="maxTryClick" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *         &lt;element name="defaultMaxReviewPages" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "waitForNextBusinessListPage",
+        "defaultWebDriverWait",
+        "defaultPollingSecs",
+        "waitForAction",
+        "maxTryClick",
+        "defaultMaxReviewPages"
+    })
+    public static class DefaultConfigs {
+
+        @XmlSchemaType(name = "unsignedByte")
+        protected short waitForNextBusinessListPage;
+        @XmlSchemaType(name = "unsignedByte")
+        protected short defaultWebDriverWait;
+        @XmlSchemaType(name = "unsignedByte")
+        protected short defaultPollingSecs;
+        @XmlSchemaType(name = "unsignedByte")
+        protected short waitForAction;
+        @XmlSchemaType(name = "unsignedByte")
+        protected short maxTryClick;
+        @XmlSchemaType(name = "unsignedByte")
+        protected short defaultMaxReviewPages;
+
+        /**
+         * Gets the value of the waitForNextBusinessListPage property.
+         * 
+         */
+        public short getWaitForNextBusinessListPage() {
+            return waitForNextBusinessListPage;
+        }
+
+        /**
+         * Sets the value of the waitForNextBusinessListPage property.
+         * 
+         */
+        public void setWaitForNextBusinessListPage(short value) {
+            this.waitForNextBusinessListPage = value;
+        }
+
+        /**
+         * Gets the value of the defaultWebDriverWait property.
+         * 
+         */
+        public short getDefaultWebDriverWait() {
+            return defaultWebDriverWait;
+        }
+
+        /**
+         * Sets the value of the defaultWebDriverWait property.
+         * 
+         */
+        public void setDefaultWebDriverWait(short value) {
+            this.defaultWebDriverWait = value;
+        }
+
+        /**
+         * Gets the value of the defaultPollingSecs property.
+         * 
+         */
+        public short getDefaultPollingSecs() {
+            return defaultPollingSecs;
+        }
+
+        /**
+         * Sets the value of the defaultPollingSecs property.
+         * 
+         */
+        public void setDefaultPollingSecs(short value) {
+            this.defaultPollingSecs = value;
+        }
+
+        /**
+         * Gets the value of the waitForAction property.
+         * 
+         */
+        public short getWaitForAction() {
+            return waitForAction;
+        }
+
+        /**
+         * Sets the value of the waitForAction property.
+         * 
+         */
+        public void setWaitForAction(short value) {
+            this.waitForAction = value;
+        }
+
+        /**
+         * Gets the value of the maxTryClick property.
+         * 
+         */
+        public short getMaxTryClick() {
+            return maxTryClick;
+        }
+
+        /**
+         * Sets the value of the maxTryClick property.
+         * 
+         */
+        public void setMaxTryClick(short value) {
+            this.maxTryClick = value;
+        }
+
+        /**
+         * Gets the value of the defaultMaxReviewPages property.
+         * 
+         */
+        public short getDefaultMaxReviewPages() {
+            return defaultMaxReviewPages;
+        }
+
+        /**
+         * Sets the value of the defaultMaxReviewPages property.
+         * 
+         */
+        public void setDefaultMaxReviewPages(short value) {
+            this.defaultMaxReviewPages = value;
+        }
+
     }
 
 

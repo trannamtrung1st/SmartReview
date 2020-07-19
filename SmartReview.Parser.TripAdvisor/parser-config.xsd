@@ -54,6 +54,18 @@
           </xs:complexType>
         </xs:element>
         <xs:element name="reviewDateFormat" type="xs:string" />
+        <xs:element name="defaultConfigs">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="waitForNextBusinessListPage" type="xs:unsignedByte" />
+              <xs:element name="defaultWebDriverWait" type="xs:unsignedByte" />
+              <xs:element name="defaultPollingSecs" type="xs:unsignedByte" />
+              <xs:element name="waitForAction" type="xs:unsignedByte" />
+              <xs:element name="maxTryClick" type="xs:unsignedByte" />
+              <xs:element name="defaultMaxReviewPages" type="xs:unsignedByte" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
