@@ -70,6 +70,13 @@ import smartreview.xmlparser.preprocessor.HtmlPreprocessor;
  */
 public class Parser {
 
+    protected final int WAIT_NEXT_PAGE_SECS_B_LIST = 5;
+    protected final int DEFAULT_WD_WAIT_TIMEOUT = 20;
+    protected final int DEFAULT_POLLING_SECS = 1;
+    protected final int WAIT_FOR_ACTION = 2;
+    protected final int MAX_TRY_CLICK = 10;
+    protected final int DEFAULT_MAX_REVIEW_PAGES = 7;
+
     protected XmlParserConfig xmlParserConfig;
     protected ParserConfig parserConfig;
     protected XPath xpath;
@@ -112,7 +119,7 @@ public class Parser {
         this.entityManager = entityManager;
         this.webDriver = webDriver;
         this.businessService = businessService;
-        businessLinks = new HashSet<>();
+        this.businessLinks = new HashSet<>();
     }
 
     public void start() throws Exception {
@@ -159,7 +166,7 @@ public class Parser {
             WebElement nextPage = webDriver.findElement(By.cssSelector(nextPageSelector));
             while (nextPage != null && pageNum < parserInfo.getToPage()) {
                 nextPage.click();
-                waitForNextPage(pageNum, nextPage, 5);
+                waitForNextPage(pageNum, nextPage, WAIT_NEXT_PAGE_SECS_B_LIST);
                 pageNum++;
                 if (pageNeedCrawl(pageNum)) {
                     pSource = webDriver.getPageSource();
@@ -179,8 +186,8 @@ public class Parser {
 
     protected void waitForNextPage(Integer pageNum, WebElement nextPage, String checkVisibleSelector) {
         Wait<WebDriver> wait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(20))
-                .pollingEvery(Duration.ofSeconds(1))
+                .withTimeout(Duration.ofSeconds(DEFAULT_WD_WAIT_TIMEOUT))
+                .pollingEvery(Duration.ofSeconds(DEFAULT_POLLING_SECS))
                 .ignoreAll(Arrays.asList(NoSuchElementException.class, StaleElementReferenceException.class, ElementClickInterceptedException.class));
         wait.until((driver) -> {
             WebElement currentPage = driver.findElement(By.cssSelector(parserConfig.getCurrentPageCssSelector()));
@@ -194,8 +201,8 @@ public class Parser {
 
     protected void waitForNextPage(Integer pageNum, WebElement nextPage, Integer waitAtLeastSeconds) {
         Wait<WebDriver> wait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(20))
-                .pollingEvery(Duration.ofSeconds(1))
+                .withTimeout(Duration.ofSeconds(DEFAULT_WD_WAIT_TIMEOUT))
+                .pollingEvery(Duration.ofSeconds(DEFAULT_POLLING_SECS))
                 .ignoreAll(Arrays.asList(NoSuchElementException.class, StaleElementReferenceException.class, ElementClickInterceptedException.class));
         wait.until(new Function<WebDriver, Object>() {
             int count = 0;
@@ -238,12 +245,14 @@ public class Parser {
                 String code = getCodeFromLink(businessLink);
                 System.out.println(code);
                 boolean existed = businessService.businessCodeExists(code);
-                if (existed && parserInfo.getRefreshExistedData() == true) {
-                    //update business info
+                if (existed) {
+                    if (parserInfo.getRefreshExistedData() == true) {
+                        //update business info
+                    }
                 } else {
                     //create business info
                     webDriver.get(businessLink);
-                    webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                    webDriver.manage().timeouts().implicitlyWait(WAIT_FOR_ACTION, TimeUnit.SECONDS);
                     String pageSource = webDriver.getPageSource();
                     System.out.println("Start parsing page: " + businessLink);
                     pageSource = preprocess(pageSource);
@@ -301,7 +310,7 @@ public class Parser {
         return writer.toString();
     }
 
-    protected Business convertToBusinessEntity(BusinessItem bItem) {
+    protected Business convertToBusinessEntity(BusinessItem bItem) throws Exception {
         Business entity = new Business();
         entity.setAddress(bItem.getAddress());
         List<BusinessImage> bImages = new ArrayList<>();
@@ -318,7 +327,16 @@ public class Parser {
         entity.setName(bItem.getName());
         entity.setPhone(bItem.getPhone());
         entity.setRating(bItem.getRating());
-        String reviewStr = bItem.getTotalReview().split(" ")[0].replace(",", "");
+
+        String reviewStr = bItem.getTotalReview();
+        String reviewRegex = parserConfig.getReviewStringRules().getRegex();
+        String removeInReviewStr = parserConfig.getReviewStringRules().getRemove();
+        Matcher matcher = RegexHelper.matcherDotAll(reviewStr, reviewRegex);
+        if (matcher.find()) {
+            reviewStr = matcher.group(1).replace(removeInReviewStr, "");
+        } else {
+            throw new Exception("Code not found");
+        }
         Integer totalReviews = Integer.parseInt(reviewStr);
         entity.setTotalReview(totalReviews);
         return entity;
@@ -330,17 +348,15 @@ public class Parser {
             WebElement nextPage;
             Integer pageNum = 1;
             while (pageNum <= parserInfo.getMaxParsedReviewsPage()) {
-                int tryClick = 0;
                 try {
                     //show full content
                     List<WebElement> mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
-                    while (tryClick++ < 10) {
+                    while (mores.size() > 0) {
                         try {
                             for (WebElement more : mores) {
                                 more.click();
-                                webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                                webDriver.manage().timeouts().implicitlyWait(WAIT_FOR_ACTION, TimeUnit.SECONDS);
                             }
-                            tryClick = 10;
                         } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
                             mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
                         }
@@ -351,18 +367,19 @@ public class Parser {
                 }
                 pageSource = webDriver.getPageSource();
                 pageSource = preprocess(pageSource);
+                FileHelper.writeToFile(pageSource, "temp.html");
                 try {
                     addReviews(entities, pageSource, bEntity);
                 } catch (SAXException e) {
                     e.printStackTrace();
                 }
-                tryClick = 0;
-                while (tryClick++ < 10) {
+                int tryClick = 0;
+                while (tryClick++ < MAX_TRY_CLICK) {
                     try {
                         nextPage = webDriver.findElement(By.cssSelector(parserConfig.getNextPageCssSelector()));
                         nextPage.click();
-                        waitForNextPage(pageNum, nextPage, 2);
-                        tryClick = 10;
+                        waitForNextPage(pageNum, nextPage, WAIT_FOR_ACTION);
+                        tryClick = MAX_TRY_CLICK;
                     } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
                     }
                 }
@@ -390,16 +407,24 @@ public class Parser {
             String code = reviewsItem.getCodes().getItem().get(i);
             bR.setCode(code);
 
-            String[] rClasses = reviewsItem.getRatingClasses().getItem().get(i).split(" ");
-            String rStr = rClasses[rClasses.length - 1].split("_")[1];
-            Double rating = Double.parseDouble(rStr) / 10;
+            String rClasses = reviewsItem.getRatingClasses().getItem().get(i);
+            String rStrRegex = parserConfig.getRatingRule().getRegex();
+            Matcher matcher = RegexHelper.matcherDotAll(rClasses, rStrRegex);
+            String rStr;
+            if (matcher.find()) {
+                rStr = matcher.group(1);
+            } else {
+                throw new Exception("Code not found");
+            }
+            Integer div = (int) parserConfig.getRatingRule().getDiv();
+            Double rating = Double.parseDouble(rStr) / div;
             bR.setRating(rating);
 
             String reviewContent = reviewsItem.getReviewContents().getItem().get(i);
             bR.setReviewContent(reviewContent);
 
             String rDateStr = reviewsItem.getDates().getItem().get(i);
-            Date rDate = DateHelper.convertToJavaDate("MMMM d, yyyy", rDateStr);
+            Date rDate = DateHelper.convertToJavaDate(parserConfig.getReviewDateFormat(), rDateStr);
             bR.setReviewDate(rDate);
 
             String rTitle = reviewsItem.getReviewTitles().getItem().get(i);
@@ -439,7 +464,7 @@ public class Parser {
         entity.setFromPage((int) parserConfig.getDefaultFromPage());
         entity.setToPage((int) parserConfig.getDefaultToPage());
         entity.setRefreshExistedData(false);
-        entity.setMaxParsedReviewsPage(7);
+        entity.setMaxParsedReviewsPage(DEFAULT_MAX_REVIEW_PAGES);
         return entity;
     }
 

@@ -77,4 +77,13 @@
       </value>
     </item>
   </reviewCateMap>
+  <reviewStringRules>
+    <regex>^([^ ]+?) .*$</regex>
+    <remove>,</remove>
+  </reviewStringRules>
+  <ratingRule>
+    <regex> bubble_(.+?)$</regex>
+    <div>10</div>
+  </ratingRule>
+  <reviewDateFormat>MMMM d, yyyy</reviewDateFormat>
 </parserConfig>

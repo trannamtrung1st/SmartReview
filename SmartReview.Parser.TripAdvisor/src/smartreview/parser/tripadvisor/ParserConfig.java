@@ -66,6 +66,31 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="reviewStringRules">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="remove" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
+ *         &lt;element name="ratingRule">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="div" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
+ *         &lt;element name="reviewDateFormat" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -88,7 +113,10 @@ import javax.xml.bind.annotation.XmlType;
     "defaultToPage",
     "codeFromUrlRegex",
     "moresBtnXPath",
-    "reviewCateMap"
+    "reviewCateMap",
+    "reviewStringRules",
+    "ratingRule",
+    "reviewDateFormat"
 })
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
@@ -119,6 +147,12 @@ public class ParserConfig {
     protected String moresBtnXPath;
     @XmlElement(required = true)
     protected ParserConfig.ReviewCateMap reviewCateMap;
+    @XmlElement(required = true)
+    protected ParserConfig.ReviewStringRules reviewStringRules;
+    @XmlElement(required = true)
+    protected ParserConfig.RatingRule ratingRule;
+    @XmlElement(required = true)
+    protected String reviewDateFormat;
 
     /**
      * Gets the value of the driverPath property.
@@ -416,6 +450,153 @@ public class ParserConfig {
         this.reviewCateMap = value;
     }
 
+    /**
+     * Gets the value of the reviewStringRules property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ParserConfig.ReviewStringRules }
+     *     
+     */
+    public ParserConfig.ReviewStringRules getReviewStringRules() {
+        return reviewStringRules;
+    }
+
+    /**
+     * Sets the value of the reviewStringRules property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ParserConfig.ReviewStringRules }
+     *     
+     */
+    public void setReviewStringRules(ParserConfig.ReviewStringRules value) {
+        this.reviewStringRules = value;
+    }
+
+    /**
+     * Gets the value of the ratingRule property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ParserConfig.RatingRule }
+     *     
+     */
+    public ParserConfig.RatingRule getRatingRule() {
+        return ratingRule;
+    }
+
+    /**
+     * Sets the value of the ratingRule property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ParserConfig.RatingRule }
+     *     
+     */
+    public void setRatingRule(ParserConfig.RatingRule value) {
+        this.ratingRule = value;
+    }
+
+    /**
+     * Gets the value of the reviewDateFormat property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getReviewDateFormat() {
+        return reviewDateFormat;
+    }
+
+    /**
+     * Sets the value of the reviewDateFormat property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setReviewDateFormat(String value) {
+        this.reviewDateFormat = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="div" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "regex",
+        "div"
+    })
+    public static class RatingRule {
+
+        @XmlElement(required = true)
+        protected String regex;
+        @XmlSchemaType(name = "unsignedByte")
+        protected short div;
+
+        /**
+         * Gets the value of the regex property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getRegex() {
+            return regex;
+        }
+
+        /**
+         * Sets the value of the regex property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setRegex(String value) {
+            this.regex = value;
+        }
+
+        /**
+         * Gets the value of the div property.
+         * 
+         */
+        public short getDiv() {
+            return div;
+        }
+
+        /**
+         * Sets the value of the div property.
+         * 
+         */
+        public void setDiv(short value) {
+            this.div = value;
+        }
+
+    }
+
 
     /**
      * <p>Java class for anonymous complex type.
@@ -671,6 +852,89 @@ public class ParserConfig {
 
             }
 
+        }
+
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="remove" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "regex",
+        "remove"
+    })
+    public static class ReviewStringRules {
+
+        @XmlElement(required = true)
+        protected String regex;
+        @XmlElement(required = true)
+        protected String remove;
+
+        /**
+         * Gets the value of the regex property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getRegex() {
+            return regex;
+        }
+
+        /**
+         * Sets the value of the regex property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setRegex(String value) {
+            this.regex = value;
+        }
+
+        /**
+         * Gets the value of the remove property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getRemove() {
+            return remove;
+        }
+
+        /**
+         * Sets the value of the remove property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setRemove(String value) {
+            this.remove = value;
         }
 
     }
