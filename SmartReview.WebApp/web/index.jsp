@@ -35,7 +35,7 @@
 
         </div>
         <hr/>
-        <div id="paging-container">
+        <div id="paging-container" style="text-align: center;margin:30px">
 
         </div>
 
