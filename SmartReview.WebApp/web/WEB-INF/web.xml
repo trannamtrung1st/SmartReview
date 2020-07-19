@@ -32,6 +32,10 @@
         <servlet-name>BusinessApiController</servlet-name>
         <servlet-class>smartreview.webapp.apis.BusinessApiController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReviewsApiController</servlet-name>
+        <servlet-class>smartreview.webapp.apis.ReviewsApiController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ErrorController</servlet-name>
         <url-pattern>/error</url-pattern>
@@ -48,6 +52,10 @@
         <servlet-name>BusinessApiController</servlet-name>
         <url-pattern>/api/business</url-pattern>
         <url-pattern>/api/business/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReviewsApiController</servlet-name>
+        <url-pattern>/api/reviews</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

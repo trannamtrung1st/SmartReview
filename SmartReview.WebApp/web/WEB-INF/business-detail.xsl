@@ -57,8 +57,10 @@
       <span class="label">Bad reviews: </span>
       <br/>
       <xsl:for-each select="badReviewDetails/item">
-        <xsl:value-of select="ratio*100"/>%
-        <xsl:value-of select="reviewCateName"/>
+        <xsl:value-of select="ratio"/>%
+        <span style="color:red">
+          <xsl:value-of select="reviewCateName"/>
+        </span>
         (<xsl:value-of select="totalReview"/>)<br/>
       </xsl:for-each>
     </div>

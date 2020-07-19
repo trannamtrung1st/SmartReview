@@ -8,6 +8,7 @@ package smartreview.business.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -25,15 +26,21 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import smartreview.business.Settings;
+import smartreview.business.dtos.ReviewCategoryDTO;
+import smartreview.business.dtos.ReviewDTO;
 import smartreview.business.models.AnalyzeReviewModel;
+import smartreview.business.models.CountModel;
+import smartreview.business.models.ListReviewModel;
 import smartreview.business.models.ReviewAnalysisResult;
 import smartreview.data.daos.BusinessReviewDAO;
 import smartreview.data.daos.ReviewCategoryDAO;
+import smartreview.data.models.Business;
 import smartreview.data.models.BusinessReview;
 import smartreview.data.models.CategoriesOfReviews;
 import smartreview.data.models.ReviewCategory;
 import smartreview.helper.HttpHelper;
 import smartreview.helper.StreamHelper;
+import smartreview.helper.StringHelper;
 import smartreview.helper.XMLHelper;
 
 /**
@@ -50,6 +57,56 @@ public class ReviewService {
         this.reviewCategoryDAO = reviewCategoryDAO;
         this.entityManager = entityManager;
         this.reviewDAO = reviewDAO;
+    }
+
+    public List<BusinessReview> getReviewsOfBusiness(Integer bId, int page, int limit, CountModel countModel) {
+        page = page - 1;
+        String whereClause = "WHERE [businessId]=?bId\n";
+        //count query
+        String countQuery = "SELECT COUNT(code) FROM BusinessReview " + whereClause;
+        Query query = reviewDAO.nativeQuery(countQuery);
+        query = query.setParameter("bId", bId);
+        Integer totalItems = (Integer) query.getSingleResult();
+        Integer totalPages = totalItems / limit + 1;
+        totalPages = (totalItems % limit) == 0
+                ? totalPages - 1 : totalPages;
+        countModel.setItemsPerPage(limit);
+        countModel.setTotalItems(totalItems);
+        countModel.setTotalPages(totalPages);
+
+        //get list query
+        String sql = "SELECT * FROM BusinessReview\n" + whereClause
+                + "ORDER BY [reviewDate] DESC\n"
+                + "OFFSET ?offset ROWS\n"
+                + "FETCH NEXT ?limit ROWS ONLY";
+        query = reviewDAO.nativeQuery(sql, BusinessReview.class);
+        query = query.setParameter("bId", bId);
+        query = query.setParameter("offset", page * limit);
+        query = query.setParameter("limit", limit);
+        List<BusinessReview> list = query.getResultList();
+        return list;
+    }
+
+    public ListReviewModel toListReviewModel(List<BusinessReview> entities, CountModel countModel, Map<String, ReviewCategory> cateMap) {
+        ListReviewModel o = new ListReviewModel();
+        List<ReviewDTO> dtos = entities.stream().map((t) -> {
+            ReviewDTO dto = new ReviewDTO();
+            dto.copyFrom(t);
+            List<ReviewCategoryDTO> list = toListReviewCategoryDTO(t.getCategoriesOfReviewsCollection(), cateMap);
+            dto.setCategories(list);
+            return dto;
+        }).collect(Collectors.toList());
+        o.setList(dtos);
+        o.setCount(countModel);
+        return o;
+    }
+
+    public List<ReviewCategoryDTO> toListReviewCategoryDTO(Collection<CategoriesOfReviews> entities, Map<String, ReviewCategory> cateMap) {
+        return Arrays.asList(entities.toArray(new CategoriesOfReviews[entities.size()])).stream().map((t) -> {
+            ReviewCategoryDTO dto = new ReviewCategoryDTO();
+            dto.copyFrom(cateMap.get(t.getCategoryCode().getCode()));
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public boolean analyzeReviews(Map<String, BusinessReview> rawReviews, float minScore) throws Exception {

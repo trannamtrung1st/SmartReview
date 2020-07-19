@@ -14,7 +14,7 @@ public class BadReviewDetailModel {
     protected String reviewCateCode;
     protected String reviewCateName;
     protected Integer totalReview;
-    protected Double ratio;
+    protected Integer ratio;
 
     public String getReviewCateCode() {
         return reviewCateCode;
@@ -40,11 +40,11 @@ public class BadReviewDetailModel {
         this.totalReview = totalReview;
     }
 
-    public Double getRatio() {
+    public Integer getRatio() {
         return ratio;
     }
 
-    public void setRatio(Double ratio) {
+    public void setRatio(Integer ratio) {
         this.ratio = ratio;
     }
 

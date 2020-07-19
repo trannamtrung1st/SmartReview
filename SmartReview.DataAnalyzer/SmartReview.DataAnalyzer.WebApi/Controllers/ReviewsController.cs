@@ -25,8 +25,8 @@ namespace PetID.ClassifyWebApi.Controllers
     [InjectionFilter]
     public class ReviewsController : BaseController
     {
-        [Inject]
-        private ReviewSentimentAnalyzer _sEngine;
+        //[Inject]
+        //private ReviewSentimentAnalyzer _sEngine;
         [Inject]
         private ReviewCategorizer _cEngine;
 
@@ -43,11 +43,11 @@ namespace PetID.ClassifyWebApi.Controllers
                 aModel.ReviewCode = r.ReviewCode;
                 if (!string.IsNullOrWhiteSpace(r.ReviewText))
                 {
-                    var sOutput = _sEngine.Predict(new SmartReview.DataAnalyzer.Sentiment.Models.ModelInput
-                    {
-                        Text = r.ReviewText
-                    });
-                    aModel.IsPositive = sOutput.Prediction || r.Rating > 3.5;
+                    //var sOutput = _sEngine.Predict(new SmartReview.DataAnalyzer.Sentiment.Models.ModelInput
+                    //{
+                    //    Text = r.ReviewText
+                    //});
+                    aModel.IsPositive = /*sOutput.Prediction ||*/ r.Rating > 3.5;
                     if (!aModel.IsPositive)
                         aModel.Output = _cEngine.Predict(new SmartReview.DataAnalyzer.Classification.Models.ModelInput
                         {

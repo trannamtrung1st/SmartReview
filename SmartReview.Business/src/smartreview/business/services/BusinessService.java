@@ -104,7 +104,7 @@ public class BusinessService {
         return list;
     }
 
-    public ListBusinessModel toListBusinessDTO(List<Business> entities, CountModel countModel) {
+    public ListBusinessModel toListBusinessModel(List<Business> entities, CountModel countModel) {
         ListBusinessModel o = new ListBusinessModel();
         List<BusinessDTO> dtos = entities.stream().map((t) -> {
             BusinessDTO dto = new BusinessDTO();
@@ -123,7 +123,7 @@ public class BusinessService {
     }
 
     public BusinessReviewGeneralModel generalizeReviewDataOfBusiness(Business entity, Map<String, ReviewCategory> cateMap) {
-        String sql = "SELECT c.categoryCode,COUNT(c.id) totalReview,CAST(COUNT(c.id) as float)/(SELECT COUNT(id) FROM BusinessReview WHERE businessId=?bId) ratio \n"
+        String sql = "SELECT c.categoryCode,COUNT(c.id) totalReview,CAST((COUNT(c.id)*100) as float)/(SELECT COUNT(id) FROM BusinessReview WHERE businessId=?bId) ratio \n"
                 + "FROM CategoriesOfReviews c\n"
                 + "INNER JOIN BusinessReview r ON c.reviewId=r.id\n"
                 + "WHERE r.businessId = ?bId\n"
@@ -135,7 +135,8 @@ public class BusinessService {
         model.setOverall(entity.getRating() > 3.5);
         List<BadReviewDetailModel> badReviews = results.stream().map((t) -> {
             BadReviewDetailModel m = new BadReviewDetailModel();
-            m.setRatio((Double) t[2]);
+            int ratio = (int) (double) t[2];
+            m.setRatio(ratio);
             m.setTotalReview((Integer) t[1]);
             String cateCode = (String) t[0];
             m.setReviewCateCode(cateCode);

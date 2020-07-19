@@ -41,10 +41,15 @@ public class AppContextListener implements ServletContextListener {
             });
             sContext.setAttribute("cateMap", cateMap);
 
-            //business-paging.xsl
+            //business-list.xsl
             String path = sContext.getRealPath("/WEB-INF/business-list.xsl");
             String bListXsl = FileHelper.readContent(path).replace("\n", "");
             sContext.setAttribute("bListXsl", bListXsl);
+            
+            //review-list.xsl
+            path = sContext.getRealPath("/WEB-INF/review-list.xsl");
+            String rListXsl = FileHelper.readContent(path).replace("\n", "");
+            sContext.setAttribute("rListXsl", rListXsl);
 
             //business-detail.xsl
             path = sContext.getRealPath("/WEB-INF/business-detail.xsl");

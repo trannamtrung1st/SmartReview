@@ -97,7 +97,7 @@ public class BusinessDetailController extends BaseController {
             String xml = XMLHelper.marshall(detailModel, BusinessDetailModel.class);
             FileHelper.writeToFile(xml, "T:\\FPT\\STUDY\\SUMMER2020\\PRX\\Project\\SmartReview\\Source\\SmartReview.WebApp\\temp.xml");
             request.setAttribute("xmlData", xml);
-            request.setAttribute("businessName", dto.getName());
+            request.setAttribute("business", dto);
         }
     }
 
@@ -117,8 +117,12 @@ public class BusinessDetailController extends BaseController {
 
     protected void dispatch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ServletContext sContext = getServletContext();
+
         String bDetailXsl = (String) sContext.getAttribute("bDetailXsl");
+        String rListXsl = (String) sContext.getAttribute("rListXsl");
         request.setAttribute("bDetailXsl", bDetailXsl);
+        request.setAttribute("rListXsl", rListXsl);
+
         response.setContentType("text/html;charset=UTF-8");
         request.getRequestDispatcher(DETAIL).forward(request, response);
     }

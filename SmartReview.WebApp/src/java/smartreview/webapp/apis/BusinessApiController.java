@@ -96,7 +96,7 @@ public class BusinessApiController extends BaseController {
             }
             CountModel countModel = new CountModel();
             List<Business> entities = businessService.getBusiness(search, page, limit, countModel);
-            ListBusinessModel dto = businessService.toListBusinessDTO(entities, countModel);
+            ListBusinessModel dto = businessService.toListBusinessModel(entities, countModel);
             String xml = XMLHelper.marshall(dto, ListBusinessModel.class);
             out.print(xml);
         }
