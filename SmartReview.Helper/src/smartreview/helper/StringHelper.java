@@ -10,6 +10,10 @@ package smartreview.helper;
  * @author TNT
  */
 public class StringHelper {
+    
+    public static boolean isNullOrWhiteSpace(String str){
+        return str == null || str.trim().isEmpty();
+    }
 
     public static String escape(String s) {
         return s.replace("\\", "\\\\")

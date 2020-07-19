@@ -1,12 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	 version="3.1">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>smartreview.webapp.filters.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>smartreview.webapp.listeners.AppContextListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>ErrorController</servlet-name>
+        <servlet-class>smartreview.webapp.controllers.ErrorController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IndexController</servlet-name>
+        <servlet-class>smartreview.webapp.controllers.IndexController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BusinessApiController</servlet-name>
+        <servlet-class>smartreview.webapp.apis.BusinessApiController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ErrorController</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexController</servlet-name>
+        <url-pattern/>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BusinessApiController</servlet-name>
+        <url-pattern>/api/business</url-pattern>
+        <url-pattern>/api/business/*</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <error-page>
+        <location>/error</location>
+    </error-page>
+    <welcome-file-list>
+        <welcome-file>
+        </welcome-file>
+    </welcome-file-list>
 </web-app>
