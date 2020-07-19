@@ -3,30 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package smartreview.business.dtos;
+package smartreview.business.models;
 
-import smartreview.business.models.CountBusinessModel;
+import smartreview.business.models.CountModel;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import smartreview.business.dtos.BusinessDTO;
 
 /**
  *
  * @author TNT
  */
 @XmlRootElement(name = "listBusiness")
-public class ListBusinessDTO {
+public class ListBusinessModel {
 
     protected List<BusinessDTO> list;
 
-    CountBusinessModel count;
+    CountModel count;
 
-    public void setCount(CountBusinessModel count) {
+    public void setCount(CountModel count) {
         this.count = count;
     }
 
-    public CountBusinessModel getCount() {
+    public CountModel getCount() {
         return count;
     }
 

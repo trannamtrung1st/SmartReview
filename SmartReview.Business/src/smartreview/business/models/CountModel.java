@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author TNT
  */
-@XmlRootElement(name = "countBusinessModel")
-public class CountBusinessModel {
+@XmlRootElement(name = "countModel")
+public class CountModel {
 
     private int totalItems;
     private int itemsPerPage;

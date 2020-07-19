@@ -19,8 +19,8 @@ import javax.persistence.Query;
 import javax.xml.bind.JAXBException;
 import smartreview.business.dtos.BusinessDTO;
 import smartreview.business.dtos.BusinessImageDTO;
-import smartreview.business.models.CountBusinessModel;
-import smartreview.business.dtos.ListBusinessDTO;
+import smartreview.business.models.CountModel;
+import smartreview.business.models.ListBusinessModel;
 import smartreview.business.models.BadReviewDetailModel;
 import smartreview.business.models.BusinessReviewGeneralModel;
 import smartreview.data.daos.BusinessDAO;
@@ -50,14 +50,14 @@ public class BusinessService {
         return list.size() > 0 ? list.get(0) : null;
     }
 
-    public CountBusinessModel countBusiness(Integer limit) {
+    public CountModel countBusiness(Integer limit) {
         String sql = "SELECT COUNT(code) FROM Business";
         Query query = businessDAO.nativeQuery(sql);
         Integer totalItems = (Integer) query.getSingleResult();
         Integer totalPages = totalItems / limit + 1;
         totalPages = (totalItems % limit) == 0
                 ? totalPages - 1 : totalPages;
-        CountBusinessModel model = new CountBusinessModel();
+        CountModel model = new CountModel();
         model.setItemsPerPage(limit);
         model.setTotalItems(totalItems);
         model.setTotalPages(totalPages);
@@ -71,7 +71,7 @@ public class BusinessService {
         return list.size() > 0 ? list.get(0) : null;
     }
 
-    public List<Business> getBusiness(String search, int page, int limit, CountBusinessModel countModel) {
+    public List<Business> getBusiness(String search, int page, int limit, CountModel countModel) {
         page = page - 1;
         boolean hasSearch = !StringHelper.isNullOrWhiteSpace(search);
         String whereClause = (hasSearch ? "WHERE [name] LIKE ?search\n" : "");
@@ -104,8 +104,8 @@ public class BusinessService {
         return list;
     }
 
-    public ListBusinessDTO toListBusinessDTO(List<Business> entities, CountBusinessModel countModel) {
-        ListBusinessDTO o = new ListBusinessDTO();
+    public ListBusinessModel toListBusinessDTO(List<Business> entities, CountModel countModel) {
+        ListBusinessModel o = new ListBusinessModel();
         List<BusinessDTO> dtos = entities.stream().map((t) -> {
             BusinessDTO dto = new BusinessDTO();
             dto.copyFrom(t);

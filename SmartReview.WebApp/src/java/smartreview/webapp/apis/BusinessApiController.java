@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.hc.core5.http.HttpStatus;
 import smartreview.business.dtos.BusinessDTO;
-import smartreview.business.models.CountBusinessModel;
-import smartreview.business.dtos.ListBusinessDTO;
+import smartreview.business.models.CountModel;
+import smartreview.business.models.ListBusinessModel;
 import smartreview.business.services.BusinessService;
 import smartreview.data.EntityContext;
 import smartreview.data.daos.BusinessDAO;
@@ -74,8 +74,8 @@ public class BusinessApiController extends BaseController {
             }
             EntityManager em = eContext.getEntityManager();
             BusinessService businessService = new BusinessService(em, new BusinessDAO(em));
-            CountBusinessModel model = businessService.countBusiness(limit);
-            String xml = XMLHelper.marshall(model, CountBusinessModel.class);
+            CountModel model = businessService.countBusiness(limit);
+            String xml = XMLHelper.marshall(model, CountModel.class);
             out.print(xml);
         }
     }
@@ -94,10 +94,10 @@ public class BusinessApiController extends BaseController {
             if (limit == null) {
                 limit = 10;
             }
-            CountBusinessModel countModel = new CountBusinessModel();
+            CountModel countModel = new CountModel();
             List<Business> entities = businessService.getBusiness(search, page, limit, countModel);
-            ListBusinessDTO dto = businessService.toListBusinessDTO(entities, countModel);
-            String xml = XMLHelper.marshall(dto, ListBusinessDTO.class);
+            ListBusinessModel dto = businessService.toListBusinessDTO(entities, countModel);
+            String xml = XMLHelper.marshall(dto, ListBusinessModel.class);
             out.print(xml);
         }
     }
