@@ -4,6 +4,7 @@
   <xs:element name="parserConfig">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="baseApiUrl" type="xs:string" />
         <xs:element name="driverPath" type="xs:string" />
         <xs:element name="baseUrl" type="xs:string" />
         <xs:element name="businessListUrl" type="xs:string" />

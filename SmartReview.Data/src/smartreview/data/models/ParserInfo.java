@@ -28,7 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "ParserInfo.findByFromPage", query = "SELECT p FROM ParserInfo p WHERE p.fromPage = :fromPage")
     , @NamedQuery(name = "ParserInfo.findByToPage", query = "SELECT p FROM ParserInfo p WHERE p.toPage = :toPage")
     , @NamedQuery(name = "ParserInfo.findByRefreshExistedData", query = "SELECT p FROM ParserInfo p WHERE p.refreshExistedData = :refreshExistedData")
-    , @NamedQuery(name = "ParserInfo.findByMaxParsedReviewsPage", query = "SELECT p FROM ParserInfo p WHERE p.maxParsedReviewsPage = :maxParsedReviewsPage")})
+    , @NamedQuery(name = "ParserInfo.findByMaxParsedReviewsPage", query = "SELECT p FROM ParserInfo p WHERE p.maxParsedReviewsPage = :maxParsedReviewsPage")
+    , @NamedQuery(name = "ParserInfo.findByCurrentOutput", query = "SELECT p FROM ParserInfo p WHERE p.currentOutput = :currentOutput")
+    , @NamedQuery(name = "ParserInfo.findByCurrentCommand", query = "SELECT p FROM ParserInfo p WHERE p.currentCommand = :currentCommand")})
 public class ParserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,6 +42,8 @@ public class ParserInfo implements Serializable {
     private Integer toPage;
     private Boolean refreshExistedData;
     private Integer maxParsedReviewsPage;
+    private String currentOutput;
+    private String currentCommand;
 
     public ParserInfo() {
     }
@@ -94,6 +98,22 @@ public class ParserInfo implements Serializable {
 
     public void setMaxParsedReviewsPage(Integer maxParsedReviewsPage) {
         this.maxParsedReviewsPage = maxParsedReviewsPage;
+    }
+
+    public String getCurrentOutput() {
+        return currentOutput;
+    }
+
+    public void setCurrentOutput(String currentOutput) {
+        this.currentOutput = currentOutput;
+    }
+
+    public String getCurrentCommand() {
+        return currentCommand;
+    }
+
+    public void setCurrentCommand(String currentCommand) {
+        this.currentCommand = currentCommand;
     }
 
     @Override

@@ -18,7 +18,7 @@
     </head>
     <body>
         <div style="text-align: right">
-            <a style="font-weight: bold;">Restaurants list</a> --- <a href="#">Administration</a>  
+            <a style="font-weight: bold;">Restaurants list</a> --- <a href="${pageContext.servletContext.contextPath}/admin">Administration</a>  
         </div>
         <hr/>
         <h1 style="color:red">List of restaurants</h1>
@@ -106,6 +106,7 @@
                             newPage.removeAttribute("href");
                             newPage.removeAttribute("onclick");
                             newPage.setAttribute("class", "current " + newPage.getAttribute("class"));
+                            newPage.onclick = null;
                         }
                     }
 

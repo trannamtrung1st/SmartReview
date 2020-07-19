@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import javax.persistence.EntityManager;
 import javax.xml.transform.Result;
@@ -49,6 +51,7 @@ import smartreview.business.services.BusinessService;
 import smartreview.business.services.ParserInfoService;
 import smartreview.business.services.ReviewCategoryService;
 import smartreview.business.services.ReviewService;
+import smartreview.data.EntityContext;
 import smartreview.data.models.Business;
 import smartreview.data.models.BusinessImage;
 import smartreview.data.models.BusinessReview;
@@ -124,10 +127,33 @@ public class Parser {
 
     public void start() throws Exception {
         init();
-        crawlBusinessLinks();
-        System.out.println("Crawled links count: " + businessLinks.size());
-        parseBusinessInfoAndReview();
-        webDriver.close();
+        String cmd = parserInfo.getCurrentCommand();
+        if (!cmd.startsWith("START")) {
+            return;
+        }
+        if (cmd.contains(":")) {
+            String url = cmd.split(":")[1];
+        } else {
+            crawlBusinessLinks();
+            String output = "Crawled links count: " + businessLinks.size();
+            entityManager.getTransaction().begin();
+            System.out.println(output);
+            parserInfoService.writeOutput(parserInfo, output);
+            entityManager.getTransaction().commit();
+
+            for (String businessLink : businessLinks) {
+                try {
+                    parseBusinessInfoAndReview(businessLink);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    output = e.getMessage();
+                    entityManager.getTransaction().begin();
+                    System.out.println(output);
+                    parserInfoService.writeOutput(parserInfo, output);
+                    entityManager.getTransaction().commit();
+                }
+            }
+        }
     }
 
     protected void init() {
@@ -140,7 +166,7 @@ public class Parser {
         this.defaultWaitNextBListPage = conf.getWaitForNextBusinessListPage();
 
         String parserCode = parserConfig.getCode();
-        parserInfo = parserInfoService.findParserInfoByCode(parserCode);
+        parserInfo = parserInfoService.findParserInfoByCode(parserCode, true);
         if (parserInfo == null) {
             parserInfo = getNewParserInfo();
             entityManager.getTransaction().begin();
@@ -185,6 +211,11 @@ public class Parser {
         } catch (NoSuchElementException e) {
         } catch (Exception e) {
             e.printStackTrace();
+            String output = e.getMessage();
+            entityManager.getTransaction().begin();
+            System.out.println(output);
+            parserInfoService.writeOutput(parserInfo, output);
+            entityManager.getTransaction().commit();
         }
     }
 
@@ -229,56 +260,79 @@ public class Parser {
     }
 
     protected void parseBusinessLinks(String pageSource, int pageNum) throws Exception {
-        System.out.println(String.format("Parse business list page %d ", pageNum));
+        String output = (String.format("Parse business list page %d ", pageNum));
+        entityManager.getTransaction().begin();
+        System.out.println(output);
+        parserInfoService.writeOutput(parserInfo, output);
+        entityManager.getTransaction().commit();
+
         String content = preprocess(pageSource);
 //            FileHelper.writeToFile(content, "temp.html");
         //parse DOM and use XPath to get links
         Document doc = XMLHelper.parseDOMFromString(content);
         NodeList linkNodes = (NodeList) xpath.evaluate(parserConfig.getBusinessLinksXPath(), doc, XPathConstants.NODESET);
         int oldLength = businessLinks.size();
-        System.out.println("Links for page " + pageNum + ": " + linkNodes.getLength());
+        output = ("Links for page " + pageNum + ": " + linkNodes.getLength());
+        entityManager.getTransaction().begin();
+        System.out.println(output);
+        parserInfoService.writeOutput(parserInfo, output);
+        entityManager.getTransaction().commit();
+
         for (int i = 0; i < linkNodes.getLength(); i++) {
             String link = linkNodes.item(i).getNodeValue();
             link = resolveFullUrl(link);
             businessLinks.add(link);
         }
-        System.out.println("Added links: " + (businessLinks.size() - oldLength));
-        FileHelper.writeToFile(pageSource, "temp.html");
+        output = ("Added links: " + (businessLinks.size() - oldLength));
+        entityManager.getTransaction().begin();
+        System.out.println(output);
+        parserInfoService.writeOutput(parserInfo, output);
+        entityManager.getTransaction().commit();
+
+//        FileHelper.writeToFile(pageSource, "temp.html");
     }
 
-    protected void parseBusinessInfoAndReview() throws Exception {
-        for (String businessLink : businessLinks) {
-            String businessXml;
-            try {
-                String code = getCodeFromLink(businessLink);
-                System.out.println(code);
-                boolean existed = businessService.businessCodeExists(code);
-                if (existed) {
-                    if (parserInfo.getRefreshExistedData() == true) {
-                        //update business info
-                    }
-                } else {
-                    //create business info
-                    webDriver.get(businessLink);
-                    webDriver.manage().timeouts().implicitlyWait(defaultWaitForAction, TimeUnit.SECONDS);
-                    String pageSource = webDriver.getPageSource();
-                    System.out.println("Start parsing page: " + businessLink);
-                    pageSource = preprocess(pageSource);
-//                FileHelper.writeToFile(pageContent, "temp.html");
-                    businessXml = transformBusiness(businessLink, pageSource, code);
-                    validateBusinessXml(businessXml);
-//                FileHelper.writeToFile(modelXml, "temp.xml");
-                    BusinessItem bItem = XMLHelper.unmarshallDocXml(businessXml, smartreview.parser.tripadvisor.models.xmlschema.ObjectFactory.class);
-                    System.out.println(bItem.getName());
-                    Business bEntity = convertToBusinessEntity(bItem);
-                    Map<String, BusinessReview> bReviews = parseAllBusinessReviews(pageSource, bEntity);
-                    insertToDb(bEntity, bReviews.values());
-                    System.out.println("Finish parsing page: " + businessLink);
-                    System.out.println("------------------------");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    protected void parseBusinessInfoAndReview(String businessLink) throws Exception {
+        String businessXml;
+        String code = getCodeFromLink(businessLink);
+        boolean existed = businessService.businessCodeExists(code);
+        if (existed) {
+            if (parserInfo.getRefreshExistedData() == true) {
+                //update business info
             }
+        } else {
+            //create business info
+            webDriver.get(businessLink);
+            webDriver.manage().timeouts().implicitlyWait(defaultWaitForAction, TimeUnit.SECONDS);
+            String pageSource = webDriver.getPageSource();
+            String output = ("Start parsing page: " + businessLink);
+            entityManager.getTransaction().begin();
+            System.out.println(output);
+            parserInfoService.writeOutput(parserInfo, output);
+            entityManager.getTransaction().commit();
+
+            pageSource = preprocess(pageSource);
+//                FileHelper.writeToFile(pageContent, "temp.html");
+            businessXml = transformBusiness(businessLink, pageSource, code);
+            validateBusinessXml(businessXml);
+//                FileHelper.writeToFile(modelXml, "temp.xml");
+            BusinessItem bItem = XMLHelper.unmarshallDocXml(businessXml, smartreview.parser.tripadvisor.models.xmlschema.ObjectFactory.class);
+            output = (bItem.getName());
+            entityManager.getTransaction().begin();
+            System.out.println(output);
+            parserInfoService.writeOutput(parserInfo, output);
+            entityManager.getTransaction().commit();
+
+            Business bEntity = convertToBusinessEntity(bItem);
+            Map<String, BusinessReview> bReviews = parseAllBusinessReviews(pageSource, bEntity);
+            insertToDb(bEntity, bReviews.values());
+            output = ("Finish parsing page: " + businessLink)
+                    + ("\n------------------------");
+            entityManager.getTransaction().begin();
+            System.out.println(output);
+            parserInfoService.writeOutput(parserInfo, output);
+            entityManager.getTransaction().commit();
+
         }
     }
 
@@ -375,11 +429,16 @@ public class Parser {
                 }
                 pageSource = webDriver.getPageSource();
                 pageSource = preprocess(pageSource);
-                FileHelper.writeToFile(pageSource, "temp.html");
+//                FileHelper.writeToFile(pageSource, "temp.html");
                 try {
                     addReviews(entities, pageSource, bEntity);
                 } catch (SAXException e) {
                     e.printStackTrace();
+                    String output = e.getMessage();
+                    entityManager.getTransaction().begin();
+                    System.out.println(output);
+                    parserInfoService.writeOutput(parserInfo, output);
+                    entityManager.getTransaction().commit();
                 }
                 int tryClick = 0;
                 while (tryClick++ < defaultMaxTryClick) {
@@ -402,13 +461,12 @@ public class Parser {
     }
 
     protected void addReviews(Map<String, BusinessReview> entities, String currentPageSource, Business bEntity) throws Exception {
-        FileHelper.writeToFile(currentPageSource, "temp.html");
+//        FileHelper.writeToFile(currentPageSource, "temp.html");
         String reviewxXml = transformReviews(currentPageSource);
-        FileHelper.writeToFile(reviewxXml, "temp.xml");
+//        FileHelper.writeToFile(reviewxXml, "temp.xml");
         validateReviewsXml(reviewxXml);
         Reviews reviewsItem = XMLHelper.unmarshallDocXml(reviewxXml, smartreview.parser.tripadvisor.models.xmlschema.ObjectFactory.class);
         Integer size = reviewsItem.getCodes().getItem().size();
-        System.out.println(size);
         for (int i = 0; i < size; i++) {
             BusinessReview bR = new BusinessReview();
             bR.setBusinessId(bEntity);
@@ -443,7 +501,12 @@ public class Parser {
 
             String uName = reviewsItem.getUsernames().getItem().get(i);
             bR.setUsername(uName);
-            System.out.println(rTitle);
+            String output = (rTitle);
+            entityManager.getTransaction().begin();
+            System.out.println(output);
+            parserInfoService.writeOutput(parserInfo, output);
+            entityManager.getTransaction().commit();
+
             entities.put(bR.getCode(), bR);
         }
     }
@@ -473,6 +536,7 @@ public class Parser {
         entity.setToPage((int) parserConfig.getDefaultToPage());
         entity.setRefreshExistedData(false);
         entity.setMaxParsedReviewsPage(defaultMaxReviewPages);
+        entity.setCurrentCommand("STOP");
         return entity;
     }
 

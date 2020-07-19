@@ -8,6 +8,7 @@ package smartreview.data.models;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -37,7 +38,7 @@ public class ReviewCategory implements Serializable {
     private String code;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "categoryCode")
+    @OneToMany(mappedBy = "categoryCode", cascade = CascadeType.PERSIST)
     private Collection<CategoriesOfReviews> categoriesOfReviewsCollection;
 
     public ReviewCategory() {

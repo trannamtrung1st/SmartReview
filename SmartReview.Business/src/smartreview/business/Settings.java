@@ -10,5 +10,7 @@ package smartreview.business;
  * @author TNT
  */
 public class Settings {
-    public static final String BASE_API_URL = "http://localhost:51122";
+
+    public static String baseApiUrl;
+    public static String tripAdvisorParserLocation;
 }

@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import smartreview.business.Settings;
 import smartreview.business.services.ReviewCategoryService;
 import smartreview.data.EntityContext;
 import smartreview.data.daos.ReviewCategoryDAO;
@@ -30,7 +31,10 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sContext = sce.getServletContext();
-
+        Settings.baseApiUrl = sContext.getInitParameter("baseApiUrl");
+        Settings.tripAdvisorParserLocation = sContext.getInitParameter("tripAdvisorParserLocation");
+        
+        
         try (EntityContext context = EntityContext.newInstance()) {
             EntityManager em = context.getEntityManager();
             ReviewCategoryService cateService = new ReviewCategoryService(em, new ReviewCategoryDAO(em));

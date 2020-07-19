@@ -110,7 +110,7 @@ public class ReviewService {
     }
 
     public boolean analyzeReviews(Map<String, BusinessReview> rawReviews, float minScore) throws Exception {
-        String url = Settings.BASE_API_URL + "/api/reviews?min_score=" + minScore;
+        String url = Settings.baseApiUrl + "/api/reviews?min_score=" + minScore;
         AnalyzeReviewModel model = new AnalyzeReviewModel();
         AnalyzeReviewModel.Reviews reviews = new AnalyzeReviewModel.Reviews();
         List<AnalyzeReviewModel.Reviews.Item> items = reviews.getItem();

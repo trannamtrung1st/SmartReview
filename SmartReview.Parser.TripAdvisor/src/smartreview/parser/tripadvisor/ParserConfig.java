@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="baseApiUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="driverPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="baseUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="businessListUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -117,6 +118,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+    "baseApiUrl",
     "driverPath",
     "baseUrl",
     "businessListUrl",
@@ -138,6 +140,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
 
+    @XmlElement(required = true)
+    protected String baseApiUrl;
     @XmlElement(required = true)
     protected String driverPath;
     @XmlElement(required = true)
@@ -172,6 +176,30 @@ public class ParserConfig {
     protected String reviewDateFormat;
     @XmlElement(required = true)
     protected ParserConfig.DefaultConfigs defaultConfigs;
+
+    /**
+     * Gets the value of the baseApiUrl property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBaseApiUrl() {
+        return baseApiUrl;
+    }
+
+    /**
+     * Sets the value of the baseApiUrl property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBaseApiUrl(String value) {
+        this.baseApiUrl = value;
+    }
 
     /**
      * Gets the value of the driverPath property.

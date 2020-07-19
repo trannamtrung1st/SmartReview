@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.xml.bind.JAXBException;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 import smartreview.data.daos.ParserInfoDAO;
 import smartreview.data.models.ParserInfo;
 
@@ -32,9 +34,15 @@ public class ParserInfoService {
         this.parserInfoDAO = parserInfoDAO;
     }
 
-    public ParserInfo findParserInfoByCode(String parserCode) {
+    public void writeOutput(ParserInfo entity, String output) {
+        String newOutput = entity.getCurrentOutput() + "\n" + output;
+        entity.setCurrentOutput(newOutput);
+    }
+
+    public ParserInfo findParserInfoByCode(String parserCode, boolean refresh) {
         String sql = "SELECT * FROM ParserInfo WHERE parserCode=?code";
         Query query = parserInfoDAO.nativeQuery(sql, ParserInfo.class).setParameter("code", parserCode);
+        query.setHint(QueryHints.REFRESH, HintValues.TRUE);
         List<ParserInfo> list = query.getResultList();
         return list.size() > 0 ? list.get(0) : null;
     }

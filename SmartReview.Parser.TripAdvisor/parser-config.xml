@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <parserConfig>
+  <baseApiUrl>http://localhost:51122</baseApiUrl>
   <driverPath>T:\ITs\WebDriver\chromedriver84.exe</driverPath>
   <baseUrl>https://www.tripadvisor.com</baseUrl>
   <businessListUrl>https://www.tripadvisor.com/Restaurants-g293925-Ho_Chi_Minh_City.html</businessListUrl>
