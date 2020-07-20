@@ -58,7 +58,7 @@
       <br/>
       <xsl:for-each select="badReviewDetails/item">
         <xsl:value-of select="ratio"/>%
-        <span style="color:red">
+        <span style="color:red;font-size:20px">
           <xsl:value-of select="reviewCateName"/>
         </span>
         (<xsl:value-of select="totalReview"/>)<br/>
