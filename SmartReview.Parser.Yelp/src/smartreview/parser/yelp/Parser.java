@@ -188,16 +188,16 @@ public class Parser {
             pageNum++;
             String nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
             WebElement nextPage = webDriver.findElement(By.xpath(nextPageXPath));
-            while (nextPage != null && pageNum < parserInfo.getToPage()) {
+            while (nextPage != null && pageNum <= parserInfo.getToPage()) {
                 try {
                     nextPage.click();
                     waitForNextPage(pageNum, nextPage, defaultWaitNextBListPage);
-                    pageNum++;
-                    nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
                     if (pageNeedCrawl(pageNum)) {
                         pSource = webDriver.getPageSource();
                         parseBusinessLinks(pSource, pageNum);
                     }
+                    pageNum++;
+                    nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
                     nextPage = webDriver.findElement(By.xpath(nextPageXPath));
                 } catch (ElementClickInterceptedException e) {
                 }

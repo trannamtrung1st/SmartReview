@@ -40,6 +40,11 @@ public class Entry {
 
     public static void main(String[] args) throws Exception {
         ParserConfig parserConfig = XMLHelper.unmarshallDocFile("parser-config.xml", ObjectFactory.class);
+        if (args != null && args.length == 3) {
+            parserConfig.setDefaultFromPage((short) Integer.parseInt(args[0]));
+            parserConfig.setDefaultToPage((short) Integer.parseInt(args[1]));
+            parserConfig.getDefaultConfigs().setDefaultMaxReviewPages((short) Integer.parseInt(args[2]));
+        }
         Settings.baseApiUrl = parserConfig.getBaseApiUrl();
         System.setProperty("webdriver.chrome.driver", parserConfig.getDriverPath());
         XmlParserConfig xmlParserConfig = XMLHelper.unmarshallDocFile("xml-parser-config.xml", smartreview.xmlparser.ObjectFactory.class);
@@ -94,7 +99,7 @@ public class Entry {
         entity.setToPage((int) parserConfig.getDefaultToPage());
         entity.setRefreshExistedData(false);
         entity.setMaxParsedReviewsPage((int) parserConfig.getDefaultConfigs().getDefaultMaxReviewPages());
-        entity.setCurrentCommand(Constants.COMMAND_STOP);
+        entity.setCurrentCommand(Constants.COMMAND_START);
         entity.setCurrentOutput("");
         return entity;
     }

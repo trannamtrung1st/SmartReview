@@ -92,18 +92,20 @@ public class AdminApiController extends BaseController {
             Integer toPage = getIntegerParamter(request, "toPage");
             Integer maxReviewParsedPages = getIntegerParamter(request, "maxReviewParsedPages");
 
-            em.getTransaction().begin();
-            pInfo.setFromPage(fromPage);
-            pInfo.setToPage(toPage);
-            pInfo.setMaxParsedReviewsPage(maxReviewParsedPages);
-            pInfo.setCurrentCommand(Constants.COMMAND_START);
-            pInfo.setCurrentOutput("");
-            em.getTransaction().commit();
+            if (pInfo != null) {
+                em.getTransaction().begin();
+                pInfo.setFromPage(fromPage);
+                pInfo.setToPage(toPage);
+                pInfo.setMaxParsedReviewsPage(maxReviewParsedPages);
+                pInfo.setCurrentCommand(Constants.COMMAND_START);
+                pInfo.setCurrentOutput("");
+                em.getTransaction().commit();
+            }
 
             for (WebConfig.Parsers.Item item : webConfig.getParsers().getItem()) {
                 if (item.getCode().equals(parserCode)) {
                     String location = item.getLocation();
-                    ProcessHelper.startParser(location);
+                    ProcessHelper.startParser(location, fromPage + " " + toPage + " " + maxReviewParsedPages);
                 }
             }
         }

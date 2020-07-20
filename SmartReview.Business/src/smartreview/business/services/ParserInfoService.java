@@ -6,6 +6,7 @@
 package smartreview.business.services;
 
 import java.util.List;
+import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.eclipse.persistence.config.HintValues;
@@ -35,7 +36,9 @@ public class ParserInfoService {
     public ParserInfo findParserInfoByCode(String parserCode, boolean refresh) {
         String sql = "SELECT * FROM ParserInfo WHERE parserCode=?code";
         Query query = parserInfoDAO.nativeQuery(sql, ParserInfo.class).setParameter("code", parserCode);
-        query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+        if (refresh) {
+            query.setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
+        }
         List<ParserInfo> list = query.getResultList();
         return list.size() > 0 ? list.get(0) : null;
     }
