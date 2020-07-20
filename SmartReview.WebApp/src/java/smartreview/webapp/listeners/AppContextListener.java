@@ -14,12 +14,16 @@ import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.xml.bind.JAXBException;
 import smartreview.business.Settings;
 import smartreview.business.services.ReviewCategoryService;
 import smartreview.data.EntityContext;
 import smartreview.data.daos.ReviewCategoryDAO;
 import smartreview.data.models.ReviewCategory;
 import smartreview.helper.FileHelper;
+import smartreview.helper.XMLHelper;
+import smartreview.webapp.ObjectFactory;
+import smartreview.webapp.WebConfig;
 
 /**
  * Web application lifecycle listener.
@@ -33,11 +37,27 @@ public class AppContextListener implements ServletContextListener {
         ServletContext sContext = sce.getServletContext();
         Settings.baseApiUrl = sContext.getInitParameter("baseApiUrl");
         Settings.tripAdvisorParserLocation = sContext.getInitParameter("tripAdvisorParserLocation");
-        
-        
+        WebConfig webConfig;
+        String webConfigPath = sContext.getRealPath("/WEB-INF/web-config.xml");
+        try {
+            webConfig = XMLHelper.unmarshallDocFile(webConfigPath, ObjectFactory.class);
+        } catch (JAXBException ex) {
+            throw new RuntimeException(ex);
+        }
+
         try (EntityContext context = EntityContext.newInstance()) {
             EntityManager em = context.getEntityManager();
             ReviewCategoryService cateService = new ReviewCategoryService(em, new ReviewCategoryDAO(em));
+            if (!cateService.anyExisted()) {
+                em.getTransaction().begin();
+                webConfig.getReviewCateMap().getItem().forEach((t) -> {
+                    ReviewCategory entity = new ReviewCategory();
+                    entity.setCode(t.getValue().getCode());
+                    entity.setName(t.getValue().getName());
+                    cateService.createReviewCategory(entity);
+                });
+                em.getTransaction().commit();
+            }
             List<ReviewCategory> categories = cateService.getAll();
             Map<String, ReviewCategory> cateMap = new HashMap<>();
             categories.forEach((t) -> {
@@ -49,7 +69,7 @@ public class AppContextListener implements ServletContextListener {
             String path = sContext.getRealPath("/WEB-INF/business-list.xsl");
             String bListXsl = FileHelper.readContent(path).replace("\n", "");
             sContext.setAttribute("bListXsl", bListXsl);
-            
+
             //review-list.xsl
             path = sContext.getRealPath("/WEB-INF/review-list.xsl");
             String rListXsl = FileHelper.readContent(path).replace("\n", "");

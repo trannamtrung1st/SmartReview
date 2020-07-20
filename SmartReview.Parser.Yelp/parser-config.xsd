@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="parserConfig">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="baseApiUrl" type="xs:string" />
+        <xs:element name="driverPath" type="xs:string" />
+        <xs:element name="baseUrl" type="xs:string" />
+        <xs:element name="businessListUrl" type="xs:string" />
+        <xs:element name="code" type="xs:string" />
+        <xs:element name="businessLinksXPath" type="xs:string" />
+        <xs:element name="businessItemCssSelector" type="xs:string" />
+        <xs:element name="nextPageCssSelector" type="xs:string" />
+        <xs:element name="currentPageCssSelector" type="xs:string" />
+        <xs:element name="defaultFromPage" type="xs:unsignedByte" />
+        <xs:element name="defaultToPage" type="xs:unsignedByte" />
+        <xs:element name="codeFromUrlRegex" type="xs:string" />
+        <xs:element name="moresBtnXPath" type="xs:string" />
+        <xs:element name="reviewCateMap">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="item">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="key" type="xs:string" />
+                    <xs:element name="value">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="code" type="xs:string" />
+                          <xs:element name="name" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="reviewStringRules">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="regex" type="xs:string" />
+              <xs:element name="remove" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ratingRule">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="regex" type="xs:string" />
+              <xs:element name="div" type="xs:unsignedByte" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="reviewDateFormat" type="xs:string" />
+        <xs:element name="defaultConfigs">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="waitForNextBusinessListPage" type="xs:unsignedByte" />
+              <xs:element name="defaultWebDriverWait" type="xs:unsignedByte" />
+              <xs:element name="defaultPollingSecs" type="xs:unsignedByte" />
+              <xs:element name="waitForAction" type="xs:unsignedByte" />
+              <xs:element name="maxTryClick" type="xs:unsignedByte" />
+              <xs:element name="defaultMaxReviewPages" type="xs:unsignedByte" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
