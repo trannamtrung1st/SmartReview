@@ -14,9 +14,9 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
         {
             //TrainYelpSentiment();
             //TestSentimentAnalysis();
-            //TrainMacDonaldReview();
+            TrainMacDonaldReview();
             //TestClassification();
-            TestIntegration();
+            //TestIntegration();
         }
 
         static void TestClassification()
@@ -52,12 +52,12 @@ namespace SmartReview.DataAnalyzer.ConsoleClient
 
         static void TrainMacDonaldReview()
         {
-            var csvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\macdonald.csv";
-            var data = FileProcessor.ReadCsv(csvPath, false);
+            //var csvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\macdonald.csv";
+            //var data = FileProcessor.ReadCsv(csvPath, false);
             var tsvPath = @"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\macdonald.tsv";
             var trainer = new ReviewCategorizeTrainer();
-            var cSet = trainer.PreprocessReviewTsvThenReturnCategories(data, tsvPath);
-            File.WriteAllLines(@"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\categories.txt", cSet);
+            //var cSet = trainer.PreprocessReviewTsvThenReturnCategories(data, tsvPath);
+            //File.WriteAllLines(@"T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\categories.txt", cSet);
             trainer.CreateModel(tsvPath, CLASSIFY_MODEL_PATH);
         }
 
