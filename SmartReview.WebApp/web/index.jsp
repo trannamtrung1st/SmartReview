@@ -22,7 +22,7 @@
         </div>
         <hr/>
         <h1 style="color:red">List of restaurants</h1>
-        <form id="search-form">
+        <form id="search-form" onsubmit="return false;">
             <div>
                 Search: <input type="text" name="search" placeholder="Input restaurant name"/> 
                 <button type="button" onclick="onSearch()">Submit</button>
@@ -41,109 +41,116 @@
 
         <script src="${pageContext.servletContext.contextPath}/js/main.js"></script>
         <script>
-                    var bListXsl = getXMLDoc('${bListXsl}');
-                    var currentPage = 1;
-                    var currentSearch = '';
-                    loadData();
-                    function loadData() {
-                        let listContainer = document.getElementById("list-container");
-                        listContainer.innerHTML = '<p>...... Loading ......</p>';
-                        //get business list
-                        const paramsObject = {
-                            page: currentPage.toString(),
-                            search: currentSearch
-                        };
-                        var query = new URLSearchParams(paramsObject).toString();
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("GET", "${pageContext.servletContext.contextPath}/api/business?" + query.toString());
-                        xhr.setRequestHeader("Accept", "application/xml");
-                        xhr.send();
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === XMLHttpRequest.DONE) {
-                                var status = xhr.status;
-                                if (status === 0 || (status >= 200 && status < 400)) {
-                                    // The xhr has been completed successfully
-                                    console.log(xhr.responseXML);
-                                    displayItems(xhr.responseXML);
-                                    displayPaging(xhr.responseXML.getElementsByTagName("count")[0]);
-                                    handleLoadedData();
-                                } else {
-                                    alert("Something's wrong");
-                                }
+            var bListXsl = getXMLDoc('${bListXsl}');
+            var currentPage = 1;
+            var currentSearch = '';
+            var lastSearch, lastPage;
+            loadData();
+            function loadData() {
+                if (lastSearch === currentSearch && lastPage === currentPage) {
+                    alert("Nothing's changed");
+                    return;
+                }
+                let listContainer = document.getElementById("list-container");
+                listContainer.innerHTML = '<p>...... Loading ......</p>';
+                //get business list
+                const paramsObject = {
+                    page: currentPage.toString(),
+                    search: currentSearch
+                };
+                var query = new URLSearchParams(paramsObject).toString();
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "${pageContext.servletContext.contextPath}/api/business?" + query.toString());
+                xhr.setRequestHeader("Accept", "application/xml");
+                xhr.send();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        var status = xhr.status;
+                        if (status === 0 || (status >= 200 && status < 400)) {
+                            // The xhr has been completed successfully
+                                console.log(xhr.responseXML);
+                                lastSearch = currentSearch;
+                                lastPage = currentPage;
+                                displayItems(xhr.responseXML);
+                                displayPaging(xhr.responseXML.getElementsByTagName("count")[0]);
+                                handleLoadedData();
+                            } else {
+                                alert("Something's wrong");
                             }
-                        };
-                    }
+                        }
+                    };
+                }
 
-                    function onSearch() {
-                        currentSearch = document.getElementById("search-form").search.value;
-                        currentPage = 1;
-                        loadData();
-                    }
+                function onSearch() {
+                    currentSearch = document.getElementById("search-form").search.value;
+                    currentPage = 1;
+                    loadData();
+                }
 
-                    function clearSearch() {
-                        document.getElementById("search-form").reset();
-                        currentSearch = '';
-                        currentPage = 1;
-                        loadData();
-                    }
+                function clearSearch() {
+                    document.getElementById("search-form").reset();
+                    currentSearch = '';
+                    currentPage = 1;
+                    loadData();
+                }
 
-                    function handleLoadedData() {
-                        let currPage = document.querySelector('.current-page');
-                        currPage.innerHTML = currentPage.toString();
-                        let searchVal = document.querySelector('.search-value');
-                        if (currentSearch)
-                            searchVal.innerHTML = ', search: ' + currentSearch;
+                function handleLoadedData() {
+                    let currPage = document.querySelector('.current-page');
+                    currPage.innerHTML = currentPage.toString();
+                    let searchVal = document.querySelector('.search-value');
+                    if (currentSearch)
+                        searchVal.innerHTML = ', search: ' + currentSearch;
+                    else
+                        searchVal.innerHTML = '';
+                    let curr = document.querySelector('.current');
+                    if (curr) {
+                        curr.setAttribute('href', '#');
+                        curr.setAttribute("class", curr.getAttribute("class").replace("current", ""));
+                        curr.onclick = () => changePage(parseInt(curr.innerText));
+                    }
+                    let newPage = document.querySelector('.p-' + currentPage);
+                    if (newPage) {
+                        newPage.removeAttribute("href");
+                        newPage.removeAttribute("onclick");
+                        newPage.setAttribute("class", "current " + newPage.getAttribute("class"));
+                        newPage.onclick = null;
+                    }
+                }
+
+                function changePage(page) {
+                    currentPage = page;
+                    loadData();
+                }
+
+                function displayPaging(xml) {
+                    console.log(xml);
+                    let totalPages = xml.getElementsByTagName("totalPages")[0].textContent;
+                    totalPages = parseInt(totalPages);
+                    console.log(totalPages);
+                    var xmlStr = 'Page: ';
+                    for (let i = 1; i <= totalPages; i++) {
+                        if (currentPage === i)
+                            xmlStr += '<a class="current p-' + i + '">' + i + '</a> , ';
                         else
-                            searchVal.innerHTML = '';
-                        let curr = document.querySelector('.current');
-                        if (curr) {
-                            curr.setAttribute('href', '#');
-                            curr.setAttribute("class", curr.getAttribute("class").replace("current", ""));
-                            curr.onclick = () => changePage(parseInt(curr.innerText));
-                        }
-                        let newPage = document.querySelector('.p-' + currentPage);
-                        if (newPage) {
-                            newPage.removeAttribute("href");
-                            newPage.removeAttribute("onclick");
-                            newPage.setAttribute("class", "current " + newPage.getAttribute("class"));
-                            newPage.onclick = null;
-                        }
+                            xmlStr += '<a class="p-' + i + '" href="#" onclick="changePage(' + i + ')">' + i + '</a> , ';
                     }
+                    let pagingContainer = document.getElementById("paging-container");
+                    pagingContainer.innerHTML = xmlStr;
+                }
 
-                    function changePage(page) {
-                        currentPage = page;
-                        loadData();
+                function displayItems(xml) {
+                    console.log(xml);
+                    let listContainer = document.getElementById("list-container");
+                    if (document.implementation && document.implementation.createDocument)
+                    {
+                        let xsltProcessor = new XSLTProcessor();
+                        xsltProcessor.setParameter(null, "contextPath", '${pageContext.servletContext.contextPath}');
+                        xsltProcessor.importStylesheet(bListXsl);
+                        let resultDocument = xsltProcessor.transformToFragment(xml, document);
+                        listContainer.innerHTML = '';
+                        listContainer.append(resultDocument);
                     }
-
-                    function displayPaging(xml) {
-                        console.log(xml);
-                        let totalPages = xml.getElementsByTagName("totalPages")[0].textContent;
-                        totalPages = parseInt(totalPages);
-                        console.log(totalPages);
-                        var xmlStr = 'Page: ';
-                        for (let i = 1; i <= totalPages; i++) {
-                            if (currentPage === i)
-                                xmlStr += '<a class="current p-' + i + '">' + i + '</a> , ';
-                            else
-                                xmlStr += '<a class="p-' + i + '" href="#" onclick="changePage(' + i + ')">' + i + '</a> , ';
-                        }
-                        let pagingContainer = document.getElementById("paging-container");
-                        pagingContainer.innerHTML = xmlStr;
-                    }
-
-                    function displayItems(xml) {
-                        console.log(xml);
-                        let listContainer = document.getElementById("list-container");
-                        if (document.implementation && document.implementation.createDocument)
-                        {
-                            let xsltProcessor = new XSLTProcessor();
-                            xsltProcessor.setParameter(null, "contextPath", '${pageContext.servletContext.contextPath}');
-                            xsltProcessor.importStylesheet(bListXsl);
-                            let resultDocument = xsltProcessor.transformToFragment(xml, document);
-                            listContainer.innerHTML = '';
-                            listContainer.append(resultDocument);
-                        }
-                    }
+                }
 
         </script>
     </body>

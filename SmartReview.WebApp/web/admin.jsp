@@ -24,7 +24,7 @@
         <hr/>
         <h1 style="color:red;">Welcome to SmartReview admin page!</h1>
         <h3>Crawl list of restaurants</h3>
-        <form id="form-parse-list">
+        <form id="form-parse-list" onsubmit="return false;">
             <div>
                 From: 
                 <select name="parserCode">
@@ -46,7 +46,7 @@
         </form>
         <hr/>
         <h3>Crawl single restaurant</h3>
-        <form id="form-parse-single">
+        <form id="form-parse-single" onsubmit="return false;">
             <div>
                 Page url: <input type="text" name="pageUrl"/>
             </div>
@@ -58,13 +58,14 @@
         </form>
         <hr/>
         <h3>OUTPUT</h3>
-        <form id="output-form">
+        <form id="output-form" onsubmit="return false;">
             <select name="parserCode">
                 <option value="trip-advisor">TripAdvisor</option>
                 <option value="yelp">Yelp</option>
             </select>
             <button type="button" onclick="startGetOutput()">START GET OUTPUT</button>
             <button type="button" onclick="stopGetOutput()">STOP GET OUTPUT</button>
+            <button type="button" onclick="clearOutput()">CLEAR OUTPUT</button>
             <br/><br/>
             <div>Current output: <span class="current-parser"></span></div>
             <textarea id="output" placeholder="Process output" style="width:100%;height:400px" readonly="true"></textarea>
@@ -88,6 +89,12 @@
                 getOutputInterval = setInterval(() => {
                     getOutput(query);
                 }, 3000);
+            }
+
+            function clearOutput() {
+                let output = document.getElementById("output");
+                output.value = '';
+                output.scrollTo(0, output.scrollHeight);
             }
 
             function stopGetOutput() {
