@@ -40,6 +40,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.w3c.dom.Document;
@@ -216,6 +217,14 @@ public class Parser {
         return pageNum >= parserInfo.getFromPage() && pageNum <= parserInfo.getToPage();
     }
 
+    protected void waitForVisibility(By by) {
+        Wait<WebDriver> wait = new FluentWait<>(webDriver)
+                .withTimeout(Duration.ofSeconds(defaultWebDriverWait))
+                .pollingEvery(Duration.ofSeconds(defaultPollingSecs))
+                .ignoreAll(Arrays.asList(NoSuchElementException.class, StaleElementReferenceException.class, ElementClickInterceptedException.class));
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(by));
+    }
+
     protected void waitForNextPage(Integer pageNum, WebElement nextPage, Integer waitAtLeastSeconds) {
         Wait<WebDriver> wait = new FluentWait<>(webDriver)
                 .withTimeout(Duration.ofSeconds(defaultWebDriverWait))
@@ -281,7 +290,7 @@ public class Parser {
         } else {
             //create business info
             webDriver.get(businessLink);
-            webDriver.manage().timeouts().implicitlyWait(defaultWaitNextBListPage, TimeUnit.SECONDS);
+            waitForVisibility(By.xpath(parserConfig.getBusinessImagesXPath()));
             String pageSource = webDriver.getPageSource();
             String output = ("Start parsing page: " + businessLink);
             entityManager.getTransaction().begin();
@@ -393,6 +402,7 @@ public class Parser {
                     entityManager.getTransaction().commit();
                 }
                 int tryClick = 0;
+                pageNum++;
                 while (tryClick++ < defaultMaxTryClick) {
                     try {
                         String nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
@@ -403,9 +413,10 @@ public class Parser {
                     } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
                     }
                 }
-                pageNum++;
-                pageSource = webDriver.getPageSource();
-                pageSource = preprocess(pageSource);
+                if (pageNum <= parserInfo.getMaxParsedReviewsPage()) {
+                    pageSource = webDriver.getPageSource();
+                    pageSource = preprocess(pageSource);
+                }
 //                FileHelper.writeToFile(pageSource, "temp.html");
             }
         } catch (NoSuchElementException e) {

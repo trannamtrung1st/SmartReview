@@ -92,4 +92,5 @@
     <maxTryClick>10</maxTryClick>
     <defaultMaxReviewPages>7</defaultMaxReviewPages>
   </defaultConfigs>
+  <businessImagesXPath>//*[@class='lemon--a__373c0__IEZFH link__373c0__1G70M link-color--blue-dark__373c0__85-Nu link-size--default__373c0__7tls6']/img</businessImagesXPath>
 </parserConfig>

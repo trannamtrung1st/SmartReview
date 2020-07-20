@@ -95,6 +95,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="businessImagesXPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -121,7 +122,8 @@ import javax.xml.bind.annotation.XmlType;
     "reviewCateMap",
     "reviewStringRules",
     "reviewDateFormat",
-    "defaultConfigs"
+    "defaultConfigs",
+    "businessImagesXPath"
 })
 @XmlRootElement(name = "parserConfig")
 public class ParserConfig {
@@ -160,6 +162,8 @@ public class ParserConfig {
     protected String reviewDateFormat;
     @XmlElement(required = true)
     protected ParserConfig.DefaultConfigs defaultConfigs;
+    @XmlElement(required = true)
+    protected String businessImagesXPath;
 
     /**
      * Gets the value of the baseApiUrl property.
@@ -551,6 +555,30 @@ public class ParserConfig {
      */
     public void setDefaultConfigs(ParserConfig.DefaultConfigs value) {
         this.defaultConfigs = value;
+    }
+
+    /**
+     * Gets the value of the businessImagesXPath property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBusinessImagesXPath() {
+        return businessImagesXPath;
+    }
+
+    /**
+     * Sets the value of the businessImagesXPath property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBusinessImagesXPath(String value) {
+        this.businessImagesXPath = value;
     }
 
 
