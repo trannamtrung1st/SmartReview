@@ -5,16 +5,9 @@
  */
 package smartreview.business.services;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.xml.bind.JAXBException;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import smartreview.data.daos.ParserInfoDAO;

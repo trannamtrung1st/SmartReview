@@ -4,6 +4,7 @@
     Author     : TNT
 --%>
 
+<%@page import="smartreview.business.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -78,7 +79,7 @@
                 let currentParser = document.querySelector(".current-parser");
                 currentParser.innerHTML = parserCode;
                 const paramsObject = {
-                    command: "OUTPUT",
+                    command: "<%=Constants.COMMAND_OUTPUT%>",
                     parserCode: parserCode,
                 };
                 var query = new URLSearchParams(paramsObject).toString();
@@ -124,7 +125,7 @@
                 var toPage = document.querySelector('#form-parse-list input[name=toPage]').value;
                 var maxReviewParsedPages = document.querySelector('#form-parse-list input[name=maxReviewParsedPages]').value;
                 const paramsObject = {
-                    command: "START",
+                    command: "<%=Constants.COMMAND_START%>",
                     parserCode: parserCode,
                     maxReviewParsedPages,
                     toPage,
@@ -151,7 +152,7 @@
             function stopParser() {
                 var parserCode = document.querySelector('#form-parse-list select[name=parserCode]').value;
                 const paramsObject = {
-                    command: "STOP",
+                    command: '<%=Constants.COMMAND_STOP%>',
                     parserCode: parserCode,
                 };
                 var query = new URLSearchParams(paramsObject).toString();

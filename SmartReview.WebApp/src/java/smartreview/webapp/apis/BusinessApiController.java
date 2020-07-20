@@ -7,15 +7,9 @@ package smartreview.webapp.apis;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.hc.core5.http.HttpStatus;

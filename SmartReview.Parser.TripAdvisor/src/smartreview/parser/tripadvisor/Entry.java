@@ -15,6 +15,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import org.openqa.selenium.WebDriver;
+import smartreview.business.Constants;
 import smartreview.business.Settings;
 import smartreview.business.services.BusinessService;
 import smartreview.business.services.ParserInfoService;
@@ -94,7 +95,7 @@ public class Entry {
                     System.out.println(output);
                     pService.writeOutput(pInfo, output);
                     em.getTransaction().commit();
-                    if (pInfo.getCurrentCommand().equals("STOP")) {
+                    if (pInfo.getCurrentCommand().equals(Constants.COMMAND_STOP)) {
                         break;
                     }
                 } catch (Exception ex) {

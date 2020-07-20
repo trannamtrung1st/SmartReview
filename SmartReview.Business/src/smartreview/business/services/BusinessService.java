@@ -5,18 +5,13 @@
  */
 package smartreview.business.services;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.xml.bind.JAXBException;
 import smartreview.business.dtos.BusinessDTO;
 import smartreview.business.dtos.BusinessImageDTO;
 import smartreview.business.models.CountModel;

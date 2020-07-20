@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.hc.core5.http.HttpStatus;
+import smartreview.business.Constants;
 import smartreview.business.Settings;
 import smartreview.business.services.ParserInfoService;
 import smartreview.data.EntityContext;
@@ -31,13 +32,13 @@ public class AdminApiController extends BaseController {
         try {
             String command = getStringParamter(request, "command");
             switch (command) {
-                case "START":
+                case Constants.COMMAND_START:
                     startParser(request, response);
                     break;
-                case "STOP":
+                case Constants.COMMAND_STOP:
                     stopParser(request, response);
                     break;
-                case "OUTPUT":
+                case Constants.COMMAND_OUTPUT:
                     handleGetOutput(request, response);
                     break;
             }
@@ -54,7 +55,7 @@ public class AdminApiController extends BaseController {
             ParserInfoService pInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             String parserCode = getStringParamter(request, "parserCode");
             ParserInfo pInfo = pInfoService.findParserInfoByCode(parserCode, true);
-            if (!pInfo.getCurrentCommand().startsWith("START")) {
+            if (!pInfo.getCurrentCommand().startsWith(Constants.COMMAND_START)) {
                 response.setStatus(HttpStatus.SC_BAD_REQUEST);
                 PrintWriter out = response.getWriter();
                 out.write("Not running");
@@ -62,7 +63,7 @@ public class AdminApiController extends BaseController {
                 return;
             }
             em.getTransaction().begin();
-            pInfo.setCurrentCommand("STOP");
+            pInfo.setCurrentCommand(Constants.COMMAND_STOP);
             em.getTransaction().commit();
         }
     }
@@ -75,7 +76,7 @@ public class AdminApiController extends BaseController {
             ParserInfoService pInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             String parserCode = getStringParamter(request, "parserCode");
             ParserInfo pInfo = pInfoService.findParserInfoByCode(parserCode, true);
-            if (!pInfo.getCurrentCommand().equals("STOP")) {
+            if (!pInfo.getCurrentCommand().equals(Constants.COMMAND_STOP)) {
                 response.setStatus(HttpStatus.SC_BAD_REQUEST);
                 PrintWriter out = response.getWriter();
                 out.write("Already started");
@@ -91,7 +92,7 @@ public class AdminApiController extends BaseController {
             pInfo.setFromPage(fromPage);
             pInfo.setToPage(toPage);
             pInfo.setMaxParsedReviewsPage(maxReviewParsedPages);
-            pInfo.setCurrentCommand("START");
+            pInfo.setCurrentCommand(Constants.COMMAND_START);
             pInfo.setCurrentOutput("");
             em.getTransaction().commit();
 

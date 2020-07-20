@@ -5,19 +5,15 @@
  */
 package smartreview.business.services;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.xml.bind.JAXBException;
 import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.client5.http.fluent.Response;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -34,13 +30,10 @@ import smartreview.business.models.ListReviewModel;
 import smartreview.business.models.ReviewAnalysisResult;
 import smartreview.data.daos.BusinessReviewDAO;
 import smartreview.data.daos.ReviewCategoryDAO;
-import smartreview.data.models.Business;
 import smartreview.data.models.BusinessReview;
 import smartreview.data.models.CategoriesOfReviews;
 import smartreview.data.models.ReviewCategory;
-import smartreview.helper.HttpHelper;
 import smartreview.helper.StreamHelper;
-import smartreview.helper.StringHelper;
 import smartreview.helper.XMLHelper;
 
 /**

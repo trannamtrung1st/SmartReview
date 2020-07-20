@@ -6,7 +6,6 @@
 package smartreview.business.dtos;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import smartreview.data.models.Business;
 import smartreview.data.models.BusinessImage;
 
 /**

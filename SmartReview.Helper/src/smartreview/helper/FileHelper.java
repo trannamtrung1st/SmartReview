@@ -5,11 +5,9 @@
  */
 package smartreview.helper;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;

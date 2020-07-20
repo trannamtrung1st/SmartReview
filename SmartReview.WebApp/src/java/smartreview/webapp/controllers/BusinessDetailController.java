@@ -6,23 +6,15 @@
 package smartreview.webapp.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import javax.xml.bind.JAXBException;
 import org.apache.hc.core5.http.HttpStatus;
 import smartreview.business.dtos.BusinessDTO;
 import smartreview.business.dtos.BusinessImageDTO;
@@ -33,7 +25,6 @@ import smartreview.data.EntityContext;
 import smartreview.data.daos.BusinessDAO;
 import smartreview.data.models.Business;
 import smartreview.data.models.ReviewCategory;
-import smartreview.helper.FileHelper;
 import smartreview.helper.XMLHelper;
 
 /**

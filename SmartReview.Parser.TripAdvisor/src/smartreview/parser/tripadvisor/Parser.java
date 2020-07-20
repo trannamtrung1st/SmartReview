@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import javax.persistence.EntityManager;
 import javax.xml.transform.Result;
@@ -47,19 +45,17 @@ import org.openqa.selenium.support.ui.Wait;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import smartreview.business.Constants;
 import smartreview.business.services.BusinessService;
 import smartreview.business.services.ParserInfoService;
 import smartreview.business.services.ReviewCategoryService;
 import smartreview.business.services.ReviewService;
-import smartreview.data.EntityContext;
 import smartreview.data.models.Business;
 import smartreview.data.models.BusinessImage;
 import smartreview.data.models.BusinessReview;
 import smartreview.data.models.ParserInfo;
 import smartreview.data.models.ReviewCategory;
 import smartreview.helper.DateHelper;
-import smartreview.helper.FileHelper;
-import smartreview.helper.HttpHelper;
 import smartreview.helper.RegexHelper;
 import smartreview.helper.XMLHelper;
 import smartreview.parser.tripadvisor.models.xmlschema.BusinessItem;
@@ -128,7 +124,7 @@ public class Parser {
     public void start() throws Exception {
         init();
         String cmd = parserInfo.getCurrentCommand();
-        if (!cmd.startsWith("START")) {
+        if (!cmd.startsWith(Constants.COMMAND_START)) {
             return;
         }
         if (cmd.contains(":")) {
@@ -536,7 +532,8 @@ public class Parser {
         entity.setToPage((int) parserConfig.getDefaultToPage());
         entity.setRefreshExistedData(false);
         entity.setMaxParsedReviewsPage(defaultMaxReviewPages);
-        entity.setCurrentCommand("STOP");
+        entity.setCurrentCommand(Constants.COMMAND_STOP);
+        entity.setCurrentOutput("");
         return entity;
     }
 
