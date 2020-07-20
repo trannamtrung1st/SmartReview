@@ -56,6 +56,7 @@ import smartreview.data.models.BusinessReview;
 import smartreview.data.models.ParserInfo;
 import smartreview.data.models.ReviewCategory;
 import smartreview.helper.DateHelper;
+import smartreview.helper.FileHelper;
 import smartreview.helper.RegexHelper;
 import smartreview.helper.XMLHelper;
 import smartreview.parser.yelp.models.xmlschema.BusinessItem;
@@ -74,7 +75,6 @@ public class Parser {
     protected int defaultPollingSecs;
     protected int defaultWaitForAction;
     protected int defaultMaxTryClick;
-    protected int defaultMaxReviewPages;
 
     protected XmlParserConfig xmlParserConfig;
     protected ParserConfig parserConfig;
@@ -93,6 +93,7 @@ public class Parser {
     protected ReviewCategoryService reviewCategoryService;
 
     public Parser(
+            ParserInfo parserInfo,
             ReviewCategoryService reviewCategoryService,
             ReviewService reviewService,
             Templates businessTemplate,
@@ -105,6 +106,7 @@ public class Parser {
             ParserInfoService parserInfoService,
             WebDriver webDriver,
             ParserConfig parserConfig) {
+        this.parserInfo = parserInfo;
         this.reviewCategoryService = reviewCategoryService;
         this.reviewService = reviewService;
         this.businessTemplate = businessTemplate;
@@ -154,21 +156,11 @@ public class Parser {
 
     protected void init() {
         ParserConfig.DefaultConfigs conf = parserConfig.getDefaultConfigs();
-        this.defaultMaxReviewPages = conf.getDefaultMaxReviewPages();
         this.defaultPollingSecs = conf.getDefaultPollingSecs();
         this.defaultWebDriverWait = conf.getDefaultWebDriverWait();
         this.defaultMaxTryClick = conf.getMaxTryClick();
         this.defaultWaitForAction = conf.getWaitForAction();
         this.defaultWaitNextBListPage = conf.getWaitForNextBusinessListPage();
-
-        String parserCode = parserConfig.getCode();
-        parserInfo = parserInfoService.findParserInfoByCode(parserCode, true);
-        if (parserInfo == null) {
-            parserInfo = getNewParserInfo();
-            entityManager.getTransaction().begin();
-            parserInfo = parserInfoService.createParserInfo(parserInfo);
-            entityManager.getTransaction().commit();
-        }
         if (reviewCategoryService.anyExisted()) {
             return;
         }
@@ -192,17 +184,22 @@ public class Parser {
             parseBusinessLinks(pSource, pageNum);
         }
         try {
-            String nextPageSelector = parserConfig.getNextPageCssSelector();
-            WebElement nextPage = webDriver.findElement(By.cssSelector(nextPageSelector));
+            pageNum++;
+            String nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
+            WebElement nextPage = webDriver.findElement(By.xpath(nextPageXPath));
             while (nextPage != null && pageNum < parserInfo.getToPage()) {
-                nextPage.click();
-                waitForNextPage(pageNum, nextPage, defaultWaitNextBListPage);
-                pageNum++;
-                if (pageNeedCrawl(pageNum)) {
-                    pSource = webDriver.getPageSource();
-                    parseBusinessLinks(pSource, pageNum);
+                try {
+                    nextPage.click();
+                    waitForNextPage(pageNum, nextPage, defaultWaitNextBListPage);
+                    pageNum++;
+                    nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
+                    if (pageNeedCrawl(pageNum)) {
+                        pSource = webDriver.getPageSource();
+                        parseBusinessLinks(pSource, pageNum);
+                    }
+                    nextPage = webDriver.findElement(By.xpath(nextPageXPath));
+                } catch (ElementClickInterceptedException e) {
                 }
-                nextPage = webDriver.findElement(By.cssSelector(nextPageSelector));
             }
         } catch (NoSuchElementException e) {
         } catch (Exception e) {
@@ -219,21 +216,6 @@ public class Parser {
         return pageNum >= parserInfo.getFromPage() && pageNum <= parserInfo.getToPage();
     }
 
-    protected void waitForNextPage(Integer pageNum, WebElement nextPage, String checkVisibleSelector) {
-        Wait<WebDriver> wait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(defaultWebDriverWait))
-                .pollingEvery(Duration.ofSeconds(defaultPollingSecs))
-                .ignoreAll(Arrays.asList(NoSuchElementException.class, StaleElementReferenceException.class, ElementClickInterceptedException.class));
-        wait.until((driver) -> {
-            WebElement currentPage = driver.findElement(By.cssSelector(parserConfig.getCurrentPageCssSelector()));
-            if (!currentPage.getText().equals(pageNum.toString())) {
-                return checkVisibleSelector != null ? driver.findElements(By.cssSelector(checkVisibleSelector)).size() > 0 : true;
-            }
-            nextPage.click();
-            return false;
-        });
-    }
-
     protected void waitForNextPage(Integer pageNum, WebElement nextPage, Integer waitAtLeastSeconds) {
         Wait<WebDriver> wait = new FluentWait<>(webDriver)
                 .withTimeout(Duration.ofSeconds(defaultWebDriverWait))
@@ -246,7 +228,7 @@ public class Parser {
             public Object apply(WebDriver driver) {
                 count++;
                 WebElement currentPage = driver.findElement(By.cssSelector(parserConfig.getCurrentPageCssSelector()));
-                if (!currentPage.getText().equals(pageNum.toString())) {
+                if (currentPage.getText().equals(pageNum.toString())) {
                     return count > waitAtLeastSeconds;
                 }
                 nextPage.click();
@@ -263,7 +245,7 @@ public class Parser {
         entityManager.getTransaction().commit();
 
         String content = preprocess(pageSource);
-//            FileHelper.writeToFile(content, "temp.html");
+        FileHelper.writeToFile(content, "temp.html");
         //parse DOM and use XPath to get links
         Document doc = XMLHelper.parseDOMFromString(content);
         NodeList linkNodes = (NodeList) xpath.evaluate(parserConfig.getBusinessLinksXPath(), doc, XPathConstants.NODESET);
@@ -439,7 +421,8 @@ public class Parser {
                 int tryClick = 0;
                 while (tryClick++ < defaultMaxTryClick) {
                     try {
-                        nextPage = webDriver.findElement(By.cssSelector(parserConfig.getNextPageCssSelector()));
+                        String nextPageXPath = parserConfig.getNextPageXPathPlaceholder().replace("{page}", pageNum.toString());
+                        nextPage = webDriver.findElement(By.xpath(nextPageXPath));
                         nextPage.click();
                         waitForNextPage(pageNum, nextPage, defaultWaitForAction);
                         tryClick = defaultMaxTryClick;
@@ -522,19 +505,6 @@ public class Parser {
             throw new Exception("Code not found");
         }
         return code;
-    }
-
-    protected ParserInfo getNewParserInfo() {
-        ParserInfo entity = new ParserInfo();
-        entity.setParserBaseUrl(parserConfig.getBaseUrl());
-        entity.setParserCode(parserConfig.getCode());
-        entity.setFromPage((int) parserConfig.getDefaultFromPage());
-        entity.setToPage((int) parserConfig.getDefaultToPage());
-        entity.setRefreshExistedData(false);
-        entity.setMaxParsedReviewsPage(defaultMaxReviewPages);
-        entity.setCurrentCommand(Constants.COMMAND_STOP);
-        entity.setCurrentOutput("");
-        return entity;
     }
 
     protected String preprocess(String content) throws IOException {

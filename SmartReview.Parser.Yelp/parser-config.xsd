@@ -11,7 +11,7 @@
         <xs:element name="code" type="xs:string" />
         <xs:element name="businessLinksXPath" type="xs:string" />
         <xs:element name="businessItemCssSelector" type="xs:string" />
-        <xs:element name="nextPageCssSelector" type="xs:string" />
+        <xs:element name="nextPageXPathPlaceholder" type="xs:string" />
         <xs:element name="currentPageCssSelector" type="xs:string" />
         <xs:element name="defaultFromPage" type="xs:unsignedByte" />
         <xs:element name="defaultToPage" type="xs:unsignedByte" />

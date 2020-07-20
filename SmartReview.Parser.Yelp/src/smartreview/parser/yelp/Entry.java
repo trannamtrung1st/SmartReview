@@ -57,18 +57,24 @@ public class Entry {
         try (EntityContext context = EntityContext.newInstance()) {
             EntityManager em = context.getEntityManager();
             ParserInfoService parserInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
-            ParserInfo pInfo = parserInfoService.findParserInfoByCode(parserConfig.getCode(), true);
-            
+            String parserCode = parserConfig.getCode();
+            ParserInfo parserInfo = parserInfoService.findParserInfoByCode(parserCode, true);
+            if (parserInfo == null) {
+                parserInfo = getNewParserInfo(parserConfig);
+                em.getTransaction().begin();
+                parserInfo = parserInfoService.createParserInfo(parserInfo);
+                em.getTransaction().commit();
+            }
             String output = "START PARSER";
             em.getTransaction().begin();
             System.out.println(output);
-            parserInfoService.writeOutput(pInfo, output);
+            parserInfoService.writeOutput(parserInfo, output);
             em.getTransaction().commit();
-            
+
             BusinessService businessService = new BusinessService(em, new BusinessDAO(em));
             ReviewService reviewService = new ReviewService(em, new BusinessReviewDAO(em), new ReviewCategoryDAO(em));
             ReviewCategoryService reviewCategoryService = new ReviewCategoryService(em, new ReviewCategoryDAO(em));
-            Parser parser = new Parser(reviewCategoryService, reviewService, bTemplate, bValidator, rTemplate, rValidator,
+            Parser parser = new Parser(parserInfo, reviewCategoryService, reviewService, bTemplate, bValidator, rTemplate, rValidator,
                     businessService, em, xmlParserConfig, parserInfoService, wDriver, parserConfig);
             parser.start();
         } catch (Exception e) {
@@ -78,6 +84,19 @@ public class Entry {
         if (thread.isAlive()) {
             thread.interrupt();
         }
+    }
+
+    protected static ParserInfo getNewParserInfo(ParserConfig parserConfig) {
+        ParserInfo entity = new ParserInfo();
+        entity.setParserBaseUrl(parserConfig.getBaseUrl());
+        entity.setParserCode(parserConfig.getCode());
+        entity.setFromPage((int) parserConfig.getDefaultFromPage());
+        entity.setToPage((int) parserConfig.getDefaultToPage());
+        entity.setRefreshExistedData(false);
+        entity.setMaxParsedReviewsPage((int) parserConfig.getDefaultConfigs().getDefaultMaxReviewPages());
+        entity.setCurrentCommand(Constants.COMMAND_STOP);
+        entity.setCurrentOutput("");
+        return entity;
     }
 
     public static Thread startCheckCommandThread(String parserCode) {

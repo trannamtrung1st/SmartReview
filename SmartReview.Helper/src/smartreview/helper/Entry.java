@@ -15,8 +15,8 @@ import java.util.regex.Matcher;
 public class Entry {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        String url = "https://www.tripadvisor.com/Restaurant_Review-g33450-d11962753-Reviews-Del_Taco-Grand_Junction_Colorado.html";
-        Matcher matcher = RegexHelper.matcherDotAll(url, "^.+?-.+?-(.+?)-.*$");
+        String url = "https://www.yelp.com/biz/spicy-moon-west-village-new-york-2";
+        Matcher matcher = RegexHelper.matcherDotAll(url, "/([^/]+?)(\\?.*)?$");
         matcher.find();
         System.out.println(matcher.group(1));
     }

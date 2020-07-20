@@ -5,13 +5,15 @@
   <baseUrl>https://www.yelp.com/</baseUrl>
   <businessListUrl>https://www.yelp.com/search?find_desc=Restaurants&amp;find_loc=New%20York%2C%20NY</businessListUrl>
   <code>yelp</code>
-  <businessLinksXPath>//*[@class='_15_ydu6b']/@href</businessLinksXPath>
+  <businessLinksXPath>//a[contains(@class,'lemon--a__373c0__IEZFH link__373c0__1G70M link-color--inherit__373c0__3dzpk link-size--inherit__373c0__1VFlE') and not(contains(@href,'adredir'))]/@href</businessLinksXPath>
   <businessItemCssSelector>._1llCuDZj</businessItemCssSelector>
-  <nextPageCssSelector>.pageNum.current + .pageNum</nextPageCssSelector>
-  <currentPageCssSelector>.pageNum.current</currentPageCssSelector>
+  <nextPageXPathPlaceholder>
+    //*[contains(@class,'lemon--div__373c0__1mboc undefined display--inline-block__373c0__1ZKqC border-color--default__373c0__3-ifU') and text()='{page}']
+  </nextPageXPathPlaceholder>
+  <currentPageCssSelector>.lemon--div__373c0__1mboc.pagination-link--current__373c0__7SZSt.display--inline-block__373c0__1ZKqC.border-color--default__373c0__3-ifU</currentPageCssSelector>
   <defaultFromPage>1</defaultFromPage>
   <defaultToPage>20</defaultToPage>
-  <codeFromUrlRegex><![CDATA[^.+?-.+?-(.+?)-.*$]]></codeFromUrlRegex>
+  <codeFromUrlRegex><![CDATA[/([^/]+?)(\?.*)?$]]></codeFromUrlRegex>
   <moresBtnXPath>//*[text()='More' and contains(@class,'taLnk ulBlueLinks')]</moresBtnXPath>
   <reviewCateMap>
     <item>

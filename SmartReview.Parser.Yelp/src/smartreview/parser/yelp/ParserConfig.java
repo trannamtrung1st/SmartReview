@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="businessLinksXPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="businessItemCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="nextPageCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="nextPageXPathPlaceholder" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="currentPageCssSelector" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="defaultFromPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
  *         &lt;element name="defaultToPage" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
@@ -125,7 +125,7 @@ import javax.xml.bind.annotation.XmlType;
     "code",
     "businessLinksXPath",
     "businessItemCssSelector",
-    "nextPageCssSelector",
+    "nextPageXPathPlaceholder",
     "currentPageCssSelector",
     "defaultFromPage",
     "defaultToPage",
@@ -155,7 +155,7 @@ public class ParserConfig {
     @XmlElement(required = true)
     protected String businessItemCssSelector;
     @XmlElement(required = true)
-    protected String nextPageCssSelector;
+    protected String nextPageXPathPlaceholder;
     @XmlElement(required = true)
     protected String currentPageCssSelector;
     @XmlSchemaType(name = "unsignedByte")
@@ -346,27 +346,27 @@ public class ParserConfig {
     }
 
     /**
-     * Gets the value of the nextPageCssSelector property.
+     * Gets the value of the nextPageXPathPlaceholder property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getNextPageCssSelector() {
-        return nextPageCssSelector;
+    public String getNextPageXPathPlaceholder() {
+        return nextPageXPathPlaceholder;
     }
 
     /**
-     * Sets the value of the nextPageCssSelector property.
+     * Sets the value of the nextPageXPathPlaceholder property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setNextPageCssSelector(String value) {
-        this.nextPageCssSelector = value;
+    public void setNextPageXPathPlaceholder(String value) {
+        this.nextPageXPathPlaceholder = value;
     }
 
     /**

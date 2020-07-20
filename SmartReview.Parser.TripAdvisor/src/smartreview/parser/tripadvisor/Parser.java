@@ -74,7 +74,6 @@ public class Parser {
     protected int defaultPollingSecs;
     protected int defaultWaitForAction;
     protected int defaultMaxTryClick;
-    protected int defaultMaxReviewPages;
 
     protected XmlParserConfig xmlParserConfig;
     protected ParserConfig parserConfig;
@@ -93,6 +92,7 @@ public class Parser {
     protected ReviewCategoryService reviewCategoryService;
 
     public Parser(
+            ParserInfo parserInfo,
             ReviewCategoryService reviewCategoryService,
             ReviewService reviewService,
             Templates businessTemplate,
@@ -105,6 +105,7 @@ public class Parser {
             ParserInfoService parserInfoService,
             WebDriver webDriver,
             ParserConfig parserConfig) {
+        this.parserInfo = parserInfo;
         this.reviewCategoryService = reviewCategoryService;
         this.reviewService = reviewService;
         this.businessTemplate = businessTemplate;
@@ -154,21 +155,12 @@ public class Parser {
 
     protected void init() {
         ParserConfig.DefaultConfigs conf = parserConfig.getDefaultConfigs();
-        this.defaultMaxReviewPages = conf.getDefaultMaxReviewPages();
         this.defaultPollingSecs = conf.getDefaultPollingSecs();
         this.defaultWebDriverWait = conf.getDefaultWebDriverWait();
         this.defaultMaxTryClick = conf.getMaxTryClick();
         this.defaultWaitForAction = conf.getWaitForAction();
         this.defaultWaitNextBListPage = conf.getWaitForNextBusinessListPage();
 
-        String parserCode = parserConfig.getCode();
-        parserInfo = parserInfoService.findParserInfoByCode(parserCode, true);
-        if (parserInfo == null) {
-            parserInfo = getNewParserInfo();
-            entityManager.getTransaction().begin();
-            parserInfo = parserInfoService.createParserInfo(parserInfo);
-            entityManager.getTransaction().commit();
-        }
         if (reviewCategoryService.anyExisted()) {
             return;
         }
@@ -522,19 +514,6 @@ public class Parser {
             throw new Exception("Code not found");
         }
         return code;
-    }
-
-    protected ParserInfo getNewParserInfo() {
-        ParserInfo entity = new ParserInfo();
-        entity.setParserBaseUrl(parserConfig.getBaseUrl());
-        entity.setParserCode(parserConfig.getCode());
-        entity.setFromPage((int) parserConfig.getDefaultFromPage());
-        entity.setToPage((int) parserConfig.getDefaultToPage());
-        entity.setRefreshExistedData(false);
-        entity.setMaxParsedReviewsPage(defaultMaxReviewPages);
-        entity.setCurrentCommand(Constants.COMMAND_STOP);
-        entity.setCurrentOutput("");
-        return entity;
     }
 
     protected String preprocess(String content) throws IOException {
