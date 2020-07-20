@@ -20,78 +20,17 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="codes">
+ *         &lt;element name="item" maxOccurs="unbounded">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="dates">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="ratingClasses">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="reviewTitles">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="reviewContents">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="usernames">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="userImages">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+ *                   &lt;element name="userImages" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="rating" type="{http://www.w3.org/2001/XMLSchema}double"/>
+ *                   &lt;element name="reviewDate" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="reviewContent" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -107,198 +46,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "codes",
-    "dates",
-    "ratingClasses",
-    "reviewTitles",
-    "reviewContents",
-    "usernames",
-    "userImages"
+    "item"
 })
 @XmlRootElement(name = "reviews")
 public class Reviews {
 
     @XmlElement(required = true)
-    protected Reviews.Codes codes;
-    @XmlElement(required = true)
-    protected Reviews.Dates dates;
-    @XmlElement(required = true)
-    protected Reviews.RatingClasses ratingClasses;
-    @XmlElement(required = true)
-    protected Reviews.ReviewTitles reviewTitles;
-    @XmlElement(required = true)
-    protected Reviews.ReviewContents reviewContents;
-    @XmlElement(required = true)
-    protected Reviews.Usernames usernames;
-    @XmlElement(required = true)
-    protected Reviews.UserImages userImages;
+    protected List<Reviews.Item> item;
 
     /**
-     * Gets the value of the codes property.
+     * Gets the value of the item property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.Codes }
-     *     
-     */
-    public Reviews.Codes getCodes() {
-        return codes;
-    }
-
-    /**
-     * Sets the value of the codes property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the item property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.Codes }
-     *     
-     */
-    public void setCodes(Reviews.Codes value) {
-        this.codes = value;
-    }
-
-    /**
-     * Gets the value of the dates property.
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getItem().add(newItem);
+     * </pre>
      * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.Dates }
-     *     
-     */
-    public Reviews.Dates getDates() {
-        return dates;
-    }
-
-    /**
-     * Sets the value of the dates property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.Dates }
-     *     
-     */
-    public void setDates(Reviews.Dates value) {
-        this.dates = value;
-    }
-
-    /**
-     * Gets the value of the ratingClasses property.
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Reviews.Item }
      * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.RatingClasses }
-     *     
-     */
-    public Reviews.RatingClasses getRatingClasses() {
-        return ratingClasses;
-    }
-
-    /**
-     * Sets the value of the ratingClasses property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.RatingClasses }
-     *     
      */
-    public void setRatingClasses(Reviews.RatingClasses value) {
-        this.ratingClasses = value;
-    }
-
-    /**
-     * Gets the value of the reviewTitles property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.ReviewTitles }
-     *     
-     */
-    public Reviews.ReviewTitles getReviewTitles() {
-        return reviewTitles;
-    }
-
-    /**
-     * Sets the value of the reviewTitles property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.ReviewTitles }
-     *     
-     */
-    public void setReviewTitles(Reviews.ReviewTitles value) {
-        this.reviewTitles = value;
-    }
-
-    /**
-     * Gets the value of the reviewContents property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.ReviewContents }
-     *     
-     */
-    public Reviews.ReviewContents getReviewContents() {
-        return reviewContents;
-    }
-
-    /**
-     * Sets the value of the reviewContents property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.ReviewContents }
-     *     
-     */
-    public void setReviewContents(Reviews.ReviewContents value) {
-        this.reviewContents = value;
-    }
-
-    /**
-     * Gets the value of the usernames property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.Usernames }
-     *     
-     */
-    public Reviews.Usernames getUsernames() {
-        return usernames;
-    }
-
-    /**
-     * Sets the value of the usernames property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.Usernames }
-     *     
-     */
-    public void setUsernames(Reviews.Usernames value) {
-        this.usernames = value;
-    }
-
-    /**
-     * Gets the value of the userImages property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Reviews.UserImages }
-     *     
-     */
-    public Reviews.UserImages getUserImages() {
-        return userImages;
-    }
-
-    /**
-     * Sets the value of the userImages property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Reviews.UserImages }
-     *     
-     */
-    public void setUserImages(Reviews.UserImages value) {
-        this.userImages = value;
+    public List<Reviews.Item> getItem() {
+        if (item == null) {
+            item = new ArrayList<Reviews.Item>();
+        }
+        return this.item;
     }
 
 
@@ -312,7 +94,12 @@ public class Reviews {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+     *         &lt;element name="userImages" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="rating" type="{http://www.w3.org/2001/XMLSchema}double"/>
+     *         &lt;element name="reviewDate" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="reviewContent" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -323,400 +110,161 @@ public class Reviews {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "item"
+        "userImages",
+        "username",
+        "rating",
+        "reviewDate",
+        "reviewContent",
+        "title"
     })
-    public static class Codes {
+    public static class Item {
 
         @XmlElement(required = true)
-        protected List<String> item;
+        protected String userImages;
+        @XmlElement(required = true)
+        protected String username;
+        protected double rating;
+        @XmlElement(required = true)
+        protected String reviewDate;
+        @XmlElement(required = true)
+        protected String reviewContent;
+        @XmlElement(required = true)
+        protected Object title;
 
         /**
-         * Gets the value of the item property.
+         * Gets the value of the userImages property.
          * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
-         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public String getUserImages() {
+            return userImages;
         }
 
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "item"
-    })
-    public static class Dates {
-
-        @XmlElement(required = true)
-        protected List<String> item;
-
         /**
-         * Gets the value of the item property.
+         * Sets the value of the userImages property.
          * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
-         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public void setUserImages(String value) {
+            this.userImages = value;
         }
 
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "item"
-    })
-    public static class RatingClasses {
-
-        @XmlElement(required = true)
-        protected List<String> item;
-
         /**
-         * Gets the value of the item property.
+         * Gets the value of the username property.
          * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
-         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public String getUsername() {
+            return username;
         }
 
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "item"
-    })
-    public static class ReviewContents {
-
-        @XmlElement(required = true)
-        protected List<String> item;
-
         /**
-         * Gets the value of the item property.
+         * Sets the value of the username property.
          * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
-         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public void setUsername(String value) {
+            this.username = value;
         }
 
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "item"
-    })
-    public static class ReviewTitles {
-
-        @XmlElement(required = true)
-        protected List<String> item;
-
         /**
-         * Gets the value of the item property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
+         * Gets the value of the rating property.
          * 
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public double getRating() {
+            return rating;
         }
 
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "item"
-    })
-    public static class UserImages {
-
-        @XmlElement(required = true)
-        protected List<String> item;
-
         /**
-         * Gets the value of the item property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
+         * Sets the value of the rating property.
          * 
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public void setRating(double value) {
+            this.rating = value;
         }
 
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "item"
-    })
-    public static class Usernames {
-
-        @XmlElement(required = true)
-        protected List<String> item;
+        /**
+         * Gets the value of the reviewDate property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getReviewDate() {
+            return reviewDate;
+        }
 
         /**
-         * Gets the value of the item property.
+         * Sets the value of the reviewDate property.
          * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the item property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getItem().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
-         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
          */
-        public List<String> getItem() {
-            if (item == null) {
-                item = new ArrayList<String>();
-            }
-            return this.item;
+        public void setReviewDate(String value) {
+            this.reviewDate = value;
+        }
+
+        /**
+         * Gets the value of the reviewContent property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getReviewContent() {
+            return reviewContent;
+        }
+
+        /**
+         * Sets the value of the reviewContent property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setReviewContent(String value) {
+            this.reviewContent = value;
+        }
+
+        /**
+         * Gets the value of the title property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link Object }
+         *     
+         */
+        public Object getTitle() {
+            return title;
+        }
+
+        /**
+         * Sets the value of the title property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link Object }
+         *     
+         */
+        public void setTitle(Object value) {
+            this.title = value;
         }
 
     }

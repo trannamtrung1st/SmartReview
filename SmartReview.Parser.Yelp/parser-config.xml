@@ -81,14 +81,9 @@
     </item>
   </reviewCateMap>
   <reviewStringRules>
-    <regex>^([^ ]+?) .*$</regex>
     <remove>,</remove>
   </reviewStringRules>
-  <ratingRule>
-    <regex> bubble_(.+?)$</regex>
-    <div>10</div>
-  </ratingRule>
-  <reviewDateFormat>MMMM d, yyyy</reviewDateFormat>
+  <reviewDateFormat>M/d/yyyy</reviewDateFormat>
   <defaultConfigs>
     <waitForNextBusinessListPage>5</waitForNextBusinessListPage>
     <defaultWebDriverWait>20</defaultWebDriverWait>

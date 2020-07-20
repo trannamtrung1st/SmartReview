@@ -41,16 +41,7 @@
         <xs:element name="reviewStringRules">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="regex" type="xs:string" />
               <xs:element name="remove" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="ratingRule">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="regex" type="xs:string" />
-              <xs:element name="div" type="xs:unsignedByte" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

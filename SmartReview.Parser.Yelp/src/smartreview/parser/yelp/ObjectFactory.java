@@ -62,14 +62,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ParserConfig.RatingRule }
-     * 
-     */
-    public ParserConfig.RatingRule createParserConfigRatingRule() {
-        return new ParserConfig.RatingRule();
-    }
-
-    /**
      * Create an instance of {@link ParserConfig.DefaultConfigs }
      * 
      */

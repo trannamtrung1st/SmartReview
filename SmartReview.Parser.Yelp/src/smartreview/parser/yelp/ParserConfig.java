@@ -72,20 +72,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="remove" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="ratingRule">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="div" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -133,7 +120,6 @@ import javax.xml.bind.annotation.XmlType;
     "moresBtnXPath",
     "reviewCateMap",
     "reviewStringRules",
-    "ratingRule",
     "reviewDateFormat",
     "defaultConfigs"
 })
@@ -170,8 +156,6 @@ public class ParserConfig {
     protected ParserConfig.ReviewCateMap reviewCateMap;
     @XmlElement(required = true)
     protected ParserConfig.ReviewStringRules reviewStringRules;
-    @XmlElement(required = true)
-    protected ParserConfig.RatingRule ratingRule;
     @XmlElement(required = true)
     protected String reviewDateFormat;
     @XmlElement(required = true)
@@ -522,30 +506,6 @@ public class ParserConfig {
     }
 
     /**
-     * Gets the value of the ratingRule property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ParserConfig.RatingRule }
-     *     
-     */
-    public ParserConfig.RatingRule getRatingRule() {
-        return ratingRule;
-    }
-
-    /**
-     * Sets the value of the ratingRule property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ParserConfig.RatingRule }
-     *     
-     */
-    public void setRatingRule(ParserConfig.RatingRule value) {
-        this.ratingRule = value;
-    }
-
-    /**
      * Gets the value of the reviewDateFormat property.
      * 
      * @return
@@ -736,81 +696,6 @@ public class ParserConfig {
          */
         public void setDefaultMaxReviewPages(short value) {
             this.defaultMaxReviewPages = value;
-        }
-
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="div" type="{http://www.w3.org/2001/XMLSchema}unsignedByte"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "regex",
-        "div"
-    })
-    public static class RatingRule {
-
-        @XmlElement(required = true)
-        protected String regex;
-        @XmlSchemaType(name = "unsignedByte")
-        protected short div;
-
-        /**
-         * Gets the value of the regex property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getRegex() {
-            return regex;
-        }
-
-        /**
-         * Sets the value of the regex property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setRegex(String value) {
-            this.regex = value;
-        }
-
-        /**
-         * Gets the value of the div property.
-         * 
-         */
-        public short getDiv() {
-            return div;
-        }
-
-        /**
-         * Sets the value of the div property.
-         * 
-         */
-        public void setDiv(short value) {
-            this.div = value;
         }
 
     }
@@ -1085,7 +970,6 @@ public class ParserConfig {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="regex" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="remove" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
@@ -1097,39 +981,12 @@ public class ParserConfig {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "regex",
         "remove"
     })
     public static class ReviewStringRules {
 
         @XmlElement(required = true)
-        protected String regex;
-        @XmlElement(required = true)
         protected String remove;
-
-        /**
-         * Gets the value of the regex property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getRegex() {
-            return regex;
-        }
-
-        /**
-         * Sets the value of the regex property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setRegex(String value) {
-            this.regex = value;
-        }
 
         /**
          * Gets the value of the remove property.

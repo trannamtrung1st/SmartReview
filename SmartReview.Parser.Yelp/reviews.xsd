@@ -4,52 +4,15 @@
   <xs:element name="reviews">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="codes">
+        <xs:element maxOccurs="unbounded" name="item">
           <xs:complexType>
             <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="dates">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="ratingClasses">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="reviewTitles">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="reviewContents">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="usernames">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="userImages">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="item" type="xs:string" />
+              <xs:element name="userImages" type="xs:string" />
+              <xs:element name="username" type="xs:string" />
+              <xs:element name="rating" type="xs:double" />
+              <xs:element name="reviewDate" type="xs:string" />
+              <xs:element name="reviewContent" type="xs:string" />
+              <xs:element name="title" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -385,7 +385,7 @@ public class Parser {
         if (matcher.find()) {
             reviewStr = matcher.group(1).replace(removeInReviewStr, "");
         } else {
-            throw new Exception("Code not found");
+            throw new Exception("Review string not found");
         }
         Integer totalReviews = Integer.parseInt(reviewStr);
         entity.setTotalReview(totalReviews);
@@ -468,7 +468,7 @@ public class Parser {
             if (matcher.find()) {
                 rStr = matcher.group(1);
             } else {
-                throw new Exception("Code not found");
+                throw new Exception("Rating not found");
             }
             Integer div = (int) parserConfig.getRatingRule().getDiv();
             Double rating = Double.parseDouble(rStr) / div;

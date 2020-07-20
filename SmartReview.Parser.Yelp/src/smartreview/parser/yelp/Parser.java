@@ -245,7 +245,7 @@ public class Parser {
         entityManager.getTransaction().commit();
 
         String content = preprocess(pageSource);
-        FileHelper.writeToFile(content, "temp.html");
+//        FileHelper.writeToFile(content, "temp.html");
         //parse DOM and use XPath to get links
         Document doc = XMLHelper.parseDOMFromString(content);
         NodeList linkNodes = (NodeList) xpath.evaluate(parserConfig.getBusinessLinksXPath(), doc, XPathConstants.NODESET);
@@ -281,7 +281,7 @@ public class Parser {
         } else {
             //create business info
             webDriver.get(businessLink);
-            webDriver.manage().timeouts().implicitlyWait(defaultWaitForAction, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(defaultWaitNextBListPage, TimeUnit.SECONDS);
             String pageSource = webDriver.getPageSource();
             String output = ("Start parsing page: " + businessLink);
             entityManager.getTransaction().begin();
@@ -290,11 +290,11 @@ public class Parser {
             entityManager.getTransaction().commit();
 
             pageSource = preprocess(pageSource);
-//                FileHelper.writeToFile(pageContent, "temp.html");
+            FileHelper.writeToFile(pageSource, "temp.html");
             businessXml = transformBusiness(businessLink, pageSource, code);
+            FileHelper.writeToFile(businessXml, "temp.xml");
             validateBusinessXml(businessXml);
-//                FileHelper.writeToFile(modelXml, "temp.xml");
-            BusinessItem bItem = XMLHelper.unmarshallDocXml(businessXml, smartreview.parser.yelp.models.xmlschema.ObjectFactory.class);
+            BusinessItem bItem = XMLHelper.unmarshallDocXml(businessXml, smartreview.parser.yelp.models.xmlschema.ObjectFactoryOld.class);
             output = (bItem.getName());
             entityManager.getTransaction().begin();
             System.out.println(output);
@@ -368,15 +368,9 @@ public class Parser {
         entity.setPhone(bItem.getPhone());
         entity.setRating(bItem.getRating());
 
-        String reviewStr = bItem.getTotalReview();
-        String reviewRegex = parserConfig.getReviewStringRules().getRegex();
         String removeInReviewStr = parserConfig.getReviewStringRules().getRemove();
-        Matcher matcher = RegexHelper.matcherDotAll(reviewStr, reviewRegex);
-        if (matcher.find()) {
-            reviewStr = matcher.group(1).replace(removeInReviewStr, "");
-        } else {
-            throw new Exception("Code not found");
-        }
+        String reviewStr = bItem.getTotalReview().replace(removeInReviewStr, "");
+
         Integer totalReviews = Integer.parseInt(reviewStr);
         entity.setTotalReview(totalReviews);
         return entity;
@@ -388,26 +382,6 @@ public class Parser {
             WebElement nextPage;
             Integer pageNum = 1;
             while (pageNum <= parserInfo.getMaxParsedReviewsPage()) {
-                try {
-                    //show full content
-                    List<WebElement> mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
-                    while (mores.size() > 0) {
-                        try {
-                            for (WebElement more : mores) {
-                                more.click();
-                                webDriver.manage().timeouts().implicitlyWait(defaultWaitForAction, TimeUnit.SECONDS);
-                            }
-                        } catch (StaleElementReferenceException | ElementClickInterceptedException e) {
-                            mores = webDriver.findElements(By.xpath(parserConfig.getMoresBtnXPath()));
-                        }
-                    }
-
-                } catch (NoSuchElementException e) {
-                    System.out.println("No more");
-                }
-                pageSource = webDriver.getPageSource();
-                pageSource = preprocess(pageSource);
-//                FileHelper.writeToFile(pageSource, "temp.html");
                 try {
                     addReviews(entities, pageSource, bEntity);
                 } catch (SAXException e) {
@@ -430,6 +404,9 @@ public class Parser {
                     }
                 }
                 pageNum++;
+                pageSource = webDriver.getPageSource();
+                pageSource = preprocess(pageSource);
+//                FileHelper.writeToFile(pageSource, "temp.html");
             }
         } catch (NoSuchElementException e) {
             System.out.println("No more");
@@ -442,45 +419,25 @@ public class Parser {
     protected void addReviews(Map<String, BusinessReview> entities, String currentPageSource, Business bEntity) throws Exception {
 //        FileHelper.writeToFile(currentPageSource, "temp.html");
         String reviewxXml = transformReviews(currentPageSource);
-//        FileHelper.writeToFile(reviewxXml, "temp.xml");
+        FileHelper.writeToFile(reviewxXml, "temp.xml");
         validateReviewsXml(reviewxXml);
-        Reviews reviewsItem = XMLHelper.unmarshallDocXml(reviewxXml, smartreview.parser.yelp.models.xmlschema.ObjectFactory.class);
-        Integer size = reviewsItem.getCodes().getItem().size();
-        for (int i = 0; i < size; i++) {
+        Reviews reviewsItem = XMLHelper.unmarshallDocXml(reviewxXml, smartreview.parser.yelp.models.xmlschema.ObjectFactoryOld.class);
+        for (Reviews.Item item : reviewsItem.getItem()) {
             BusinessReview bR = new BusinessReview();
             bR.setBusinessId(bEntity);
-            String code = reviewsItem.getCodes().getItem().get(i);
-            bR.setCode(code);
+            bR.setCode(bEntity.getCode() + "-" + item.getUsername());
+            bR.setRating(item.getRating());
+            bR.setReviewContent(item.getReviewContent());
 
-            String rClasses = reviewsItem.getRatingClasses().getItem().get(i);
-            String rStrRegex = parserConfig.getRatingRule().getRegex();
-            Matcher matcher = RegexHelper.matcherDotAll(rClasses, rStrRegex);
-            String rStr;
-            if (matcher.find()) {
-                rStr = matcher.group(1);
-            } else {
-                throw new Exception("Code not found");
-            }
-            Integer div = (int) parserConfig.getRatingRule().getDiv();
-            Double rating = Double.parseDouble(rStr) / div;
-            bR.setRating(rating);
-
-            String reviewContent = reviewsItem.getReviewContents().getItem().get(i);
-            bR.setReviewContent(reviewContent);
-
-            String rDateStr = reviewsItem.getDates().getItem().get(i);
+            String rDateStr = item.getReviewDate();
             Date rDate = DateHelper.convertToJavaDate(parserConfig.getReviewDateFormat(), rDateStr);
             bR.setReviewDate(rDate);
 
-            String rTitle = reviewsItem.getReviewTitles().getItem().get(i);
-            bR.setTitle(rTitle);
+            bR.setTitle("");
+            bR.setUserImage(item.getUserImages());
+            bR.setUsername(item.getUsername());
 
-            String uImg = reviewsItem.getUserImages().getItem().get(i);
-            bR.setUserImage(uImg);
-
-            String uName = reviewsItem.getUsernames().getItem().get(i);
-            bR.setUsername(uName);
-            String output = (rTitle);
+            String output = (item.getUsername());
             entityManager.getTransaction().begin();
             System.out.println(output);
             parserInfoService.writeOutput(parserInfo, output);
