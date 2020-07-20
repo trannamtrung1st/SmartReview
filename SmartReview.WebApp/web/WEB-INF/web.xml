@@ -59,6 +59,7 @@
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/admin</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BusinessApiController</servlet-name>

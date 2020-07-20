@@ -6,6 +6,7 @@
 
 <%@page import="smartreview.business.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,7 +20,10 @@
     </head>
     <body>
         <div style="text-align: right">
-            <a href="${pageContext.servletContext.contextPath}/">Restaurants list</a> --- <a style="font-weight: bold;">Administration</a>  
+            <a href="${pageContext.servletContext.contextPath}/">Restaurants list</a> --- <a style="font-weight: bold;">Administration</a>
+            <c:if test="${user!=null}">
+                --- <a href="${pageContext.servletContext.contextPath}/admin/logout">Log out</a>
+            </c:if>
         </div>
         <hr/>
         <h1 style="color:red;">Welcome to SmartReview admin page!</h1>
