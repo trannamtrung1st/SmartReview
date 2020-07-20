@@ -81,14 +81,6 @@
     <error-page>
         <location>/error</location>
     </error-page>
-    <context-param>
-        <param-name>baseApiUrl</param-name>
-        <param-value>http://localhost:51122</param-value>
-    </context-param>
-    <context-param>
-        <param-name>tripAdvisorParserLocation</param-name>
-        <param-value>T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.Parser.TripAdvisor\dist\SmartReview.Parser.TripAdvisor.jar</param-value>
-    </context-param>
     <welcome-file-list>
         <welcome-file>
         </welcome-file>

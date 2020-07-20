@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="baseApiUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="reviewCateMap">
  *           &lt;complexType>
  *             &lt;complexContent>
@@ -53,6 +54,28 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="parsers">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="item" maxOccurs="unbounded">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence>
+ *                             &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -63,13 +86,43 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "reviewCateMap"
+    "baseApiUrl",
+    "reviewCateMap",
+    "parsers"
 })
 @XmlRootElement(name = "webConfig")
 public class WebConfig {
 
     @XmlElement(required = true)
+    protected String baseApiUrl;
+    @XmlElement(required = true)
     protected WebConfig.ReviewCateMap reviewCateMap;
+    @XmlElement(required = true)
+    protected WebConfig.Parsers parsers;
+
+    /**
+     * Gets the value of the baseApiUrl property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBaseApiUrl() {
+        return baseApiUrl;
+    }
+
+    /**
+     * Sets the value of the baseApiUrl property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBaseApiUrl(String value) {
+        this.baseApiUrl = value;
+    }
 
     /**
      * Gets the value of the reviewCateMap property.
@@ -93,6 +146,184 @@ public class WebConfig {
      */
     public void setReviewCateMap(WebConfig.ReviewCateMap value) {
         this.reviewCateMap = value;
+    }
+
+    /**
+     * Gets the value of the parsers property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link WebConfig.Parsers }
+     *     
+     */
+    public WebConfig.Parsers getParsers() {
+        return parsers;
+    }
+
+    /**
+     * Sets the value of the parsers property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link WebConfig.Parsers }
+     *     
+     */
+    public void setParsers(WebConfig.Parsers value) {
+        this.parsers = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="item" maxOccurs="unbounded">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                 &lt;sequence>
+     *                   &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                   &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                 &lt;/sequence>
+     *               &lt;/restriction>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "item"
+    })
+    public static class Parsers {
+
+        @XmlElement(required = true)
+        protected List<WebConfig.Parsers.Item> item;
+
+        /**
+         * Gets the value of the item property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the item property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getItem().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link WebConfig.Parsers.Item }
+         * 
+         * 
+         */
+        public List<WebConfig.Parsers.Item> getItem() {
+            if (item == null) {
+                item = new ArrayList<WebConfig.Parsers.Item>();
+            }
+            return this.item;
+        }
+
+
+        /**
+         * <p>Java class for anonymous complex type.
+         * 
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         * 
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         * 
+         * 
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "code",
+            "location"
+        })
+        public static class Item {
+
+            @XmlElement(required = true)
+            protected String code;
+            @XmlElement(required = true)
+            protected String location;
+
+            /**
+             * Gets the value of the code property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            public String getCode() {
+                return code;
+            }
+
+            /**
+             * Sets the value of the code property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            public void setCode(String value) {
+                this.code = value;
+            }
+
+            /**
+             * Gets the value of the location property.
+             * 
+             * @return
+             *     possible object is
+             *     {@link String }
+             *     
+             */
+            public String getLocation() {
+                return location;
+            }
+
+            /**
+             * Sets the value of the location property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link String }
+             *     
+             */
+            public void setLocation(String value) {
+                this.location = value;
+            }
+
+        }
+
     }
 
 

@@ -35,12 +35,12 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sContext = sce.getServletContext();
-        Settings.baseApiUrl = sContext.getInitParameter("baseApiUrl");
-        Settings.tripAdvisorParserLocation = sContext.getInitParameter("tripAdvisorParserLocation");
         WebConfig webConfig;
         String webConfigPath = sContext.getRealPath("/WEB-INF/web-config.xml");
         try {
             webConfig = XMLHelper.unmarshallDocFile(webConfigPath, ObjectFactory.class);
+            sContext.setAttribute("webConfig", webConfig);
+            Settings.baseApiUrl = webConfig.getBaseApiUrl();
         } catch (JAXBException ex) {
             throw new RuntimeException(ex);
         }

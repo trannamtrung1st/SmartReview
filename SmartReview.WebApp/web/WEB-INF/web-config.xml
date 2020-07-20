@@ -1,68 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <webConfig>
-  <reviewCateMap>
-    <item>
-      <key>RudeService</key>
-      <value>
-        <code>RudeService</code>
-        <name>Rude service</name>
-      </value>
-    </item>
-    <item>
-      <key>OrderProblem</key>
-      <value>
-        <code>OrderProblem</code>
-        <name>Order problem</name>
-      </value>
-    </item>
-    <item>
-      <key>Filthy</key>
-      <value>
-        <code>Filthy</code>
-        <name>Filthy</name>
-      </value>
-    </item>
-    <item>
-      <key>SlowService</key>
-      <value>
-        <code>SlowService</code>
-        <name>Slow service</name>
-      </value>
-    </item>
-    <item>
-      <key>BadFood</key>
-      <value>
-        <code>BadFood</code>
-        <name>Bad food</name>
-      </value>
-    </item>
-    <item>
-      <key>na</key>
-      <value>
-        <code>na</code>
-        <name>Unknown</name>
-      </value>
-    </item>
-    <item>
-      <key>Scary</key>
-      <value>
-        <code>Scary</code>
-        <name>Scary</name>
-      </value>
-    </item>
-    <item>
-      <key>MissingFood</key>
-      <value>
-        <code>MissingFood</code>
-        <name>Missing food</name>
-      </value>
-    </item>
-    <item>
-      <key>Cost</key>
-      <value>
-        <code>Cost</code>
-        <name>Cost</name>
-      </value>
-    </item>
-  </reviewCateMap>
+    <baseApiUrl>http://localhost:51122</baseApiUrl>
+    <reviewCateMap>
+        <item>
+            <key>RudeService</key>
+            <value>
+                <code>RudeService</code>
+                <name>Rude service</name>
+            </value>
+        </item>
+        <item>
+            <key>OrderProblem</key>
+            <value>
+                <code>OrderProblem</code>
+                <name>Order problem</name>
+            </value>
+        </item>
+        <item>
+            <key>Filthy</key>
+            <value>
+                <code>Filthy</code>
+                <name>Filthy</name>
+            </value>
+        </item>
+        <item>
+            <key>SlowService</key>
+            <value>
+                <code>SlowService</code>
+                <name>Slow service</name>
+            </value>
+        </item>
+        <item>
+            <key>BadFood</key>
+            <value>
+                <code>BadFood</code>
+                <name>Bad food</name>
+            </value>
+        </item>
+        <item>
+            <key>na</key>
+            <value>
+                <code>na</code>
+                <name>Unknown</name>
+            </value>
+        </item>
+        <item>
+            <key>Scary</key>
+            <value>
+                <code>Scary</code>
+                <name>Scary</name>
+            </value>
+        </item>
+        <item>
+            <key>MissingFood</key>
+            <value>
+                <code>MissingFood</code>
+                <name>Missing food</name>
+            </value>
+        </item>
+        <item>
+            <key>Cost</key>
+            <value>
+                <code>Cost</code>
+                <name>Cost</name>
+            </value>
+        </item>
+    </reviewCateMap>
+    <parsers>
+        <item>
+            <code>trip-advisor</code>
+            <location>T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.Parser.TripAdvisor\dist\SmartReview.Parser.TripAdvisor.jar</location>
+        </item>
+        <item>
+            <code>yelp</code>
+            <location>T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.Parser.Yelp\dist\SmartReview.Parser.Yelp.jar</location>
+        </item>
+    </parsers>
 </webConfig>

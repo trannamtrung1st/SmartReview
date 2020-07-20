@@ -12,5 +12,4 @@ package smartreview.business;
 public class Settings {
 
     public static String baseApiUrl;
-    public static String tripAdvisorParserLocation;
 }

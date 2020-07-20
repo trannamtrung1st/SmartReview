@@ -8,6 +8,7 @@ package smartreview.webapp.apis;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.persistence.EntityManager;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import smartreview.data.EntityContext;
 import smartreview.data.daos.ParserInfoDAO;
 import smartreview.data.models.ParserInfo;
 import smartreview.helper.ProcessHelper;
+import smartreview.webapp.WebConfig;
 import smartreview.webapp.controllers.BaseController;
 
 /**
@@ -70,6 +72,8 @@ public class AdminApiController extends BaseController {
 
     protected void startParser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServletContext sContext = getServletContext();
+        WebConfig webConfig = (WebConfig) sContext.getAttribute("webConfig");
         response.setContentType("text/plain");
         try (EntityContext context = EntityContext.newInstance()) {
             EntityManager em = context.getEntityManager();
@@ -85,7 +89,7 @@ public class AdminApiController extends BaseController {
             }
 
             Integer fromPage = getIntegerParamter(request, "fromPage");
-            Integer toPage = getIntegerParamter(request, "fromPage");
+            Integer toPage = getIntegerParamter(request, "toPage");
             Integer maxReviewParsedPages = getIntegerParamter(request, "maxReviewParsedPages");
 
             em.getTransaction().begin();
@@ -96,11 +100,11 @@ public class AdminApiController extends BaseController {
             pInfo.setCurrentOutput("");
             em.getTransaction().commit();
 
-            switch (parserCode) {
-                case "trip-advisor":
-                    String tripLocation = Settings.tripAdvisorParserLocation;
-                    ProcessHelper.startTripAdvisor(tripLocation);
-                    break;
+            for (WebConfig.Parsers.Item item : webConfig.getParsers().getItem()) {
+                if (item.getCode().equals(parserCode)) {
+                    String location = item.getLocation();
+                    ProcessHelper.startParser(location);
+                }
             }
         }
     }

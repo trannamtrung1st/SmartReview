@@ -72,10 +72,10 @@
 
         <script>
             var getOutputInterval;
-            function startGetOutput() {
+            function startGetOutput(fromParser) {
                 let output = document.getElementById("output");
                 output.value = '';
-                var parserCode = document.querySelector('#output-form select[name=parserCode]').value;
+                var parserCode = fromParser ? fromParser : document.querySelector('#output-form select[name=parserCode]').value;
                 let currentParser = document.querySelector(".current-parser");
                 currentParser.innerHTML = parserCode;
                 const paramsObject = {
@@ -140,7 +140,7 @@
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         var status = xhr.status;
                         if (status === 0 || (status >= 200 && status < 400)) {
-                            startGetOutput();
+                            startGetOutput(parserCode);
                             alert("Start successfully. Already start get output");
                         } else {
                             alert(xhr.responseText ? xhr.responseText : "Something's wrong");

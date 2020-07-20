@@ -299,9 +299,9 @@ public class Parser {
             entityManager.getTransaction().commit();
 
             pageSource = preprocess(pageSource);
-            FileHelper.writeToFile(pageSource, "temp.html");
+//            FileHelper.writeToFile(pageSource, "temp.html");
             businessXml = transformBusiness(businessLink, pageSource, code);
-            FileHelper.writeToFile(businessXml, "temp.xml");
+//            FileHelper.writeToFile(businessXml, "temp.xml");
             validateBusinessXml(businessXml);
             BusinessItem bItem = XMLHelper.unmarshallDocXml(businessXml, smartreview.parser.yelp.models.xmlschema.ObjectFactoryOld.class);
             output = (bItem.getName());
@@ -430,7 +430,7 @@ public class Parser {
     protected void addReviews(Map<String, BusinessReview> entities, String currentPageSource, Business bEntity) throws Exception {
 //        FileHelper.writeToFile(currentPageSource, "temp.html");
         String reviewxXml = transformReviews(currentPageSource);
-        FileHelper.writeToFile(reviewxXml, "temp.xml");
+//        FileHelper.writeToFile(reviewxXml, "temp.xml");
         validateReviewsXml(reviewxXml);
         Reviews reviewsItem = XMLHelper.unmarshallDocXml(reviewxXml, smartreview.parser.yelp.models.xmlschema.ObjectFactoryOld.class);
         for (Reviews.Item item : reviewsItem.getItem()) {

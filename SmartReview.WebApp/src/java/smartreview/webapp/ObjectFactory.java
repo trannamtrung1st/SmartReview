@@ -38,6 +38,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link WebConfig.Parsers }
+     * 
+     */
+    public WebConfig.Parsers createWebConfigParsers() {
+        return new WebConfig.Parsers();
+    }
+
+    /**
      * Create an instance of {@link WebConfig.ReviewCateMap }
      * 
      */
@@ -51,6 +59,14 @@ public class ObjectFactory {
      */
     public WebConfig.ReviewCateMap.Item createWebConfigReviewCateMapItem() {
         return new WebConfig.ReviewCateMap.Item();
+    }
+
+    /**
+     * Create an instance of {@link WebConfig.Parsers.Item }
+     * 
+     */
+    public WebConfig.Parsers.Item createWebConfigParsersItem() {
+        return new WebConfig.Parsers.Item();
     }
 
     /**
