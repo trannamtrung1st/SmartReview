@@ -57,7 +57,7 @@ public class AdminApiController extends BaseController {
             ParserInfoService pInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             String parserCode = getStringParamter(request, "parserCode");
             ParserInfo pInfo = pInfoService.findParserInfoByCode(parserCode, true);
-            if (!pInfo.getCurrentCommand().startsWith(Constants.COMMAND_START)) {
+            if (pInfo == null || !pInfo.getCurrentCommand().startsWith(Constants.COMMAND_START)) {
                 response.setStatus(HttpStatus.SC_BAD_REQUEST);
                 PrintWriter out = response.getWriter();
                 out.write("Not running");
@@ -80,7 +80,7 @@ public class AdminApiController extends BaseController {
             ParserInfoService pInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             String parserCode = getStringParamter(request, "parserCode");
             ParserInfo pInfo = pInfoService.findParserInfoByCode(parserCode, true);
-            if (!pInfo.getCurrentCommand().equals(Constants.COMMAND_STOP)) {
+            if (pInfo != null && !pInfo.getCurrentCommand().equals(Constants.COMMAND_STOP)) {
                 response.setStatus(HttpStatus.SC_BAD_REQUEST);
                 PrintWriter out = response.getWriter();
                 out.write("Already started");
@@ -117,6 +117,9 @@ public class AdminApiController extends BaseController {
             ParserInfoService pInfoService = new ParserInfoService(em, new ParserInfoDAO(em));
             String parserCode = getStringParamter(request, "parserCode");
             ParserInfo pInfo = pInfoService.findParserInfoByCode(parserCode, true);
+            if (pInfo == null) {
+                return;
+            }
             String output = pInfo.getCurrentOutput();
             output = output != null ? output : "";
             out.write(output);
