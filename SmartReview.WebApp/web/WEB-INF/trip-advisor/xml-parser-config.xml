@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmlParserConfig>
+  <neccessaryPart><![CDATA[<body.*?</body>]]></neccessaryPart>
+  <miscs>
+    <pattern><![CDATA[<script.*?</script>]]></pattern>
+    <pattern><![CDATA[<style.*?</style>]]></pattern>
+    <pattern><![CDATA[<!--.*?-->]]></pattern>
+    <pattern><![CDATA[&nbsp;]]></pattern>
+  </miscs>
+  <openBracketReplacements>
+    <replacement>
+      <from>&amp;</from>
+      <to>&amp;amp;</to>
+    </replacement>
+  </openBracketReplacements>
+  <attrReplacements>
+    <replacement>
+      <from>&amp;</from>
+      <to>&amp;amp;</to>
+    </replacement>
+    <replacement>
+      <from>"</from>
+      <to>&amp;quot;</to>
+    </replacement>
+    <replacement>
+      <from>'</from>
+      <to>&amp;apos;</to>
+    </replacement>
+    <replacement>
+      <from>&lt;</from>
+      <to>&amp;lt;</to>
+    </replacement>
+    <replacement>
+      <from>&gt;</from>
+      <to>&amp;gt;</to>
+    </replacement>
+  </attrReplacements>
+</xmlParserConfig>

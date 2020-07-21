@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parserConfig>
+  <baseApiUrl>http://localhost:51122</baseApiUrl>
+  <driverPath>T:\ITs\WebDriver\chromedriver84.exe</driverPath>
+  <baseUrl>https://www.yelp.com/</baseUrl>
+  <businessListUrl>https://www.yelp.com/search?find_desc=Restaurants&amp;find_loc=New%20York%2C%20NY</businessListUrl>
+  <code>yelp</code>
+  <businessLinksXPath>//a[contains(@class,'lemon--a__373c0__IEZFH link__373c0__1G70M link-color--inherit__373c0__3dzpk link-size--inherit__373c0__1VFlE') and not(contains(@href,'adredir'))]/@href</businessLinksXPath>
+  <businessItemCssSelector>._1llCuDZj</businessItemCssSelector>
+  <nextPageXPathPlaceholder>
+    //*[contains(@class,'lemon--div__373c0__1mboc undefined display--inline-block__373c0__1ZKqC border-color--default__373c0__3-ifU') and text()='{page}']
+  </nextPageXPathPlaceholder>
+  <currentPageCssSelector>.lemon--div__373c0__1mboc.pagination-link--current__373c0__7SZSt.display--inline-block__373c0__1ZKqC.border-color--default__373c0__3-ifU</currentPageCssSelector>
+  <defaultFromPage>1</defaultFromPage>
+  <defaultToPage>20</defaultToPage>
+  <codeFromUrlRegex><![CDATA[/([^/]+?)(\?.*)?$]]></codeFromUrlRegex>
+  <moresBtnXPath>//*[text()='More' and contains(@class,'taLnk ulBlueLinks')]</moresBtnXPath>
+  <reviewCateMap>
+    <item>
+      <key>RudeService</key>
+      <value>
+        <code>RudeService</code>
+        <name>Rude service</name>
+      </value>
+    </item>
+    <item>
+      <key>OrderProblem</key>
+      <value>
+        <code>OrderProblem</code>
+        <name>Order problem</name>
+      </value>
+    </item>
+    <item>
+      <key>Filthy</key>
+      <value>
+        <code>Filthy</code>
+        <name>Filthy</name>
+      </value>
+    </item>
+    <item>
+      <key>SlowService</key>
+      <value>
+        <code>SlowService</code>
+        <name>Slow service</name>
+      </value>
+    </item>
+    <item>
+      <key>BadFood</key>
+      <value>
+        <code>BadFood</code>
+        <name>Bad food</name>
+      </value>
+    </item>
+    <item>
+      <key>na</key>
+      <value>
+        <code>na</code>
+        <name>Unknown</name>
+      </value>
+    </item>
+    <item>
+      <key>Scary</key>
+      <value>
+        <code>Scary</code>
+        <name>Scary</name>
+      </value>
+    </item>
+    <item>
+      <key>MissingFood</key>
+      <value>
+        <code>MissingFood</code>
+        <name>Missing food</name>
+      </value>
+    </item>
+    <item>
+      <key>Cost</key>
+      <value>
+        <code>Cost</code>
+        <name>Cost</name>
+      </value>
+    </item>
+  </reviewCateMap>
+  <reviewStringRules>
+    <remove>,</remove>
+  </reviewStringRules>
+  <reviewDateFormat>M/d/yyyy</reviewDateFormat>
+  <defaultConfigs>
+    <waitForNextBusinessListPage>7</waitForNextBusinessListPage>
+    <defaultWebDriverWait>20</defaultWebDriverWait>
+    <defaultPollingSecs>1</defaultPollingSecs>
+    <waitForAction>7</waitForAction>
+    <maxTryClick>10</maxTryClick>
+    <defaultMaxReviewPages>7</defaultMaxReviewPages>
+  </defaultConfigs>
+  <businessImagesXPath>//*[@class='lemon--a__373c0__IEZFH link__373c0__1G70M link-color--blue-dark__373c0__85-Nu link-size--default__373c0__7tls6']/img</businessImagesXPath>
+</parserConfig>

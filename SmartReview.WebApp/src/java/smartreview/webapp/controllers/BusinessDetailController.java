@@ -16,15 +16,15 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.hc.core5.http.HttpStatus;
-import smartreview.business.dtos.BusinessDTO;
-import smartreview.business.dtos.BusinessImageDTO;
-import smartreview.business.models.BusinessDetailModel;
-import smartreview.business.models.BusinessReviewGeneralModel;
-import smartreview.business.services.BusinessService;
-import smartreview.data.EntityContext;
-import smartreview.data.daos.BusinessDAO;
-import smartreview.data.models.Business;
-import smartreview.data.models.ReviewCategory;
+import smartreview.dtos.BusinessDTO;
+import smartreview.services.BusinessService;
+import smartreview.models.EntityContext;
+import smartreview.daos.BusinessDAO;
+import smartreview.models.Business;
+import smartreview.models.ReviewCategory;
+import smartreview.dtos.BusinessDetailModel;
+import smartreview.dtos.BusinessImageDTO;
+import smartreview.dtos.BusinessReviewGeneralModel;
 import smartreview.helper.XMLHelper;
 
 /**

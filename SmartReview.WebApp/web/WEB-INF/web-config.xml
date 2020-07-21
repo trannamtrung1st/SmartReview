@@ -69,11 +69,9 @@
     <parsers>
         <item>
             <code>trip-advisor</code>
-            <location>T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.Parser.TripAdvisor\dist\SmartReview.Parser.TripAdvisor.jar</location>
         </item>
         <item>
             <code>yelp</code>
-            <location>T:\FPT\STUDY\SUMMER2020\PRX\Project\SmartReview\Source\SmartReview.Parser.Yelp\dist\SmartReview.Parser.Yelp.jar</location>
         </item>
     </parsers>
 </webConfig>

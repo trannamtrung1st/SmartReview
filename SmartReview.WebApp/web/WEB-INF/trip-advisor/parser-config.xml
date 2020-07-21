@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parserConfig>
+  <baseApiUrl>http://localhost:51122</baseApiUrl>
+  <driverPath>T:\ITs\WebDriver\chromedriver84.exe</driverPath>
+  <baseUrl>https://www.tripadvisor.com</baseUrl>
+  <businessListUrl>https://www.tripadvisor.com/Restaurants-g293925-Ho_Chi_Minh_City.html</businessListUrl>
+  <code>trip-advisor</code>
+  <businessLinksXPath>//*[@class='_15_ydu6b']/@href</businessLinksXPath>
+  <businessItemCssSelector>._1llCuDZj</businessItemCssSelector>
+  <nextPageCssSelector>.pageNum.current + .pageNum</nextPageCssSelector>
+  <currentPageCssSelector>.pageNum.current</currentPageCssSelector>
+  <defaultFromPage>1</defaultFromPage>
+  <defaultToPage>20</defaultToPage>
+  <codeFromUrlRegex><![CDATA[^.+?-.+?-(.+?)-.*$]]></codeFromUrlRegex>
+  <moresBtnXPath>//*[text()='More' and contains(@class,'taLnk ulBlueLinks')]</moresBtnXPath>
+  <reviewCateMap>
+    <item>
+      <key>RudeService</key>
+      <value>
+        <code>RudeService</code>
+        <name>Rude service</name>
+      </value>
+    </item>
+    <item>
+      <key>OrderProblem</key>
+      <value>
+        <code>OrderProblem</code>
+        <name>Order problem</name>
+      </value>
+    </item>
+    <item>
+      <key>Filthy</key>
+      <value>
+        <code>Filthy</code>
+        <name>Filthy</name>
+      </value>
+    </item>
+    <item>
+      <key>SlowService</key>
+      <value>
+        <code>SlowService</code>
+        <name>Slow service</name>
+      </value>
+    </item>
+    <item>
+      <key>BadFood</key>
+      <value>
+        <code>BadFood</code>
+        <name>Bad food</name>
+      </value>
+    </item>
+    <item>
+      <key>na</key>
+      <value>
+        <code>na</code>
+        <name>Unknown</name>
+      </value>
+    </item>
+    <item>
+      <key>Scary</key>
+      <value>
+        <code>Scary</code>
+        <name>Scary</name>
+      </value>
+    </item>
+    <item>
+      <key>MissingFood</key>
+      <value>
+        <code>MissingFood</code>
+        <name>Missing food</name>
+      </value>
+    </item>
+    <item>
+      <key>Cost</key>
+      <value>
+        <code>Cost</code>
+        <name>Cost</name>
+      </value>
+    </item>
+  </reviewCateMap>
+  <reviewStringRules>
+    <regex>^([^ ]+?) .*$</regex>
+    <remove>,</remove>
+  </reviewStringRules>
+  <ratingRule>
+    <regex> bubble_(.+?)$</regex>
+    <div>10</div>
+  </ratingRule>
+  <reviewDateFormat>MMMM d, yyyy</reviewDateFormat>
+  <defaultConfigs>
+    <waitForNextBusinessListPage>7</waitForNextBusinessListPage>
+    <defaultWebDriverWait>20</defaultWebDriverWait>
+    <defaultPollingSecs>1</defaultPollingSecs>
+    <waitForAction>7</waitForAction>
+    <maxTryClick>10</maxTryClick>
+    <defaultMaxReviewPages>7</defaultMaxReviewPages>
+  </defaultConfigs>
+</parserConfig>

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="SmartReview.DataPU" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="SmartReview.WebAppPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>smartreview.data.models.ParserInfo</class>
-    <class>smartreview.data.models.Business</class>
-    <class>smartreview.data.models.BusinessReview</class>
-    <class>smartreview.data.models.BusinessImage</class>
-    <class>smartreview.data.models.CategoriesOfReviews</class>
-    <class>smartreview.data.models.ReviewCategory</class>
-    <class>smartreview.data.models.AdminAccount</class>
+    <class>smartreview.models.AdminAccount</class>
+    <class>smartreview.models.ParserInfo</class>
+    <class>smartreview.models.ReviewCategory</class>
+    <class>smartreview.models.BusinessImage</class>
+    <class>smartreview.models.BusinessReview</class>
+    <class>smartreview.models.Business</class>
+    <class>smartreview.models.CategoriesOfReviews</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=SmartReview"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

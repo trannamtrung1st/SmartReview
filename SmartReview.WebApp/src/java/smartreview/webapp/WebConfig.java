@@ -65,7 +65,6 @@ import javax.xml.bind.annotation.XmlType;
  *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                           &lt;sequence>
  *                             &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                             &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                           &lt;/sequence>
  *                         &lt;/restriction>
  *                       &lt;/complexContent>
@@ -189,7 +188,6 @@ public class WebConfig {
      *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                 &lt;sequence>
      *                   &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                   &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                 &lt;/sequence>
      *               &lt;/restriction>
      *             &lt;/complexContent>
@@ -253,7 +251,6 @@ public class WebConfig {
          *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *       &lt;sequence>
          *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *       &lt;/sequence>
          *     &lt;/restriction>
          *   &lt;/complexContent>
@@ -264,15 +261,12 @@ public class WebConfig {
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
-            "code",
-            "location"
+            "code"
         })
         public static class Item {
 
             @XmlElement(required = true)
             protected String code;
-            @XmlElement(required = true)
-            protected String location;
 
             /**
              * Gets the value of the code property.
@@ -296,30 +290,6 @@ public class WebConfig {
              */
             public void setCode(String value) {
                 this.code = value;
-            }
-
-            /**
-             * Gets the value of the location property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            public String getLocation() {
-                return location;
-            }
-
-            /**
-             * Sets the value of the location property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            public void setLocation(String value) {
-                this.location = value;
             }
 
         }
