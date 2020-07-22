@@ -48,7 +48,7 @@
             <div>
                 Max review parsed pages: <input type="number" name="maxReviewParsedPages"/>
             </div>
-            <button type="submit">START</button>
+            <button type="submit" onclick="onBtnClick(event)">START</button>
         </form>
         <hr/>
         <h3>Crawl single restaurant</h3>
@@ -66,6 +66,10 @@
         <script>
             if (location.href.indexOf("/start-parser") > -1)
                 window.history.pushState({}, document.title, location.href.substring(0, location.href.indexOf('/start-parser')));
+            function onBtnClick(event) {
+                event.target.setAttribute("disabled", "true");
+                document.getElementById("form-parse-list").submit();
+            }
         </script>
     </body>
 </html>

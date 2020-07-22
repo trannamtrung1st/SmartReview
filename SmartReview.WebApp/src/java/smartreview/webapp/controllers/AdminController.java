@@ -58,20 +58,20 @@ public class AdminController extends BaseController {
                 pInfo.setToPage(toPage);
                 pInfo.setMaxParsedReviewsPage(maxReviewParsedPages);
                 em.getTransaction().commit();
-                switch (parserCode) {
-                    case Constants.TRIP_ADVISOR_CODE: {
-                        String folderPath = sContext.getRealPath("/WEB-INF/" + parserCode);
-                        TripAdvisorParser.start(fromPage, toPage, maxReviewParsedPages, folderPath, maxBusinessCount);
-                    }
-                    break;
-                    case Constants.YELP_CODE: {
-                        String folderPath = sContext.getRealPath("/WEB-INF/" + parserCode);
-                        YelpParser.start(fromPage, toPage, maxReviewParsedPages, folderPath, maxBusinessCount);
-                    }
-                    break;
+            }
+            switch (parserCode) {
+                case Constants.TRIP_ADVISOR_CODE: {
+                    String folderPath = sContext.getRealPath("/WEB-INF/" + parserCode);
+                    TripAdvisorParser.start(fromPage, toPage, maxReviewParsedPages, folderPath, maxBusinessCount);
                 }
-            } else {
-                found = false;
+                break;
+                case Constants.YELP_CODE: {
+                    String folderPath = sContext.getRealPath("/WEB-INF/" + parserCode);
+                    YelpParser.start(fromPage, toPage, maxReviewParsedPages, folderPath, maxBusinessCount);
+                }
+                break;
+                default:
+                    found = false;
             }
         }
         if (found) {
