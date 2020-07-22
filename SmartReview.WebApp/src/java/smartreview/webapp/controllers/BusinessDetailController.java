@@ -20,12 +20,15 @@ import smartreview.dtos.BusinessDTO;
 import smartreview.services.BusinessService;
 import smartreview.models.EntityContext;
 import smartreview.daos.BusinessDAO;
+import smartreview.daos.BusinessReviewDAO;
+import smartreview.daos.ReviewCategoryDAO;
 import smartreview.models.Business;
 import smartreview.models.ReviewCategory;
 import smartreview.dtos.BusinessDetailModel;
 import smartreview.dtos.BusinessImageDTO;
 import smartreview.dtos.BusinessReviewGeneralModel;
 import smartreview.helper.XMLHelper;
+import smartreview.services.ReviewService;
 
 /**
  *
@@ -63,13 +66,14 @@ public class BusinessDetailController extends BaseController {
         try (EntityContext eContext = EntityContext.newInstance();) {
             EntityManager em = eContext.getEntityManager();
             BusinessService businessService = new BusinessService(em, new BusinessDAO(em));
+            ReviewService reviewService = new ReviewService(em, new BusinessReviewDAO(em), new ReviewCategoryDAO(em));
             Business entity = businessService.findBusinessById(id);
             if (entity == null) {
                 response.setStatus(HttpStatus.SC_NOT_FOUND);
                 return;
             }
             Map<String, ReviewCategory> cateMap = (Map<String, ReviewCategory>) getServletContext().getAttribute("cateMap");
-            BusinessReviewGeneralModel reviewGeneral = businessService.generalizeReviewDataOfBusiness(entity, cateMap);
+            BusinessReviewGeneralModel reviewGeneral = reviewService.generalizeReviewDataOfBusiness(entity, cateMap);
             BusinessDTO dto = businessService.toBusinessDTO(entity);
             List<BusinessImageDTO> images = businessService.toListBusinessImageDTO(entity.getBusinessImageCollection());
             List<BusinessImageDTO> filterImages = new ArrayList<>();

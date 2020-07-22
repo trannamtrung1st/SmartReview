@@ -117,31 +117,6 @@ public class BusinessService {
         return dto;
     }
 
-    public BusinessReviewGeneralModel generalizeReviewDataOfBusiness(Business entity, Map<String, ReviewCategory> cateMap) {
-        String sql = "SELECT c.categoryCode,COUNT(c.id) totalReview,CAST((COUNT(c.id)*100) as float)/(SELECT COUNT(id) FROM BusinessReview WHERE businessId=?bId) ratio \n"
-                + "FROM CategoriesOfReviews c\n"
-                + "INNER JOIN BusinessReview r ON c.reviewId=r.id\n"
-                + "WHERE r.businessId = ?bId\n"
-                + "GROUP BY c.categoryCode";
-        Query query = businessDAO.nativeQuery(sql).setParameter("bId", entity.getId());
-        List<Object[]> results = query.getResultList();
-        BusinessReviewGeneralModel model = new BusinessReviewGeneralModel();
-        model.setBusinessId(entity.getId());
-        model.setOverall(entity.getRating() > 3.5);
-        List<BadReviewDetailModel> badReviews = results.stream().map((t) -> {
-            BadReviewDetailModel m = new BadReviewDetailModel();
-            int ratio = (int) (double) t[2];
-            m.setRatio(ratio);
-            m.setTotalReview((Integer) t[1]);
-            String cateCode = (String) t[0];
-            m.setReviewCateCode(cateCode);
-            m.setReviewCateName(cateMap.get(cateCode).getName());
-            return m;
-        }).collect(Collectors.toList());
-        model.setBadReviewDetails(badReviews);
-        return model;
-    }
-
     public List<BusinessImageDTO> toListBusinessImageDTO(Collection<BusinessImage> entities) {
         return Arrays.asList(entities.toArray(new BusinessImage[entities.size()])).stream().map((t) -> {
             BusinessImageDTO dto = new BusinessImageDTO();
